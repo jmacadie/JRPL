@@ -21,7 +21,7 @@ $(document).ready(function() {
 function doLogIn() {
 
     // Send request
-    $.post("../includes/login.php",
+    $.post("login.php",
 
         {action: "login",
             email: $("#logInEmail").val(),

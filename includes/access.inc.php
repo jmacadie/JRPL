@@ -70,7 +70,7 @@ function userIsLoggedIn()
         if ($password <> $password2)
         {
             $GLOBALS['loginError'] = 'The passwords do not match';
-            return TRUE;
+            return FALSE;
         }
         
         if ($password == '')
@@ -122,9 +122,8 @@ function userIsLoggedIn()
         }
 
         setUserSessionInfo($email);
-
-        header('Location: .');
-        exit();
+		
+		return TRUE;
 
     }
 
