@@ -69,11 +69,8 @@
 						'<li class="active"><a href="./">Fixtures</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'fixtures/">Fixtures</a></li>'); ?>
 					<?php echo($tab == 'tables' ?
-						'<li class="active"><a href="./">Tables</a></li>' :
-						'<li><a href="'.($tab == 'home' ? '' : '../').'tables/">Tables</a></li>'); ?>
-					<?php echo($tab == 'graphs' ?
-						'<li class="active"><a href="./">Graphs</a></li>' :
-						'<li><a href="'.($tab == 'home' ? '' : '../').'graphs/">Graphs</a></li>'); ?>
+						'<li class="active"><a href="./">Results</a></li>' :
+						'<li><a href="'.($tab == 'home' ? '' : '../').'results/">Results</a></li>'); ?>
 					<?php echo($tab == 'rules' ?
 						'<li class="active"><a href="./">Rules</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'rules/">Rules</a></li>'); ?>
