@@ -98,7 +98,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="<?php echo($tab == 'home' ? '' : '../'); ?>details">Profile</a></li>
 								<li class="divider"></li>
-								<li><a href="#" id="logOut">Sign Out</a></li>
+								<li><a href="#" id="logOut">Log Out</a></li>
 							</ul>
 						</li>
 					</ul>
