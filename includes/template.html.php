@@ -65,9 +65,6 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="navbar-collapse">
 				<ul class="nav navbar-nav">
-					<?php echo($tab == 'home' ?
-						'<li class="active"><a href="/">Home</a></li>' :
-						'<li><a href="../">Home</a></li>'); ?>
 					<?php echo($tab == 'predictions' ?
 						'<li class="active"><a href="./">Predictions</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'predictions/">Predictions</a></li>'); ?>
