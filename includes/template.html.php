@@ -31,8 +31,8 @@
     <![endif]-->
 
 	<!-- Fav and touch icons -->
-	<link rel="icon" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.ico" type="image/x-icon">
-	<link rel="shortcut icon" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.png" type="image/x-icon">
+	<link rel="shortcut icon" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.png" type="image/x-icon">
 
 </head>
 
