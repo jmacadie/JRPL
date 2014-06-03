@@ -18,7 +18,7 @@
 				</div>
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbLockedMatches" value="" checked>
+					<input type="checkbox" id="ckbPredictedMatches" value="" checked>
 					Exclude predicted matches
 				  </label>
 				</div>
@@ -102,29 +102,32 @@
 				
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbLockedMatches" value="" checked>
+					<input type="checkbox" id="ckbLast16" value="" checked>
 					Last 16
 				  </label>
 				</div>
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbLockedMatches" value="" checked>
+					<input type="checkbox" id="ckbQuarterFinals" value="" checked>
 					Quarter-finals
 				  </label>
 				</div>
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbLockedMatches" value="" checked>
+					<input type="checkbox" id="ckbSemiFinals" value="" checked>
 					Semi-finals
 				  </label>
 				</div>
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbLockedMatches" value="" checked>
+					<input type="checkbox" id="ckbFinal" value="" checked>
 					Final
 				  </label>
 				</div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit" id="btnUpdateMatches">Update</button>
 			</div>
 		</div>
 	</div>
 </div>
+<div id="matchesMessage"></div>
+<div id="matches"></div>
