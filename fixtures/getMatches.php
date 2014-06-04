@@ -58,8 +58,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 				m.`MatchID`,
 				m.`Date`,
 				m.`KickOff`,
-				ht.`ShortName` AS `HomeTeam`,
-				at.`ShortName` AS `AwayTeam`,
+				ht.`Name` AS `HomeTeam`,
+				at.`Name` AS `AwayTeam`,
+				ht.`ShortName` AS `HomeTeamS`,
+				at.`ShortName` AS `AwayTeamS`,
 				m.`HomeTeamGoals`,
 				m.`AwayTeamGoals`,
 				p.`HomeTeamPoints`,
@@ -91,7 +93,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		$error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
-		$arr = array('result' => 'No', 'message' => $error);
+		$arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
 		echo json_encode($arr);
 		die();
 	} 
@@ -111,9 +113,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 	// build results into output JSON file
 	header('Content-type: application/json');
 	$arr = array(
-		'result' => 'Yes',
-		'message' => '',
-		'data' => $arrMatches);
+		'result' => 'Yes'
+		,'message' => ''
+		,'data' => $arrMatches
+		,'loggedIn' => max($UserID, 1));
 	echo json_encode($arr);
 
 }

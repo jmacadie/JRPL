@@ -95,49 +95,83 @@ function processMatchesReturn (data) {
 		// Output error message
 		$("#matchesMessage").html(result.join(''));
 
-	} else { // User is logged in ok add results to table
-
-        result = [
-            '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="tableSessionsContent">',
-            '<thead>',
-            '<th>Date</th>',
-            '<th>Sport</th>',
-            '<th>Event</th>',
-            '<th>Session</th>',
-            '<th>Venue</th>',
-            '<th class="center">Closed</th>',
-            '<th class="center">Lockdown</th>',
-            '<th class="center">Medal</th>',
-            '<th class="center">Predictions</th>',
-            '<th class="center">WRJoker</th>',
-            '</thead>',
-            '<tbody>'];
+	} else { // Data cam back OK so build HTML and then display it
+		
+		var date = '';
+		var time = '';
+		
+		// Initialise the result variable as an empty array, 
+		// bits of HTML will be pushed onto it and finally the whole
+		// thing will be joined to output
+        result = [];
 		
 		$.each(data.data, function(entryIndex, entry){
 			
-			// Add row data
-            result.push('<tr>');
-            result.push('<td>'+ entry['Date'] + ' ' + entry['Time'].slice(0,5) + '</td>');
-            result.push('<td>'+ entry['Sport'] + '</td>');
-            result.push('<td>'+ '<a href="#" data-eventID="' + entry['EventID'] + '" class="sessionTableLink">' + entry['Event'] + '</a>' + '</td>');
-            result.push('<td>'+ entry['Session'] + '</td>');
-            result.push('<td>'+ entry['Venue'] + '</td>');
-            result.push('<td class="center">'+ entry['Closed'] + '</td>');
-            result.push('<td class="center">'+ entry['Lockdown'] + '</td>');
-            result.push('<td class="center">'+ entry['Medal'] + '</td>');
-            result.push('<td class="center">'+ entry['Predictions'] + '</td>');
-            result.push('<td class="center">'+ entry['WRJoker'] + '</td>');
-            result.push('</tr>');
+			// Display Date Header if the first Match or date has changed
+			if entryIndex == 0 || entry['Date'] != date {
+				date = entry['Date'];
+				result.push('<h3>' + date + '</h3>');
+			}
+			
+			// Display Time Header if the first Match or kick-off has changed
+			if entryIndex == 0 || entry['KickOff'] != time {
+				time = entry['KickOff'];
+				result.push('<h4>' + time.slice(0,5) + '</h4>');
+			}
+			
+			// Add mark-up for a single match
+			
+			// Wrap whole row in a link to the relevant match page
+			result.push('<div class="matchRow">');
+            result.push('<a href="../match?id=' + entry['MatchID'] + '">');
+			
+			// Have own row to show flags on phones, in-line on anything bigger
+            result.push('<div class="row visible-xs">');
+			result.push('<div class="col-xs-4"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['HomeTeamS'] + '.png></div>');
+			result.push('<div class="col-xs-4 col-xs-offset-4"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['AwayTeamS'] + '.png></div>');
+			result.push('</div>');
+			
+			// Main row with team names, flags and result on
+			result.push('<div class="row">');
+			result.push('<div class="col-sm-1 hidden-xs"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['HomeTeamS'] + '.png></div>'); // in-line flag for devices bigger than a phone
+			result.push('<div class="col-sm-3 visible-sm col-xs-4 visible-xs text-right">' + entry['HomeTeamS'] + '</div>'); // Short name for phones and tablets
+			result.push('<div class="col-md-3 visible-md visible-lg text-right">' + entry['HomeTeam'] + '</div>'); // Full name for desktops
+			result.push('<div class="col-xs-1 text-center">' + entry['HomeTeamGoals'] + '</div>'); // Score
+			result.push('<div class="col-xs-2 text-center">vs.</div>'); // Divider
+			result.push('<div class="col-xs-1 text-center">' + entry['AwayTeamGoals'] + '</div>'); // Score
+			result.push('<div class="col-md-3 visible-md visible-lg text-left">' + entry['AwayTeam'] + '</div>'); // Full name for desktops
+			result.push('<div class="col-sm-3 visible-sm col-xs-4 visible-xs text-left">' + entry['AwayTeamS'] + '</div>');  // Short name for phones and tablets
+			result.push('<div class="col-sm-1 hidden-xs"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['AwayTeamS'] + '.png></div>'); // in-line flag for devices bigger than a phone
+			result.push('</div>');
+			
+			// Row for prediction, if logged in
+			if data.loggedIn == 1 {
+				result.push('<div class="row">');
+				if entry['LockedDown'] == 1 {
+					result.push('Not yet predicted');
+				} else {
+					result.push('Locked Down');
+				}
+				result.push('</div>');
+			}
+			
+			// Row for locked down status
+			if entry['LockedDown'] == 1 {
+				result.push('<div class="row">');
+				result.push('Locked Down');
+				result.push('</div>');
+			}
+			
+			// Close link and wrapping div
+            result.push('</a>');
+			result.push('</div>');
 			
 		});
-
-        result.push('</tbody>');
-        result.push('</table>');
 		
 		// Write the HTML
         $("#matches").html(result.join(''));
 		
-        // Close Alert
+        // Close "Getting data" alert
         $("#aGettingMatchData").alert('close');
 
 	}
