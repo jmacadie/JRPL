@@ -82,9 +82,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 				
 			WHERE
 				m.`MatchID` > 0";
-	if ($excLocked) $sql .= " AND DATE_ADD(NOW(), INTERVAL 30 MINUTE) > TIMESTAMP(m.`Date`, m.`KickOff`)";
+	if ($excLocked) $sql .= " AND DATE_ADD(NOW(), INTERVAL 30 MINUTE) < TIMESTAMP(m.`Date`, m.`KickOff`)";
 	if ($excPredicted) $sql .= " AND p.`PredictionID` IS NULL";
-	$sql .= ";";
+	$sql .= " ORDER BY m.`Date` ASC, m.`KickOff` ASC;";
 	
 	// Run query and handle any failure
 	$result = mysqli_query($link, $sql);
@@ -105,10 +105,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		$arrMatches[] = $row; 
 	}
 	
-	/*// Test Code
-	header('Content-type: application/json');
+	// Test Code
+	/*header('Content-type: application/json');
 	$arr = array('result' => 'No', 'message' => $sql);
-	echo json_encode($arr);*/
+	echo json_encode($arr)*/;
 
 	// build results into output JSON file
 	header('Content-type: application/json');
@@ -116,7 +116,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		'result' => 'Yes'
 		,'message' => ''
 		,'data' => $arrMatches
-		,'loggedIn' => max($UserID, 1));
+		,'loggedIn' => min($UserID, 1));
 	echo json_encode($arr);
 
 }

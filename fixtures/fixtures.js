@@ -123,27 +123,27 @@ function processMatchesReturn (data) {
 			
 			// Have own row to show flags on phones, in-line on anything bigger
             result.push('<div class="row visible-xs">');
-			result.push('<div class="col-xs-4"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['HomeTeamS'] + '.png></div>');
-			result.push('<div class="col-xs-4 col-xs-offset-4"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['AwayTeamS'] + '.png></div>');
+			result.push('<div class="col-xs-4 text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flag/' + entry['HomeTeamS'].toLowerCase() + '.png"></div>');
+			result.push('<div class="col-xs-4 col-xs-offset-4 text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flag/' + entry['AwayTeamS'].toLowerCase() + '.png"></div>');
 			result.push('</div>');
 			
 			// Main row with team names, flags and result on
 			result.push('<div class="row">');
-			result.push('<div class="col-sm-1 hidden-xs"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['HomeTeamS'] + '.png></div>'); // in-line flag for devices bigger than a phone
+			result.push('<div class="col-sm-1 hidden-xs"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flag/' + entry['HomeTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
 			result.push('<div class="col-sm-3 visible-sm col-xs-4 visible-xs text-right">' + entry['HomeTeamS'] + '</div>'); // Short name for phones and tablets
 			result.push('<div class="col-md-3 visible-md visible-lg text-right">' + entry['HomeTeam'] + '</div>'); // Full name for desktops
-			result.push('<div class="col-xs-1 text-center">' + entry['HomeTeamGoals'] + '</div>'); // Score
+			result.push('<div class="col-xs-1 text-center">' + ((entry['HomeTeamGoals'] === null) ? '' : entry['HomeTeamGoals']) + '</div>'); // Score
 			result.push('<div class="col-xs-2 text-center">vs.</div>'); // Divider
-			result.push('<div class="col-xs-1 text-center">' + entry['AwayTeamGoals'] + '</div>'); // Score
+			result.push('<div class="col-xs-1 text-center">' + ((entry['HomeTeamGoals'] === null) ? '' : entry['HomeTeamGoals']) + '</div>'); // Score
 			result.push('<div class="col-md-3 visible-md visible-lg text-left">' + entry['AwayTeam'] + '</div>'); // Full name for desktops
 			result.push('<div class="col-sm-3 visible-sm col-xs-4 visible-xs text-left">' + entry['AwayTeamS'] + '</div>');  // Short name for phones and tablets
-			result.push('<div class="col-sm-1 hidden-xs"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flag/"' + entry['AwayTeamS'] + '.png></div>'); // in-line flag for devices bigger than a phone
+			result.push('<div class="col-sm-1 hidden-xs"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flag/' + entry['AwayTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
 			result.push('</div>');
 			
 			// Row for prediction, if logged in
 			if (data.loggedIn === 1) {
 				result.push('<div class="row">');
-				if (entry['HomeTeamPoints'] === '') {
+				if (entry['HomeTeamPoints'] === null) {
 					result.push('Not yet predicted');
 				} else {
 					result.push('Predicted: ' + entry['HomeTeamPoints'] + ' - ' + entry['AwayTeamPoints']);
