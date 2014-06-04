@@ -173,6 +173,3 @@ function processMatchesReturn (data) {
 	}
 	
 }
-
-		
-}
