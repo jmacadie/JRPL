@@ -1,7 +1,3 @@
-var lCompetitors = [];
-var lCompetitors2 = [];
-var pEventID;
-
 // Do stuff when page is ready
 $(document).ready(function() {
 
@@ -81,7 +77,7 @@ function processMatchesReturn (data) {
 
     var result;
 	
-	if (data.result == "No") {
+	if (data.result === "No") {
 	// If result returned no then something went wrong so build and display an error message
 		
 		// Build HTML for error message
@@ -95,7 +91,7 @@ function processMatchesReturn (data) {
 		// Output error message
 		$("#matchesMessage").html(result.join(''));
 
-	} else { // Data cam back OK so build HTML and then display it
+	} else { // Data came back OK so build HTML and then display it
 		
 		var date = '';
 		var time = '';
@@ -108,13 +104,13 @@ function processMatchesReturn (data) {
 		$.each(data.data, function(entryIndex, entry){
 			
 			// Display Date Header if the first Match or date has changed
-			if entryIndex == 0 || entry['Date'] != date {
+			if ((entryIndex === 0) || (entry['Date'] != date)) {
 				date = entry['Date'];
 				result.push('<h3>' + date + '</h3>');
 			}
 			
 			// Display Time Header if the first Match or kick-off has changed
-			if entryIndex == 0 || entry['KickOff'] != time {
+			if ((entryIndex === 0) || (entry['KickOff'] != time)) {
 				time = entry['KickOff'];
 				result.push('<h4>' + time.slice(0,5) + '</h4>');
 			}
@@ -145,18 +141,18 @@ function processMatchesReturn (data) {
 			result.push('</div>');
 			
 			// Row for prediction, if logged in
-			if data.loggedIn == 1 {
+			if (data.loggedIn === 1) {
 				result.push('<div class="row">');
-				if entry['LockedDown'] == 1 {
+				if (entry['HomeTeamPoints'] === '') {
 					result.push('Not yet predicted');
 				} else {
-					result.push('Locked Down');
+					result.push('Predicted: ' + entry['HomeTeamPoints'] + ' - ' + entry['AwayTeamPoints']);
 				}
 				result.push('</div>');
 			}
 			
 			// Row for locked down status
-			if entry['LockedDown'] == 1 {
+			if (entry['LockedDown'] === 1) {
 				result.push('<div class="row">');
 				result.push('Locked Down');
 				result.push('</div>');
