@@ -53,3 +53,20 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+/*
+ * Fixtures page
+ */
+ 
+ .flag {
+	border: 1px solid #c7c6c6;
+ }
+ 
+.matchRow a:visited,
+.matchRow a:visited * {
+  text-decoration: none;
+}
+
+.matchRow {
+	background-color: #f7f7f9;
+}
