@@ -52,11 +52,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 	$semiFinals = mysqli_real_escape_string($link, $semiFinals);
 	$final = mysqli_real_escape_string($link, $final);
 	
+	// Make sure at least 1 stage is selected
+	$final = !($groupA || $groupB || $groupC || $groupD || $groupE || $groupF || $groupG || $groupH || $last16 || $quarterFinals || $semiFinals) || $final;
+	
+	$firstFilter = true;
+	
 	// Query to pull match data from DB
 	// TODO: Change column names in predictions table to reference goals not points
 	$sql = "SELECT
 				m.`MatchID`,
-				DATE_FORMAT(m.`Date`, '%W, %D %M %Y'),
+				DATE_FORMAT(m.`Date`, '%W %D %M %Y') AS `Date`,
 				m.`KickOff`,
 				ht.`Name` AS `HomeTeam`,
 				at.`Name` AS `AwayTeam`,
@@ -76,12 +81,111 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 					ht.`TeamID` = m.`HomeTeamID`
 				INNER JOIN `Team` at ON
 					at.`TeamID` = m.`AwayTeamID`
+				INNER JOIN `Stage` s ON
+					s.`StageID` = m.`StageID`
 				LEFT JOIN `Prediction` p ON
 					p.`MatchID` = m.`MatchID`
 					AND p.`UserID` =  " . $userID . "
 				
 			WHERE
-				m.`MatchID` > 0";
+				(";
+	if ($groupA) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'A')";
+	}
+	if ($groupB) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'B')";
+	}
+	if ($groupC) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'C')";
+	}
+	if ($groupD) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'D')";
+	}
+	if ($groupE) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'E')";
+	}
+	if ($groupF) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'F')";
+	}
+	if ($groupG) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'G')";
+	}
+	if ($groupH) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'H')";
+	}
+	if ($last16) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Last 16')";
+	}
+	if ($quarterFinals) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Quarter Finals')";
+	}
+	if ($semiFinals) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Seni Finals')";
+	}
+	if ($final) {
+		if ($firstFilter) {
+			$firstFilter = false;
+		} else {
+			$sql .= " OR ";
+		}
+		$sql .= "(s.`Name` = 'Final')";
+	}
+	$sql .= ")";
 	if ($excLocked) $sql .= " AND DATE_ADD(NOW(), INTERVAL 30 MINUTE) < TIMESTAMP(m.`Date`, m.`KickOff`)";
 	if ($excPredicted) $sql .= " AND p.`PredictionID` IS NULL";
 	$sql .= " ORDER BY m.`Date` ASC, m.`KickOff` ASC;";
