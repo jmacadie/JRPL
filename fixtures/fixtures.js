@@ -11,14 +11,21 @@ $(document).ready(function() {
 	// Add click handler to update filter button
 	$("#btnUpdateMatches").click(function(e) {
 		e.preventDefault();
-		$("#collapseGroup").collapse(); // collapse the filters section
+		$("#collapseFilters").collapse('hide'); // collapse the filters section
+		$("#collapseGroup").collapse('hide'); // collapse the filters section
 		getMatchesData();
 	});
 	
 	// Add click handler to select / unselect all group stages button
 	$("#btnSelectGroup").click(function(e) {
 		e.preventDefault();
-		selectAll($(this).attr('data-mode'));
+		selectAllGroups($(this).attr('data-mode'));
+	});
+	
+	// Add click handler to all group stages checkbox
+	$("#ckbGroupStage").click(function(e) {
+		e.preventDefault();
+		disableAllGroups($(this).is(':checked'));
 	});
 
 });
@@ -181,7 +188,7 @@ function processMatchesReturn (data) {
 	
 }
 
-function selectAll (mode) {
+function selectAllGroups (mode) {
 	
 	// see if we're selecting or unselecting
 	if (mode === 'unselect') {
@@ -193,7 +200,20 @@ function selectAll (mode) {
 		// Change all the checkbox states to checked
 		$('#collapseGroup').find('[type=checkbox]').prop('checked',true);
 		// Change button text back to unselect all
-		$("#btnSelectGroup").text('Unelect All').attr('data-mode','unselect');
+		$("#btnSelectGroup").text('Unselect All').attr('data-mode','unselect');
+	}
+	
+}
+
+function disableAllGroups (mode) {
+	
+	// see if we're disabling or enabling
+	if (mode === true) {
+		// Enable all the checkboxes
+		$('#collapseGroup').find('[type=checkbox]').prop('disabled', false);
+	} else {
+		// Disable all the checkboxes
+		$("#btnSelectGroup").text('Unselect All').prop('disabled', true);
 	}
 	
 }

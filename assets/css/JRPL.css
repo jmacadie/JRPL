@@ -68,6 +68,10 @@ body {
   color: #000;
 }
 
+.matchRow  .col-xs-1{
+	padding: 0;
+}
+
 .matchRow {
 	background-color: #f7f7f9;
 	padding-top: 10px;
