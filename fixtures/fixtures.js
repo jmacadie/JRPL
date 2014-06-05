@@ -11,7 +11,14 @@ $(document).ready(function() {
 	// Add click handler to update filter button
 	$("#btnUpdateMatches").click(function(e) {
 		e.preventDefault();
+		$("#collapseGroup").collapse(); // collapse the filters section
 		getMatchesData();
+	});
+	
+	// Add click handler to select / unselect all group stages button
+	$("#btnSelectGroup").click(function(e) {
+		e.preventDefault();
+		selectAll($(this).attr('data-mode'));
 	});
 
 });
@@ -30,7 +37,7 @@ function getMatchesData() {
     $("#matchesMessage").html(result.join(''));
 	
 	// Sort out the group stage filters
-	var groupOv = $("#ckbLockedMatches").is(':checked');
+	var groupOv = $("#ckbGroupStage").is(':checked');
 	var groupA = groupOv && $("#ckbGroupA").is(':checked');
 	var groupB = groupOv && $("#ckbGroupB").is(':checked');
 	var groupC = groupOv && $("#ckbGroupC").is(':checked');
@@ -47,7 +54,7 @@ function getMatchesData() {
 		data: 
 			{action: "updateMatches",
 			excLocked: $("#ckbLockedMatches").is(':checked'),
-			excPredicted: $("#ckbLockedMatches").is(':checked'),
+			excPredicted: $("#ckbPredictedMatches").is(':checked'),
 			groupA: groupA,
 			groupB: groupB,
 			groupC: groupC,
@@ -130,13 +137,13 @@ function processMatchesReturn (data) {
 			// Main row with team names, flags and result on
 			result.push('<div class="row">');
 			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + entry['HomeTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
-			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['HomeTeamS'] + '</div>'); // Centred short name for phones
+			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['HomeTeam'] + '</div>'); // Centred name for phones
 			result.push('<div class="col-sm-2 hidden-xs text-right">' + entry['HomeTeam'] + '</div>'); // Full name for tablets & desktops
 			result.push('<div class="col-xs-1 text-center">' + ((entry['HomeTeamGoals'] === null) ? '' : entry['HomeTeamGoals']) + '</div>'); // Score
 			result.push('<div class="col-xs-2 text-center">vs.</div>'); // Divider
 			result.push('<div class="col-xs-1 text-center">' + ((entry['AwayTeamGoals'] === null) ? '' : entry['AwayTeamGoals']) + '</div>'); // Score
 			result.push('<div class="col-sm-2 hidden-xs text-left">' + entry['AwayTeam'] + '</div>'); // Full name for tablets & desktops
-			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['AwayTeamS'] + '</div>');  // Centred short name for phones
+			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['AwayTeam'] + '</div>');  // Centred name for phones
 			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + entry['AwayTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
 			result.push('</div>');
 			
@@ -170,6 +177,23 @@ function processMatchesReturn (data) {
         // Close "Getting data" alert
         $("#aGettingMatchData").alert('close');
 
+	}
+	
+}
+
+function selectAll (mode) {
+	
+	// see if we're selecting or unselecting
+	if (mode === 'unselect') {
+		// Change all the checkbox states to unchecked
+		$('#collapseGroup').find('[type=checkbox]').prop('checked',false);
+		// Change button text back to select all
+		$("#btnSelectGroup").text('Select All').attr('data-mode','select');
+	} else {
+		// Change all the checkbox states to checked
+		$('#collapseGroup').find('[type=checkbox]').prop('checked',true);
+		// Change button text back to unselect all
+		$("#btnSelectGroup").text('Unelect All').attr('data-mode','unselect');
 	}
 	
 }

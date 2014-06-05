@@ -12,13 +12,13 @@
 			<div class="panel-body">
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbLockedMatches" value="" checked>
+					<input type="checkbox" id="ckbLockedMatches" value="">
 					Exclude locked-down matches
 				  </label>
 				</div>
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbPredictedMatches" value="" checked>
+					<input type="checkbox" id="ckbPredictedMatches" value="">
 					Exclude predicted matches
 				  </label>
 				</div>
@@ -39,6 +39,7 @@
 						</div>
 						<div id="collapseGroup" class="panel-collapse collapse">
 							<div class="panel-body">
+								<button class="btn btn-sm btn-info" type="submit" id="btnSelectGroup" data-mode="unselect">Unselect all</button>
 								<div class="checkbox">
 								  <label>
 									<input type="checkbox" id="ckbGroupA" value="" checked>
