@@ -1,4 +1,3 @@
-<h1>Change your details</h1><br />
 <?php if (!isset($_SESSION['loggedIn']) or $_SESSION['loggedIn'] == FALSE): ?>
     <div class="alert alert-danger">
         <h4>Log In Error</h4>

@@ -24,7 +24,6 @@ $(document).ready(function() {
 	
 	// Add click handler to all group stages checkbox
 	$("#ckbGroupStage").click(function(e) {
-		e.preventDefault();
 		disableAllGroups($(this).is(':checked'));
 	});
 
@@ -209,11 +208,13 @@ function disableAllGroups (mode) {
 	
 	// see if we're disabling or enabling
 	if (mode === true) {
-		// Enable all the checkboxes
+		// Enable all the checkboxes + the button
 		$('#collapseGroup').find('[type=checkbox]').prop('disabled', false);
+		$('#btnSelectGroup').prop('disabled', false);
 	} else {
-		// Disable all the checkboxes
-		$("#btnSelectGroup").text('Unselect All').prop('disabled', true);
+		// Disable all the checkboxes + the button
+		$('#collapseGroup').find('[type=checkbox]').prop('disabled', true);
+		$('#btnSelectGroup').prop('disabled', true);
 	}
 	
 }
