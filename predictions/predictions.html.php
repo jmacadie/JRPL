@@ -1,1 +1,0 @@
-<h1>Predictions</h1>
