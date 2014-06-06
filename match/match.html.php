@@ -73,13 +73,13 @@
 	<div class="form-group">
 		<label for="homeScore" class="col-xs-8 control-label"><?php htmlout($homeTeam); ?></label>
 		<div class="col-xs-4">
-			<input type="number" class="form-control" id="homeScoreXS" name="homeScoreXS" value="">
+			<input type="number" class="form-control" id="homeScoreXS" name="homeScoreXS" value="<?php htmlout($homeTeamPredGoals); ?>">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="awayScore" class="col-xs-8 control-label"><?php htmlout($awayTeam); ?></label>
 		<div class="col-xs-4">
-			<input type="number" class="form-control" id="awayScoreXS" name="awayScoreXS" value="">
+			<input type="number" class="form-control" id="awayScoreXS" name="awayScoreXS" value="<?php htmlout($awayTeamPredGoals); ?>">
 		</div>
 	</div>
 	<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPredictionXS">Submit</button>

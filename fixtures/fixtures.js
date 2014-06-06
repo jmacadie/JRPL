@@ -154,21 +154,27 @@ function processMatchesReturn (data) {
 			result.push('</div>');
 			
 			// Row for prediction, if logged in
-			if (data.loggedIn === 1) {
-				result.push('<div class="row">');
+			if (data.loggedIn === '1') {
+				result.push('<div class="row"><div class="col-xs-12 text-left">');
 				if (entry['HomeTeamPoints'] === null) {
-					result.push('Not yet predicted');
+					result.push('<i>Not yet predicted</i>');
 				} else {
-					result.push('Predicted: ' + entry['HomeTeamPoints'] + ' - ' + entry['AwayTeamPoints']);
+					if (entry['HomeTeamPoints'] > entry['AwayTeamPoints']) {
+						result.push('Predicted: <b>' + entry['HomeTeam'] + ' Win</b> ' + entry['HomeTeamPoints'] + ' - ' + entry['AwayTeamPoints']);
+					} else if (entry['HomeTeamPoints'] < entry['AwayTeamPoints']) {
+						result.push('Predicted: <b>' + entry['AwayTeam'] + ' Win</b> ' + entry['AwayTeamPoints'] + ' - ' + entry['HomeTeamPoints']);
+					} else {
+						result.push('Predicted: <b>Draw</b> ' + entry['HomeTeamPoints'] + ' - ' + entry['AwayTeamPoints']);
+					}
 				}
-				result.push('</div>');
+				result.push('</div></div>');
 			}
 			
 			// Row for locked down status
 			if (entry['LockedDown'] === 1) {
-				result.push('<div class="row">');
+				result.push('<div class="row"><div class="col-xs-12 text-left">');
 				result.push('Locked Down');
-				result.push('</div>');
+				result.push('</div></div>');
 			}
 			
 			// Close link and wrapping div

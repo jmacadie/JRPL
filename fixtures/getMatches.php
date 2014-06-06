@@ -213,14 +213,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 	/*header('Content-type: application/json');
 	$arr = array('result' => 'No', 'message' => $sql);
 	echo json_encode($arr)*/;
-
+	
 	// build results into output JSON file
 	header('Content-type: application/json');
 	$arr = array(
 		'result' => 'Yes'
 		,'message' => ''
 		,'data' => $arrMatches
-		,'loggedIn' => min($UserID, 1));
+		,'loggedIn' => min($userID, 1));
 	echo json_encode($arr);
 
 }
