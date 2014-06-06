@@ -14,7 +14,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0)) {
 
 	// Set content pointers
 	$content = $_SERVER['DOCUMENT_ROOT'] . '/match/match.html.php';
-	$contentjs = $_SERVER['DOCUMENT_ROOT'] . '/match/match.js.php';
 	
 } else {
 // MatchID has not been properly posted so return error
@@ -26,6 +25,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0)) {
 }
 
 // Call main HTML page
+$contentjs = $_SERVER['DOCUMENT_ROOT'] . '/match/match.js.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/template.html.php';
 	
 ?>

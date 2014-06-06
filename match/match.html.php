@@ -1,34 +1,37 @@
-<h3><?php htmlout($date); ?></h3>
+<h3><?php htmlout($date); ?><br />
+	<?php htmlout(substr($kickOff, 0, 5)); ?><br />
+	<small><?php htmlout($venue); ?><br/>
+	<?php htmlout($broadcaster); ?></small></h3>
 <h3>
 	<div class="row hidden-xs">
 		<div class="col-sm-4 text-right">
-			<img alt="Bazil" class="flag" src="../assets/img/flags/bra.png">
-			[One Team]
+			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($homeTeamS)); ?>.png">
+			<?php htmlout($homeTeam); ?>
 		</div>
-		<div class="col-sm-4 text-center">[s1] - [s2]</div>
+		<div class="col-sm-4 text-center"><?php htmlout($homeTeamGoals); ?> - <?php htmlout($awayTeamGoals); ?></div>
 		<div class="col-sm-4 text-left">
-			[Another]
-			<img alt="Croatia" class="flag" src="../assets/img/flags/cro.png">
+			<?php htmlout($awayTeam); ?>
+			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($awayTeamS)); ?>.png">
 		</div>
 	</div>
 	<div class="row visible-xs text-left">
-		<img alt="Bazil" class="flag" src="../assets/img/flags/bra.png">
-		[One Team] [s1]
+		<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($homeTeamS)); ?>.png">
+		<?php htmlout($homeTeam); ?> <?php htmlout($homeTeamGoals); ?>
 	</div>
 	<div class="row visible-xs text-left">
-		[Another] [s2]
-		<img alt="Croatia" class="flag" src="../assets/img/flags/cro.png">
+		<?php htmlout($awayTeam); ?> <?php htmlout($awayTeamGoals); ?>
+		<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($awayTeamS)); ?>.png">
 	</div>
 </h3>
 <form role="form">
-	<h2 class="form-heading">Prediction</h2>
+	<h4 class="form-heading">Prediction</h4>
 	<div class="form-group">
-		<label for="homeScore">[One Team]</label>
+		<label for="homeScore"><?php htmlout($homeTeam); ?></label>
 		<input type="text" class="form-control" id="homeScore" name="homeScore"
 			value="">
 	</div>
 	<div class="form-group">
-		<label for="awayScore">[Another]</label>
+		<label for="awayScore"><?php htmlout($awayTeam); ?></label>
 		<input type="text" class="form-control" id="awayScore" name="awayScore"
 			value="">
 	</div>

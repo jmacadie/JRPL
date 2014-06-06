@@ -61,7 +61,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 	// TODO: Change column names in predictions table to reference goals not points
 	$sql = "SELECT
 				m.`MatchID`,
-				DATE_FORMAT(m.`Date`, '%W %D %M %Y') AS `Date`,
+				DATE_FORMAT(m.`Date`, '%W, %D %M %Y') AS `Date`,
 				m.`KickOff`,
 				ht.`Name` AS `HomeTeam`,
 				at.`Name` AS `AwayTeam`,

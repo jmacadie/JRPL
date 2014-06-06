@@ -21,7 +21,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 	// Query to pull match data from DB
 	$sql = "SELECT
 				m.`MatchID`,
-				DATE_FORMAT(m.`Date`, '%W %D %M %Y') AS `Date`,
+				DATE_FORMAT(m.`Date`, '%W, %D %M %Y') AS `Date`,
 				m.`KickOff`,
 				ht.`Name` AS `HomeTeam`,
 				at.`Name` AS `AwayTeam`,
@@ -29,6 +29,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 				at.`ShortName` AS `AwayTeamS`,
 				m.`HomeTeamGoals`,
 				m.`AwayTeamGoals`,
+				CONCAT(v.`Name`, ', ', v.`City`) AS `Venue`,
+				b.`Name` AS `Broadcaster`,
 				p.`HomeTeamPoints`,
 				p.`AwayTeamPoints`,
 				CASE
@@ -41,6 +43,10 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 					ht.`TeamID` = m.`HomeTeamID`
 				INNER JOIN `Team` at ON
 					at.`TeamID` = m.`AwayTeamID`
+				INNER JOIN `Venue` v ON
+					v.`VenueID` = m.`VenueID`
+				INNER JOIN `Broadcaster` b ON
+					b.`BroadcasterID` = m.`BroadcasterID`
 				LEFT JOIN `Prediction` p ON
 					p.`MatchID` = m.`MatchID`
 					AND p.`UserID` =  " . $userID . "
@@ -61,7 +67,19 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 	
 	// Store results
 	$row = mysqli_fetch_assoc($result);
-    $date = $row['Date']);
+    $date = $row['Date'];
+	$kickOff = $row['KickOff'];
+	$venue = $row['Venue'];
+	$broadcaster = $row['Broadcaster'];
+	$homeTeam = $row['HomeTeam'];
+	$homeTeamS = $row['HomeTeamS'];
+	$homeTeamGoals = $row['HomeTeamGoals'];
+	$homeTeamPredGoals = $row['HomeTeamPoints'];
+	$awayTeam = $row['AwayTeam'];
+	$awayTeamS = $row['AwayTeamS'];
+	$awayTeamGoals = $row['AwayTeamGoals'];
+	$awayTeamPredGoals = $row['AwayTeamPoints'];
+	$lockedDown = $row['LockedDown'];
 
 }
 

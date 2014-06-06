@@ -1,1 +1,1 @@
-<h2>No Match chosen, please go back to <a href="../fixtures">fixtures page</a></h2>
+No match chosen, please go back to <a href="../fixtures">fixtures page</a>
