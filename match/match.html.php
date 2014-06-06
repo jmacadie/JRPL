@@ -89,5 +89,5 @@
 <h4>All Predictions</h4>
 <?php if ($lockedDown): ?>
 <?php else: ?>
-Match not yet locked down, come back when it is...
+<i>Match not yet locked down, come back when it is...</i>
 <?php endif; ?>
