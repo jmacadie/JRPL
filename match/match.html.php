@@ -1,7 +1,8 @@
 <h3><?php htmlout($date); ?><br />
 	<?php htmlout(substr($kickOff, 0, 5)); ?><br />
 	<small><?php htmlout($venue); ?><br/>
-	<?php htmlout($broadcaster); ?></small></h3>
+	<?php htmlout($broadcaster); ?></small>
+</h3>
 <h3>
 	<div class="row hidden-xs">
 		<div class="col-sm-4 text-right">
@@ -61,9 +62,10 @@
 	</div>
 	<div class="row form-group">
 		<div class="col-sm-12 text-center">
-			<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPrediction">Update</button>
+			<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPrediction">Submit</button>
 		</div>
 	</div>
+	<input type="hidden" name="matchID" id="matchID" value="<?php htmlout($matchID); ?>">
 	<?php if($lockedDown) echo('</fieldset>'); ?>
 </form>
 <form class="form-horizontal visible-xs" role="form">
@@ -71,16 +73,17 @@
 	<div class="form-group">
 		<label for="homeScore" class="col-xs-8 control-label"><?php htmlout($homeTeam); ?></label>
 		<div class="col-xs-4">
-			<input type="number" class="form-control" id="homeScore" name="homeScore" value="">
+			<input type="number" class="form-control" id="homeScoreXS" name="homeScoreXS" value="">
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="awayScore" class="col-xs-8 control-label"><?php htmlout($awayTeam); ?></label>
 		<div class="col-xs-4">
-			<input type="number" class="form-control" id="awayScore" name="awayScore" value="">
+			<input type="number" class="form-control" id="awayScoreXS" name="awayScoreXS" value="">
 		</div>
 	</div>
-	<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPredictionXS">Update</button>
+	<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPredictionXS">Submit</button>
+	<input type="hidden" name="matchID" id="matchIDXS" value="<?php htmlout($matchID); ?>">
 	<?php if($lockedDown) echo('</fieldset>'); ?>
 </form>
 <div id="updatePrediction"></div>
