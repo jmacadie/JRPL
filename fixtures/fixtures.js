@@ -208,13 +208,13 @@ function disableAllGroups (mode) {
 	
 	// see if we're disabling or enabling
 	if (mode === true) {
-		// Enable all the checkboxes + button
+		// Enable all the checkboxes + the button
 		$('#collapseGroup').find('[type=checkbox]').prop('disabled', false);
 		$('#btnSelectGroup').prop('disabled', false);
 	} else {
-		// Disable all the checkboxes + button
+		// Disable all the checkboxes + the button
 		$('#collapseGroup').find('[type=checkbox]').prop('disabled', true);
-		$('#btnSelectGroup').prop('disabled', false);
+		$('#btnSelectGroup').prop('disabled', true);
 	}
 	
 }
