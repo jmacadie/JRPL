@@ -1,7 +1,4 @@
 <?php
-// Start the session if needed
-if (!isset($_SESSION)) session_start();
-
 // Make sure all relevant includes are loaded
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 

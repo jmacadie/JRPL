@@ -1,4 +1,4 @@
-<h3>[Date & Time]</h3>
+<h3><?php htmlout($date); ?></h3>
 <h3>
 	<div class="row hidden-xs">
 		<div class="col-sm-4 text-right">

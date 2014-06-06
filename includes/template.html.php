@@ -22,7 +22,7 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 	
 	<!-- Custom styles for this template -->
-	<link type="text/css" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/css/JRPL.css" rel="stylesheet">
+	<link type="text/css" href="<?php htmlout($tab == 'home' ? '' : '../'); ?>assets/css/JRPL.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -31,8 +31,8 @@
     <![endif]-->
 
 	<!-- Fav and touch icons -->
-	<link rel="icon" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.png" type="image/x-icon">
-	<link rel="shortcut icon" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.png" type="image/x-icon">
+	<link rel="icon" href="<?php htmlout($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.png" type="image/x-icon">
+	<link rel="shortcut icon" href="<?php htmlout($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.png" type="image/x-icon">
 
 </head>
 
@@ -65,23 +65,23 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="navbar-collapse">
 				<ul class="nav navbar-nav">
-					<?php echo($tab == 'fixtures' ?
+					<?php htmlout($tab == 'fixtures' ?
 						'<li class="active"><a href="./">Fixtures</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'fixtures/">Fixtures</a></li>'); ?>
-					<?php echo($tab == 'tables' ?
+					<?php htmlout($tab == 'tables' ?
 						'<li class="active"><a href="./">Results</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'results/">Results</a></li>'); ?>
-					<?php echo($tab == 'rules' ?
+					<?php htmlout($tab == 'rules' ?
 						'<li class="active"><a href="./">Rules</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'rules/">Rules</a></li>'); ?>
 					<?php if (isset($_SESSION['isAdmin']) and $_SESSION['isAdmin'] == TRUE)
-						echo($tab == 'admin' ?
+						htmlout($tab == 'admin' ?
 							'<li class="active"><a href="./">Admin</a></li>' :
 							'<li><a href="'.($tab == 'home'?'':'../').'admin/">Admin</a></li>'); ?>
 				</ul>
 				<?php if (!isset($_SESSION['loggedIn']) or $_SESSION['loggedIn'] == FALSE): ?>
 					<ul class="nav navbar-nav navbar-right">
-						<?php echo($tab == 'login' ?
+						<?php htmlout($tab == 'login' ?
 							'<li class="active"><a href="./">Log In</a></li>' :
 							'<li><a href="'.($tab == 'home' ? '' : '../').'login/">Log In</a></li>'); ?>
 					</ul>
@@ -89,11 +89,11 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">logged in as
-								<?php echo($displayName == '' ? $firstName.' '.$lastName : $displayName); ?>
+								<?php htmlout($displayName == '' ? $firstName.' '.$lastName : $displayName); ?>
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="<?php echo($tab == 'home' ? '' : '../'); ?>details">Profile</a></li>
+								<li><a href="<?php htmlout($tab == 'home' ? '' : '../'); ?>details">Profile</a></li>
 								<li class="divider"></li>
 								<li><a href="#" id="logOut">Log Out</a></li>
 							</ul>
@@ -125,7 +125,7 @@
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-	<script src="<?php echo($tab == 'home' ? '' : '../'); ?>assets/js/logout.js"></script>
+	<script src="<?php htmlout($tab == 'home' ? '' : '../'); ?>assets/js/logout.js"></script>
 
 	<?php
 		// Load the specific page's additional javascript content
