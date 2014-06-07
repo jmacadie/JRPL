@@ -85,14 +85,15 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 			,'message' => 'Submitted results are negative');
 		echo json_encode($arr);
 		die();
-	}
+	} 
 	
-	// Query to see if a prediction for this match already exists
+	// Query to see if a result for this match already exists
 	$sql = "SELECT COUNT(*) AS `Count`
-			FROM `Prediction` p
+			FROM `Match` m
 			WHERE
-				p.`MatchID` = " . $matchID . "
-				AND p.`UserID` =  " . $userID . ";";
+				m.`MatchID` = " . $matchID . "
+				AND m.`HomeTeamGoals` IS NOT NULL
+				AND m.`AwayTeamGoals` IS NOT NULL;";
 	
 	// Run query and handle any failure
 	$result = mysqli_query($link, $sql);
@@ -106,56 +107,36 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 		die();
 	} 
 	
-	// Check result to see if we need to UPDATE or INSERT
+	// Check result
 	$row = mysqli_fetch_assoc($result);
-    if ($row['Count'] == 1) {
-		// Entry already exists so UPDATE
-		$sql = "UPDATE `Prediction`
-				SET `HomeTeamPoints` = " . $homeTeamScore . ",
-					`AwayTeamPoints` = " . $awayTeamScore . ",
-					`DateAdded` = NOW()
-				WHERE
-					`MatchID` = " . $matchID . "
-					AND `UserID` =  " . $userID . ";";
+    $updateResult = ($row['Count'] == 1);
+	
+	// UPDATE the match table with the posted data
+	$sql = "UPDATE `Match`
+			SET `HomeTeamGoals` = " . $homeTeamScore . ",
+				`AwayTeamGoals` = " . $awayTeamScore . ",
+				`ResultPostedBy` = " . $userID . ",
+				`ResultPostedOn` = NOW()
+			WHERE
+				`MatchID` = " . $matchID . ";";
+	
+	// Run query and handle any failure
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error adding result: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
-		// Run query and handle any failure
-		$result = mysqli_query($link, $sql);
-		if (!$result)
-		{
-			$error = 'Error updating prediction: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-			
-			header('Content-type: application/json');
-			$arr = array('result' => 'No', 'message' => $error);
-			echo json_encode($arr);
-			die();
-		}
-	} else {
-		// No entry already exists so INSERT
-		$sql = "INSERT INTO `Prediction`
-					(`UserID`,
-					`MatchID`,
-					`HomeTeamPoints`,
-					`AwayTeamPoints`,
-					`DateAdded`)
-				VALUES
-					(" . $userID . ",
-					" . $matchID . ",
-					" . $homeTeamScore . ",
-					" . $awayTeamScore . ",
-					NOW());";
-		
-		// Run query and handle any failure
-		$result = mysqli_query($link, $sql);
-		if (!$result)
-		{
-			$error = 'Error inserting prediction: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-			
-			header('Content-type: application/json');
-			$arr = array('result' => 'No', 'message' => $error);
-			echo json_encode($arr);
-			die();
-		}
-	};
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
+	//TODO: Calc Mr Mean & Mr Median
+	
+	//TODO: Calculate everyone's points
+	
+	//TODO: Send e-mail
 	
 	// Test Code
 	/*header('Content-type: application/json');

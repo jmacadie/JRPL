@@ -19,6 +19,22 @@ body {
 }
 
 /*
+ * Get dividers to span pages on phones
+ */
+
+hr {
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+@media (min-width: 768px) {
+	hr {
+		margin-right: 0;
+		margin-left: 0;
+	}
+}
+
+/*
  * Log in page
  */
 
@@ -99,3 +115,8 @@ body {
 /*
  * Match page
  */
+ 
+ #updateRes  .alert,
+ #updatePrediction .alert{
+	margin-top: 15px;
+}

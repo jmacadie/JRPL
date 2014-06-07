@@ -80,6 +80,41 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 	$awayTeamGoals = $row['AwayTeamGoals'];
 	$awayTeamPredGoals = $row['AwayTeamPrediction'];
 	$lockedDown = $row['LockedDown'];
+	
+	//If we're locked down then also retrieve the table of all users predictions
+	if ($lockedDown == 1) {
+		
+		// Query to pull match data from DB
+		$sql = "SELECT
+					u.`DisplayName`,
+					p.`HomeTeamGoals` AS `HomeTeamPrediction`,
+					p.`AwayTeamGoals` AS `AwayTeamPrediction`,
+					po.`TotalPoints`
+
+				FROM `Prediction` p
+					INNER JOIN `User` u ON
+						u.UserID = p.`UserID`
+					LEFT JOIN `Points` po ON
+						po.`MatchID` = p.`MatchID`
+						AND po.`UserID` = p.`UserID`
+					
+				WHERE m.`MatchID` = " . $matchID . "
+				
+				ORDER BY po.`TotalPoints` DESC, u.`UserID`;";
+		
+		// Run query and handle any failure
+		$result = mysqli_query($link, $sql);
+		if (!$result)
+		{
+			$error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+			
+			header('Content-type: application/json');
+			$arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
+			echo json_encode($arr);
+			die();
+		} 
+		
+	}
 
 }
 

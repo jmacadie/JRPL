@@ -10,7 +10,11 @@
 			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($homeTeamS)); ?>.png">
 			<?php htmlout($homeTeam); ?>
 		</div>
-		<div class="col-sm-4 text-center"><?php htmlout($homeTeamGoals); ?> - <?php htmlout($awayTeamGoals); ?></div>
+		<div class="col-sm-4 text-center">
+			<span id="homeTeamGoals"><?php htmlout($homeTeamGoals); ?></span>
+			-
+			<span id="awayTeamGoals"><?php htmlout($awayTeamGoals); ?></span>
+		</div>
 		<div class="col-sm-4 text-left">
 			<?php htmlout($awayTeam); ?>
 			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($awayTeamS)); ?>.png">
@@ -24,7 +28,7 @@
 		<div class="col-xs-6">
 			<?php htmlout($homeTeam); ?>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-4" id="homeTeamGoalsXS">
 			<?php htmlout($homeTeamGoals); ?>
 		</div>
 	</div>
@@ -38,7 +42,7 @@
 		<div class="col-xs-6">
 			<?php htmlout($awayTeam); ?>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-4" id="awayTeamGoalsXS">
 			<?php htmlout($awayTeamGoals); ?>
 		</div>
 	</div>
@@ -74,7 +78,6 @@
 </form>
 <!-- Layout for phones -->
 <form class="form-horizontal visible-xs" role="form">
-	<?php if($lockedDown) echo('<fieldset disabled>'); ?>
 	<div class="form-group">
 		<label for="homeScore" class="col-xs-8 control-label"><?php htmlout($homeTeam); ?></label>
 		<div class="col-xs-4">
@@ -89,9 +92,8 @@
 	</div>
 	<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitResXS">Submit</button>
 	<input type="hidden" name="matchID" id="matchIDResXS" value="<?php htmlout($matchID); ?>">
-	<?php if($lockedDown) echo('</fieldset>'); ?>
-</form>
 <div id="updateRes"></div>
+</form>
 <?php endif; ?>
 <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == TRUE): ?>
 <hr>
@@ -146,6 +148,22 @@
 <hr>
 <h4>All Predictions</h4>
 <?php if ($lockedDown): ?>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Player</th>
+			<th>Prediction</th>
+			<th>Points</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
 <?php else: ?>
 <i>Match not yet locked down, come back when it is...</i>
 <?php endif; ?>

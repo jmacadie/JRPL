@@ -20,7 +20,7 @@ $(document).ready(function() {
 	});
 	
 	// Add click handler to submit result button for mobile
-	$("#btnSubmitPredictionXS").click(function(e) {
+	$("#btnSubmitResXS").click(function(e) {
 		e.preventDefault();
 		submitResult($("#matchIDResXS").val(), $("#homeScoreResXS").val(), $("#awayScoreResXS").val());
 	});
@@ -160,6 +160,12 @@ function processSubmitResReturn (data) {
 				
 		// Output success message
 		$("#updateRes").html(result.join(''));
+		
+		// Update scaore at top of page
+		$("#homeTeamGoals").html($("#homeScoreRes").val());
+		$("#awayTeamGoals").html($("#awayScoreRes").val());
+		$("#homeTeamGoalsXS").html($("#homeScoreResXS").val());
+		$("#awayTeamGoalsXS").html($("#awayScoreResXS").val());
 		
 	}
 	
