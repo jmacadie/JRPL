@@ -23,9 +23,23 @@ if (!userIsLoggedIn() || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] 
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Check to see if user is logged in
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] == FALSE) {
+	// build results into output JSON file
+	header('Content-type: application/json');
+	$arr = array(
+		'result' => 'No'
+		,'message' => 'You are not an Admin. Only Admins can submit match results');
+	echo json_encode($arr);
+	die();
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Check to see if we've got the right action posted
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
+if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 {
 		
 	// Assign values
@@ -58,7 +72,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
 		header('Content-type: application/json');
 		$arr = array(
 			'result' => 'No'
-			,'message' => 'Submitted predictions are not integers');
+			,'message' => 'Submitted results are not integers');
 		echo json_encode($arr);
 		die();
 	}
@@ -68,7 +82,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
 		header('Content-type: application/json');
 		$arr = array(
 			'result' => 'No'
-			,'message' => 'Submitted predictions are negative');
+			,'message' => 'Submitted results are negative');
 		echo json_encode($arr);
 		die();
 	}
@@ -97,8 +111,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
     if ($row['Count'] == 1) {
 		// Entry already exists so UPDATE
 		$sql = "UPDATE `Prediction`
-				SET `HomeTeamGoals` = " . $homeTeamScore . ",
-					`AwayTeamGoals` = " . $awayTeamScore . ",
+				SET `HomeTeamPoints` = " . $homeTeamScore . ",
+					`AwayTeamPoints` = " . $awayTeamScore . ",
 					`DateAdded` = NOW()
 				WHERE
 					`MatchID` = " . $matchID . "
@@ -120,8 +134,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
 		$sql = "INSERT INTO `Prediction`
 					(`UserID`,
 					`MatchID`,
-					`HomeTeamGoals`,
-					`AwayTeamGoals`,
+					`HomeTeamPoints`,
+					`AwayTeamPoints`,
 					`DateAdded`)
 				VALUES
 					(" . $userID . ",

@@ -4,6 +4,7 @@
 	<?php htmlout($broadcaster); ?></small>
 </h3>
 <h3>
+	<!-- Layout for tablets and bigger -->
 	<div class="row hidden-xs">
 		<div class="col-sm-4 text-right">
 			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($homeTeamS)); ?>.png">
@@ -15,6 +16,7 @@
 			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($awayTeamS)); ?>.png">
 		</div>
 	</div>
+	<!-- Layout for phones -->
 	<div class="row visible-xs text-left">
 		<div class="col-xs-2">
 			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($homeTeamS)); ?>.png">
@@ -41,9 +43,61 @@
 		</div>
 	</div>
 </h3>
+<?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == TRUE && $lockedDown): ?>
+<!-- Admin post result section -->
+<hr>
+<h4 class="form-heading">Post Result</h4>
+<!-- Layout for tablets and bigger -->
+<form class="hidden-xs" role="form">
+	<?php if(!$lockedDown) echo('<fieldset disabled>'); ?>
+	<div class="row form-group">
+		<div class="col-sm-4 text-right">
+			<label for="homeScore"><?php htmlout($homeTeam); ?></label>
+		</div>
+		<div class="col-sm-2">
+			<input type="number" class="form-control" id="homeScoreRes" name="homeScore" value="<?php htmlout($homeTeamGoals); ?>">
+		</div>
+		<div class="col-sm-2">
+			<input type="number" class="form-control" id="awayScoreRes" name="awayScore" value="<?php htmlout($awayTeamGoals); ?>">
+		</div>
+		<div class="col-sm-4 text-left">
+			<label for="awayScore"><?php htmlout($awayTeam); ?></label>
+		</div>
+	</div>
+	<div class="row form-group">
+		<div class="col-sm-12 text-center">
+			<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitRes">Submit</button>
+		</div>
+	</div>
+	<input type="hidden" name="matchID" id="matchIDRes" value="<?php htmlout($matchID); ?>">
+	<?php if($lockedDown) echo('</fieldset>'); ?>
+</form>
+<!-- Layout for phones -->
+<form class="form-horizontal visible-xs" role="form">
+	<?php if($lockedDown) echo('<fieldset disabled>'); ?>
+	<div class="form-group">
+		<label for="homeScore" class="col-xs-8 control-label"><?php htmlout($homeTeam); ?></label>
+		<div class="col-xs-4">
+			<input type="number" class="form-control" id="homeScoreResXS" name="homeScoreXS" value="<?php htmlout($homeTeamGoals); ?>">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="awayScore" class="col-xs-8 control-label"><?php htmlout($awayTeam); ?></label>
+		<div class="col-xs-4">
+			<input type="number" class="form-control" id="awayScoreResXS" name="awayScoreXS" value="<?php htmlout($awayTeamGoals); ?>">
+		</div>
+	</div>
+	<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitResXS">Submit</button>
+	<input type="hidden" name="matchID" id="matchIDResXS" value="<?php htmlout($matchID); ?>">
+	<?php if($lockedDown) echo('</fieldset>'); ?>
+</form>
+<div id="updateRes"></div>
+<?php endif; ?>
 <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == TRUE): ?>
 <hr>
 <h4 class="form-heading">Your Prediction</h4>
+<?php if($lockedDown) echo('<i>Match locked down. No more updates to predictions possible</i>'); ?>
+<!-- Layout for tablets and bigger -->
 <form class="hidden-xs" role="form">
 	<?php if($lockedDown) echo('<fieldset disabled>'); ?>
 	<div class="row form-group">
@@ -68,6 +122,7 @@
 	<input type="hidden" name="matchID" id="matchID" value="<?php htmlout($matchID); ?>">
 	<?php if($lockedDown) echo('</fieldset>'); ?>
 </form>
+<!-- Layout for phones -->
 <form class="form-horizontal visible-xs" role="form">
 	<?php if($lockedDown) echo('<fieldset disabled>'); ?>
 	<div class="form-group">

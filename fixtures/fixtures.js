@@ -13,6 +13,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		$("#collapseFilters").collapse('hide'); // collapse the filters section
 		$("#collapseGroup").collapse('hide'); // collapse the filters section
+		window.scrollTo(0, 0);
 		getMatchesData();
 	});
 	
@@ -144,34 +145,34 @@ function processMatchesReturn (data) {
 			result.push('<div class="row">');
 			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + entry['HomeTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
 			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['HomeTeam'] + '</div>'); // Centred name for phones
-			result.push('<div class="col-sm-2 hidden-xs text-right">' + entry['HomeTeam'] + '</div>'); // Full name for tablets & desktops
-			result.push('<div class="col-xs-1 text-center">' + ((entry['HomeTeamGoals'] === null) ? '' : entry['HomeTeamGoals']) + '</div>'); // Score
+			result.push('<div class="col-sm-2 hidden-xs text-right lead">' + entry['HomeTeam'] + '</div>'); // Full name for tablets & desktops
+			result.push('<div class="col-xs-1 text-center lead"><b>' + ((entry['HomeTeamGoals'] === null) ? '' : entry['HomeTeamGoals']) + '</b></div>'); // Score
 			result.push('<div class="col-xs-2 text-center">vs.</div>'); // Divider
-			result.push('<div class="col-xs-1 text-center">' + ((entry['AwayTeamGoals'] === null) ? '' : entry['AwayTeamGoals']) + '</div>'); // Score
-			result.push('<div class="col-sm-2 hidden-xs text-left">' + entry['AwayTeam'] + '</div>'); // Full name for tablets & desktops
+			result.push('<div class="col-xs-1 text-center lead"><b>' + ((entry['AwayTeamGoals'] === null) ? '' : entry['AwayTeamGoals']) + '</b></div>'); // Score
+			result.push('<div class="col-sm-2 hidden-xs text-left lead">' + entry['AwayTeam'] + '</div>'); // Full name for tablets & desktops
 			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['AwayTeam'] + '</div>');  // Centred name for phones
 			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + entry['AwayTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
 			result.push('</div>');
 			
 			// Row for prediction, if logged in
-			if (data.loggedIn === '1') {
+			if (data.loggedIn == 1) {
 				result.push('<div class="row"><div class="col-xs-12 text-left">');
-				if (entry['HomeTeamPoints'] === null) {
+				if (entry['HomeTeamPrediction'] === null) {
 					result.push('<i>Not yet predicted</i>');
 				} else {
-					if (entry['HomeTeamPoints'] > entry['AwayTeamPoints']) {
-						result.push('Predicted: <b>' + entry['HomeTeam'] + ' Win</b> ' + entry['HomeTeamPoints'] + ' - ' + entry['AwayTeamPoints']);
-					} else if (entry['HomeTeamPoints'] < entry['AwayTeamPoints']) {
-						result.push('Predicted: <b>' + entry['AwayTeam'] + ' Win</b> ' + entry['AwayTeamPoints'] + ' - ' + entry['HomeTeamPoints']);
+					if (entry['HomeTeamPrediction'] > entry['AwayTeamPrediction']) {
+						result.push('Predicted: <b>' + entry['HomeTeam'] + ' Win</b> ' + entry['HomeTeamPrediction'] + ' - ' + entry['AwayTeamPrediction']);
+					} else if (entry['HomeTeamPrediction'] < entry['AwayTeamPrediction']) {
+						result.push('Predicted: <b>' + entry['AwayTeam'] + ' Win</b> ' + entry['AwayTeamPrediction'] + ' - ' + entry['HomeTeamPrediction']);
 					} else {
-						result.push('Predicted: <b>Draw</b> ' + entry['HomeTeamPoints'] + ' - ' + entry['AwayTeamPoints']);
+						result.push('Predicted: <b>Draw</b> ' + entry['HomeTeamPrediction'] + ' - ' + entry['AwayTeamPrediction']);
 					}
 				}
 				result.push('</div></div>');
 			}
 			
 			// Row for locked down status
-			if (entry['LockedDown'] === 1) {
+			if (entry['LockedDown'] == 1) {
 				result.push('<div class="row"><div class="col-xs-12 text-left">');
 				result.push('Locked Down');
 				result.push('</div></div>');

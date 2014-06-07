@@ -31,8 +31,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 				m.`AwayTeamGoals`,
 				CONCAT(v.`Name`, ', ', v.`City`) AS `Venue`,
 				b.`Name` AS `Broadcaster`,
-				p.`HomeTeamPoints`,
-				p.`AwayTeamPoints`,
+				p.`HomeTeamGoals` AS `HomeTeamPrediction`,
+				p.`AwayTeamGoals` AS `AwayTeamPrediction`,
 				CASE
 					WHEN DATE_ADD(NOW(), INTERVAL 30 MINUTE) > TIMESTAMP(m.`Date`, m.`KickOff`) THEN 1
 					ELSE 0
@@ -74,11 +74,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 	$homeTeam = $row['HomeTeam'];
 	$homeTeamS = $row['HomeTeamS'];
 	$homeTeamGoals = $row['HomeTeamGoals'];
-	$homeTeamPredGoals = $row['HomeTeamPoints'];
+	$homeTeamPredGoals = $row['HomeTeamPrediction'];
 	$awayTeam = $row['AwayTeam'];
 	$awayTeamS = $row['AwayTeamS'];
 	$awayTeamGoals = $row['AwayTeamGoals'];
-	$awayTeamPredGoals = $row['AwayTeamPoints'];
+	$awayTeamPredGoals = $row['AwayTeamPrediction'];
 	$lockedDown = $row['LockedDown'];
 
 }
