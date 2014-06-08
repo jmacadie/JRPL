@@ -86,6 +86,44 @@ function getMatchesData() {
 
 }
 
+function bin2hex(s) {
+    var i, k, part, accum, ret = '';
+    for (i = s.length-1; i >= 3; i -= 4) {
+        // extract out in substrings of 4 and convert to hex
+        part = s.substr(i+1-4, 4);
+        accum = 0;
+        for (k = 0; k < 4; k += 1) {
+            if (part[k] !== '0' && part[k] !== '1') {
+                // invalid character
+                return { valid: false };
+            }
+            // compute the length 4 substring
+            accum = accum * 2 + parseInt(part[k], 10);
+        }
+        if (accum >= 10) {
+            // 'A' to 'F'
+            ret = String.fromCharCode(accum - 10 + 'A'.charCodeAt(0)) + ret;
+        } else {
+            // '0' to '9'
+            ret = String(accum) + ret;
+        }
+    }
+    // remaining characters, i = 0, 1, or 2
+    if (i >= 0) {
+        accum = 0;
+        // convert from front
+        for (k = 0; k <= i; k += 1) {
+            if (s[k] !== '0' && s[k] !== '1') {
+                return { valid: false };
+            }
+            accum = accum * 2 + parseInt(s[k], 10);
+        }
+        // 3 bits, value cannot exceed 2^3 - 1 = 7, just convert
+        ret = String(accum) + ret;
+    }
+    return { valid: true, result: ret };
+}
+
 // Callback function to process the returned data when filters are updated (or page is first loaded)
 function processMatchesReturn (data) {
 
@@ -110,6 +148,19 @@ function processMatchesReturn (data) {
 		var date = '';
 		var time = '';
 		
+		// Initialise the result variable to hold which matches have been selected
+		var result = [];
+		for (var i = 1; i <= 64; i++) { result.push(0); }
+		
+		// Record which matches have actually been selected
+		$.each(data.data, function(entryIndex, entry){
+			result[entry['MatchID']] = 1;
+		});
+		
+		// Concat resultand then convert to hex
+		result = result.join('');
+		var ring = bin2hex(result);
+		
 		// Initialise the result variable as an empty array, 
 		// bits of HTML will be pushed onto it and finally the whole
 		// thing will be joined to output
@@ -133,7 +184,7 @@ function processMatchesReturn (data) {
 			
 			// Wrap whole row in a link to the relevant match page
 			result.push('<div class="matchRow">');
-            result.push('<a href="../match?id=' + entry['MatchID'] + '">');
+            result.push('<a href="../match?id=' + entry['MatchID'] + '&ring=' + ring.result + '">');
 			
 			// Have own row to show flags on phones, in-line on anything bigger
             result.push('<div class="row visible-xs">');

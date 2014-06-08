@@ -9,6 +9,45 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0)) {
 	// Call the getMatchDetails script to load all the varaibles for the match page
 	include 'getMatchDetails.php';
 	
+	// Sort out the previous and next links based on the ring varaible
+	if (isset($_GET['ring'])) {
+		
+		$tmp = base_convert($_GET['ring'], 16, 2);
+		//TODO: cope with ring being all zeros
+		
+		$i = $_GET['id'] + 0;
+		do {
+			if ($i == 1) {
+				$i = 64;
+			} else {
+				$i -= 1;
+			}
+			$j = substr($tmp, $i - 1, 1);
+		} while ($j == 0);
+		$prevID = max($i, 1);
+		$prev = '../match?id=' . $prevID .'&ring='. $_GET['ring'];
+		
+		$i = $_GET['id'] + 0;
+		do {
+			if ($i == 64) {
+				$i = 1;
+			} else {
+				$i += 1;
+			}
+			$j = substr($tmp, $i - 1, 1);
+		} while ($j == 0);
+		$nextID = min($i, 64);
+		$next = '../match?id=' . $nextID .'&ring='. $_GET['ring'];
+		
+	} else {
+	
+		$prevID = max($_GET['id'] - 1, 1);
+		$prev = '../match?id=' . $prevID;
+		$nextID = min($_GET['id'] + 1, 64);
+		$next = '../match?id=' . $nextID;
+		
+	}
+	
 	// Set tab variable to indicate point to match page
 	$tab = 'match';
 

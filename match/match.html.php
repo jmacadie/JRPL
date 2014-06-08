@@ -1,3 +1,8 @@
+<?php echo($tmp); ?>
+<div class="row">
+	<div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
+	<div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
+</div>
 <h3><?php htmlout($date); ?><br />
 	<?php htmlout(substr($kickOff, 0, 5)); ?><br />
 	<small><?php htmlout($venue); ?><br/>
@@ -167,3 +172,7 @@
 <?php else: ?>
 <i>Match not yet locked down, come back when it is...</i>
 <?php endif; ?>
+<div class="row">
+	<div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
+	<div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
+</div>
