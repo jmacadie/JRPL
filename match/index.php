@@ -12,9 +12,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0)) {
 	// Sort out the previous and next links based on the ring varaible
 	if (isset($_GET['ring'])) {
 		
+		//Convert hex string back into binary
 		$tmp = base_convert($_GET['ring'], 16, 2);
 		//TODO: cope with ring being all zeros
+		// ought not to happen else how did we get here?
 		
+		// Set previous match link by looping back until we hit a match
+		// which is set in the ring variable, with a 1
 		$i = $_GET['id'] + 0;
 		do {
 			if ($i == 1) {
@@ -27,6 +31,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0)) {
 		$prevID = max($i, 1);
 		$prev = '../match?id=' . $prevID .'&ring='. $_GET['ring'];
 		
+		// Set next match link by looping forward until we hit a match
+		// which is set in the ring variable, with a 1
 		$i = $_GET['id'] + 0;
 		do {
 			if ($i == 64) {
@@ -40,7 +46,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0)) {
 		$next = '../match?id=' . $nextID .'&ring='. $_GET['ring'];
 		
 	} else {
-	
+		
+		// Absent the ring varaiable just increment the Match ID
 		$prevID = max($_GET['id'] - 1, 1);
 		$prev = '../match?id=' . $prevID;
 		$nextID = min($_GET['id'] + 1, 64);

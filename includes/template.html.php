@@ -5,7 +5,7 @@
 
 <head>
 
-	<title>The Julian Rimet Olympics Predictions League</title>
+	<title>The Julian Rimet Predictions League</title>
 
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 

@@ -1,4 +1,3 @@
-<?php echo($tmp); ?>
 <div class="row">
 	<div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
 	<div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
@@ -162,15 +161,36 @@
 		</tr>
 	</thead>
 	<tbody>
+		<?php foreach ($arrPredictions as $result): ?>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td><?php htmlout($result['DisplayName']); ?></td>
+			<td>
+			<?php if($result['HomeTeamPrediction'] > $result['AwayTeamPrediction']) {
+				htmlout($result['HomeTeam']);
+				echo(' win: ');
+				htmlout($result['HomeTeamPrediction']);
+				echo(' - ');
+				htmlout($result['AwayTeamPrediction']);
+			} elseif ($result['HomeTeamPrediction'] < $result['AwayTeamPrediction']) {
+				htmlout($result['AwayTeam']);
+				echo(' win: ');
+				htmlout($result['HomeTeamPrediction']);
+				echo(' - ');
+				htmlout($result['AwayTeamPrediction']);
+			} else {
+				echo('Draw: ');
+				htmlout($result['HomeTeamPrediction']);
+				echo(' - ');
+				htmlout($result['AwayTeamPrediction']);
+			}?>
+			</td>
+			<td><?php htmlout($result['TotalPoints']); ?></td>
 		</tr>
+		<?php endforeach; ?>
 	</tbody>
 </table>
 <?php else: ?>
-<i>Match not yet locked down, come back when it is...</i>
+<i>Match not yet locked down. Come back when it is...</i>
 <?php endif; ?>
 <div class="row">
 	<div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>

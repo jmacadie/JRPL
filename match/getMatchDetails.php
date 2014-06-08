@@ -55,6 +55,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 	
 	// Run query and handle any failure
 	$result = mysqli_query($link, $sql);
+	// TODO: This doesn't work as we're not running an AJAX request here
 	if (!$result)
 	{
 		$error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
@@ -87,32 +88,52 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 		// Query to pull match data from DB
 		$sql = "SELECT
 					u.`DisplayName`,
+					ht.`Name` AS `HomeTeam`,
+					at.`Name` AS `AwayTeam`,
 					p.`HomeTeamGoals` AS `HomeTeamPrediction`,
 					p.`AwayTeamGoals` AS `AwayTeamPrediction`,
 					po.`TotalPoints`
 
-				FROM `Prediction` p
-					INNER JOIN `User` u ON
-						u.UserID = p.`UserID`
+				FROM `User` u
+					LEFT JOIN `Prediction` p ON
+						p.UserID = u.`UserID`
+					LEFT JOIN `Match` m ON
+						m.`MatchID` = p.`MatchID`
+					LEFT JOIN `Team` ht ON
+						ht.`TeamID` = m.`HomeTeamID`
+					LEFT JOIN `Team` at ON
+						at.`TeamID` = m.`AwayTeamID`
 					LEFT JOIN `Points` po ON
 						po.`MatchID` = p.`MatchID`
 						AND po.`UserID` = p.`UserID`
 					
 				WHERE m.`MatchID` = " . $matchID . "
 				
-				ORDER BY po.`TotalPoints` DESC, u.`UserID`;";
+				ORDER BY
+					po.`TotalPoints` DESC,
+					(p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
+					p.`HomeTeamGoals` DESC,
+					p.`UserID` ASC;";
 		
 		// Run query and handle any failure
 		$result = mysqli_query($link, $sql);
+		// TODO: This doesn't work as we're not running an AJAX request here
 		if (!$result)
 		{
-			$error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+			$error = 'Error fetching predictions: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 			
 			header('Content-type: application/json');
 			$arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
 			echo json_encode($arr);
 			die();
-		} 
+		}
+
+		// Store results
+		$arrPredictions = array();
+		while($row = mysqli_fetch_assoc($result))
+		{
+			$arrPredictions[] = $row; 
+		}
 		
 	}
 
