@@ -175,10 +175,10 @@ function bodySeparatorHR($comment) {
 // wrap content in a html <table> with no cellpadding but just a 1px grey border
 // This is only necessary because of the vagaries of html email
 function tableBorder($content) {
-	$text  = '<table border="0" cellpadding="0" cellspacing="0" border="0"><tr><td style="border: 1px solid #ccc;">' . chr(13);;
+	$text  = '<table border="0" cellpadding="0" cellspacing="0" border="0"><tr><td style="border: 1px solid #ccc;">' . chr(13);
 	$text .= $content . chr(13);
 	$text .= '</td></tr></table>';
-	return $text
+	return $text;
  }
 
 // Build HTML for body based on input array

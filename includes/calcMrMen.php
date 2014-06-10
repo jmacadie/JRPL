@@ -12,7 +12,7 @@ function calcMrMean($matchID,$link) {
 						(SELECT ur.`UserID`
 						FROM `UserRole` ur
 							INNER JOIN `Role` r ON
-								r.`RoleID` = ur.`UserID`
+								r.`RoleID` = ur.`RoleID`
 						WHERE r.`Role` = 'Mr Mean')
 					AND `MatchID` = " . $matchID . ";";
 	
@@ -92,7 +92,7 @@ function calcMrMean($matchID,$link) {
 					(SELECT ur.`UserID`
 					FROM `UserRole` ur
 						INNER JOIN `Role` r ON
-							r.`RoleID` = ur.`UserID`
+							r.`RoleID` = ur.`RoleID`
 					WHERE r.`Role` = 'Mr Mean'
 					LIMIT 1),
 					" . $matchID . ",
@@ -126,7 +126,7 @@ function calcMrMode($matchID,$link) {
 						(SELECT ur.`UserID`
 						FROM `UserRole` ur
 							INNER JOIN `Role` r ON
-								r.`RoleID` = ur.`UserID`
+								r.`RoleID` = ur.`RoleID`
 						WHERE r.`Role` = 'Mr Mode')
 					AND `MatchID` = " . $matchID . ";";
 	
@@ -205,7 +205,7 @@ function calcMrMode($matchID,$link) {
 					(SELECT ur.`UserID`
 					FROM `UserRole` ur
 						INNER JOIN `Role` r ON
-							r.`RoleID` = ur.`UserID`
+							r.`RoleID` = ur.`RoleID`
 					WHERE r.`Role` = 'Mr Mode'
 					LIMIT 1),
 					" . $matchID . ",
@@ -239,7 +239,7 @@ function calcMrMedian($matchID,$link) {
 						(SELECT ur.`UserID`
 						FROM `UserRole` ur
 							INNER JOIN `Role` r ON
-								r.`RoleID` = ur.`UserID`
+								r.`RoleID` = ur.`RoleID`
 						WHERE r.`Role` = 'Mr Median')
 					AND `MatchID` = " . $matchID . ";";
 	
@@ -327,7 +327,7 @@ function calcMrMedian($matchID,$link) {
 					(SELECT ur.`UserID`
 					FROM `UserRole` ur
 						INNER JOIN `Role` r ON
-							r.`RoleID` = ur.`UserID`
+							r.`RoleID` = ur.`RoleID`
 					WHERE r.`Role` = 'Mr Median'
 					LIMIT 1),
 					" . $matchID . ",

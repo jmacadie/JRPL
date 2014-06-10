@@ -45,8 +45,8 @@ while ($row = mysqli_fetch_array($result))
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     calcMrMean($row['MatchID'],$link);
-	//calcMrMedian($row['MatchID'],$link);
-	//calcMrMode($row['MatchID'],$link);
+	calcMrMedian($row['MatchID'],$link);
+	calcMrMode($row['MatchID'],$link);
 	
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Email To Addresses
