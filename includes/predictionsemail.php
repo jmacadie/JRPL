@@ -110,13 +110,13 @@ while ($row = mysqli_fetch_array($result))
 	$heading .= '<td>' . chr(13);
 	$heading .= tableBorder('<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['HomeTeamS']) . '.png" />') . chr(13);
 	$heading .= '</td>' . chr(13);
-	$heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 16px; color: #666666; text-align:right; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+	$heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:right; line-height: 30px;" st-content="fulltext-content">' . chr(13);
 	$heading .= $row['HomeTeam'] . chr(13);
 	$heading .= '</td>' . chr(13);
-	$heading .= '<td style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 16px; color: #666666; text-align:center; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+	$heading .= '<td style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 16px; color: #333333; text-align:center; line-height: 30px;" st-content="fulltext-content">' . chr(13);
 	$heading .= 'vs.' . chr(13);
 	$heading .= '</td>' . chr(13);
-	$heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 16px; color: #666666; text-align:left; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+	$heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:left; line-height: 30px;" st-content="fulltext-content">' . chr(13);
 	$heading .= $row['AwayTeam'] . chr(13);
 	$heading .= '</td>' . chr(13);
 	$heading .= '<td>' . chr(13);
@@ -130,11 +130,11 @@ while ($row = mysqli_fetch_array($result))
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	$predictions .= '<!-- content -->' . chr(13);
 	$predictions .= '<tr>' . chr(13);
-	$predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px;" st-content="fulltext-content">' . chr(13);
+	$predictions .= '<td st-content="fulltext-content">' . chr(13);
 	$predictions .= '<table border="0" width="100%" cellpadding="4" cellspacing="0" border="0" align="left" class="devicewidth">' . chr(13);
 	$predictions .= '<tr>' . chr(13);
-	$predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px;" align="left">Player</th>' . chr(13);
-	$predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px;" align="left">Prediction</th>' . chr(13);
+	$predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Player</th>' . chr(13);
+	$predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Prediction</th>' . chr(13);
 	$predictions .= '</tr>' . chr(13);
 	
 	// Counter for striped rows
@@ -175,6 +175,11 @@ while ($row = mysqli_fetch_array($result))
 		$predictions .= '</tr>' . chr(13);
 	
 	}
+	
+	$predictions .= '</table>' . chr(13);
+	$predictions .= '</td>' . chr(13);
+	$predictions .= '</tr>' . chr(13);
+	$predictions .= '<!-- End of content -->' . chr(13);
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - build body array for sendEmail routine

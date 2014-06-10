@@ -150,4 +150,146 @@ function HSVtoRGB($h,$s,$v)
 	
 	return $out;
 }
+
+function getLeagueTable() {
+	
+	// Create temporary table to hold submitted matches count
+	$sql = "CREATE TEMPORARY TABLE `SubmittedMatches` (
+					`UserID` INT NOT NULL,
+					`Submitted` INT NOT NULL,
+					`NotSubmitted` INT NOT NULL) ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error creating submitted matches temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
+        exit();
+	}
+	
+	// Add submitted matches count data to temporary table
+	$sql = "INSERT INTO `SubmittedMatches`
+					SELECT
+						u.`UserID`,
+						(SELECT COUNT(*)
+						FROM `Match` m
+							LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
+						WHERE p.`UserID` = u.`UserID`
+							AND (p.`HomeTeamPoints` IS NOT NULL AND p.`AwayTeamPoints` IS NOT NULL)
+							AND (m.`HomeTeamPoints` IS NOT NULL AND m.`AwayTeamPoints` IS NOT NULL)) AS `Submitted`,
+						(SELECT COUNT(*)
+						FROM (SELECT `MatchID`, `UserID` FROM `Match`, `User` WHERE `ResultSubmittedBy` IS NOT NULL) mu
+							LEFT JOIN `Prediction` p ON
+								p.`MatchID` = mu.`MatchID`
+								AND p.`UserID` = mu.`UserID`
+						WHERE mu.`UserID` = u.`UserID`
+							AND p.`PredictionID` IS NULL) AS `NotSubmitted`
+					FROM `User` u ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error adding submitted matches data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
+        exit();
+	}
+	
+	// Create temporary table to hold points by user
+	$sql = "CREATE TEMPORARY TABLE `PointsByUser` (
+					`UserID` INT NOT NULL,
+					`DisplayName` VARCHAR(100) NOT NULL,
+					`ResultPoints` INT NOT NULL,
+					`ScorePoints` INT NOT NULL,
+					`TotalPoints` INT NOT NULL) ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error creating points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
+        exit();
+	}
+	
+	// Add points by user data to temporary table
+	$sql = "INSERT INTO `PointsByUser`
+					SELECT
+						tmp.`UserID`,
+						tmp.`DisplayName`,
+						SUM(tmp.`ResultPoints`) AS `ResultPoints`,
+						SUM(tmp.`ScorePoints`) AS `ScorePoints`,
+						SUM(tmp.`TotalPoints`) AS `TotalPoints`
+					FROM
+					(SELECT
+						u.`UserID`,
+						IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
+						po.`ResultPoints` AS `ResultPoints`,
+						po.`ScorePoints` AS `ScorePoints`,
+						po.`TotalPoints` AS `TotalPoints`
+
+					FROM `Points` po
+						INNER JOIN `User` u ON
+							u.`UserID` = po.`UserID`) tmp
+
+					GROUP BY tmp.`DisplayName`; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error adding points by user data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
+        exit();
+	}
+	
+	// Create 2nd temporary table to hold points by user
+	$sql = "CREATE TEMPORARY TABLE `PointsByUser2` SELECT * FROM `PointsByUser`; ";
+	
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error creating 2nd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
+        exit();
+	}
+	
+	// Final query
+	$sql = "SELECT
+					(SELECT COUNT(*) + 1
+					FROM `PointsByUser2` pbu2
+					WHERE pbu2.`TotalPoints`>pbu.`TotalPoints`) AS `Rank`,
+					pbu.*,
+					sm.`Submitted`,
+					sm.`NotSubmitted`
+					
+				FROM `PointsByUser` pbu
+					INNER JOIN `SubmittedMatches` sm ON sm.`UserID` = pbu.`UserID`
+
+				ORDER BY
+					pbu.`TotalPoints` DESC,
+					pbu.`ScorePoints` DESC,
+					pbu.`ResultPoints` DESC,
+					pbu.`DisplayName` ASC;";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error fetching league table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
+        exit();
+	}
+	
+	// Build array of outputs 
+	while ($row = mysqli_fetch_array($result))
+	{
+		$out[] = array(
+			'rank' => $row['Rank'],
+			'name' => $row['DisplayName'],
+			'submitted' => $row['Submitted'],
+			'notSubmitted' => $row['NotSubmitted'],
+			'resultPoints' => $row['ResultPoints'],
+			'scorePoints' => $row['TeamScorePoints'],
+			'totalPoints' => $row['TotalPoints']);
+	}
+	
+	return $out;
+}
 ?>
