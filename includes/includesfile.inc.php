@@ -16,6 +16,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/helpers.inc.php';
 // Always get the website to check for prediction lockdown
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/predictionsemail.php';
+//require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/predictionsemail.php';
 
 ?>
