@@ -110,6 +110,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 	// Check result
 	$row = mysqli_fetch_assoc($result);
     $updateResult = ($row['Count'] == 1);
+	//TODO: use this result to update the text of the e-mail sent
 	
 	// UPDATE the match table with the posted data
 	$sql = "UPDATE `Match`
@@ -132,9 +133,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 		die();
 	}
 	
-	//TODO: Calculate everyone's points
+	// Calculate everyone's points
+	calculatePoints ($matchID)
 	
-	//TODO: Send e-mail
+	// Send e-mail
+	sendResultsEmail($matchID);
 	
 	// Test Code
 	/*header('Content-type: application/json');
@@ -151,7 +154,130 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 }
 
 // Calculate the points for a given match
-function CalculatePoints ($matchID) {
+function calculatePoints ($matchID) {
+
+	// Delete existing prediction first
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "DELETE FROM `Points`
+			WHERE `MatchID` = " . $matchID . ";";
+	
+	// Run SQL and trap any errors
+    $result = mysqli_query($link, $sql);
+    if (!$result)
+    {
+        $error = "Error deleting previous points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Grab match result
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "SELECT
+				`HomeTeamGoals`,
+				`AwayTeamGoals`
+			FROM `Match`
+			WHERE `MatchID` = " . $matchID . ";";
+	
+	// Run SQL and trap any errors
+    $resultM = mysqli_query($link, $sql);
+    if (!$resultM)
+    {
+        $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Grab results and process
+	$rowM = mysqli_fetch_array($resultM)
+	
+	// Grab predictions
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "SELECT
+				`UserID`,
+				`HomeTeamGoals`,
+				`AwayTeamGoals`
+			FROM `Prediction`
+			WHERE `MatchID` = " . $matchID . ";";
+	
+	// Run SQL and trap any errors
+    $resultP = mysqli_query($link, $sql);
+    if (!$resultP)
+    {
+        $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Calculate points and INSERT them back into the DB
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	while ($rowP = mysqli_fetch_array($resultP)) {
+		
+		// First check right result
+		if ((($rowM['HomeTeamGoals'] > $rowM['AwayTeamGoals']) && ($rowP['HomeTeamGoals'] > $rowP['AwayTeamGoals'])) ||
+			(($rowM['HomeTeamGoals'] < $rowM['AwayTeamGoals']) && ($rowP['HomeTeamGoals'] < $rowP['AwayTeamGoals'])) ||
+			(($rowM['HomeTeamGoals'] = $rowM['AwayTeamGoals']) && ($rowP['HomeTeamGoals'] = $rowP['AwayTeamGoals']))) {
+				
+				// Right result so award a result point
+				$resultPoints = 1;
+				
+				// Then check exact score
+				if (($rowM['HomeTeamGoals'] = $rowP['HomeTeamGoals']) && ($rowM['AwayTeamGoals'] = $rowP['AwayTeamGoals'])) {
+						$scorePoints = 2;
+				} else {
+					$scorePoints = 0;
+				}
+				
+		} else {
+			// Not the right result so no points all round
+			$resultPoints = 0;
+			$scorePoints = 0;
+		}
+		
+		// Calculate the total points
+		$totalPoints = $resultPoints + $scorePoints;
+		
+		// Build SQL
+		$sql = "INSERT INTO `Points`
+					(`UserID`,
+					`MatchID`
+					`ResultPoints`,
+					`ScorePoints`,
+					`TotalPoints`)
+				VALUES
+					(" . $rowP['UserID'] . ",
+					" . $matchID . ",
+					" . $resultPoints . ",
+					" . $scorePoints . ",
+					" . $totalPoints . ");";
+		
+		// Run SQL and trap any errors
+		$result = mysqli_query($link, $sql);
+		if (!$result)
+		{
+			$error = "Error inserting points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+			
+			header('Content-type: application/json');
+			$arr = array('result' => 'No', 'message' => $error);
+			echo json_encode($arr);
+			die();
+		}
+	
+	}
 }
 
 // Send e-mail of the results from the posted match
