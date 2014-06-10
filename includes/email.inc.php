@@ -224,7 +224,6 @@ function sendEmail($to,$subject,$css,$body) {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	$MESSAGE_BODY .= '<body>' . chr(13);
 	$MESSAGE_BODY .= 'to: ' .$to . '<br /><br />' . chr(13);
-	$MESSAGE_BODY .= $body;
 	if (is_array($body)) {
 		$MESSAGE_BODY .= emailBody($body);
 	} else {
