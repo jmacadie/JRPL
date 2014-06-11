@@ -8,9 +8,9 @@
 	<li>The system will send an e-mail at lock-down saying what every player predicted for that match</li>
 	<li>After the match is over and someone has posted the result the predictions will be scores as follows:
 		<ul>
-			<ul><strong>3 points</strong> for the correct result (e.g. Brazil Win, Draw, Croatia Win) and scoreline, <i>or</i>
-			<ul><strong>1 point</strong> for the correct result but the wrong scoreline, <i>or</i> 
-			<ul><strong>0 points</strong> if you get the result wrong
+			<li><strong>3 points</strong> for the correct result (e.g. Brazil Win, Draw, Croatia Win) and scoreline, <i>or</i></li>
+			<li><strong>1 point</strong> for the correct result but the wrong scoreline, <i>or</i></li>
+			<li><strong>0 points</strong> if you get the result wrong</li>
 		</ul>
 	</li>
 </ul>
