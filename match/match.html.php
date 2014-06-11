@@ -102,7 +102,7 @@
 <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == TRUE): ?>
 <hr>
 <h4 class="form-heading">Your Prediction</h4>
-<?php if($lockedDown) echo('<i>Match locked down. No more updates to predictions possible</i>'); ?>
+<?php if($lockedDown) echo('<i>Match locked down. No more updates to predictions possible</i><br />'); ?>
 <!-- Layout for tablets and bigger -->
 <form class="hidden-xs" role="form">
 	<?php if($lockedDown) echo('<fieldset disabled>'); ?>
@@ -163,34 +163,43 @@
 	<tbody>
 		<?php foreach ($arrPredictions as $result): ?>
 		<tr>
+			<?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('<i>') }; ?>
 			<td><?php htmlout($result['DisplayName']); ?></td>
-			<td>
-			<?php if($result['HomeTeamPrediction'] > $result['AwayTeamPrediction']) {
+			<td><b>
+			<?php if($result['HomeTeamPrediction'] == 'No prediction') {
+				echo('No prediction');
+			} elseif($result['HomeTeamPrediction'] > $result['AwayTeamPrediction']) {
 				htmlout($result['HomeTeam']);
-				echo(' win: ');
+				echo(' win<br/>');
 				htmlout($result['HomeTeamPrediction']);
 				echo(' - ');
 				htmlout($result['AwayTeamPrediction']);
 			} elseif ($result['HomeTeamPrediction'] < $result['AwayTeamPrediction']) {
 				htmlout($result['AwayTeam']);
-				echo(' win: ');
-				htmlout($result['HomeTeamPrediction']);
-				echo(' - ');
+				echo(' win<br/>');
 				htmlout($result['AwayTeamPrediction']);
+				echo(' - ');
+				htmlout($result['HomeTeamPrediction']);
 			} else {
-				echo('Draw: ');
+				echo('Draw<br/>');
 				htmlout($result['HomeTeamPrediction']);
 				echo(' - ');
 				htmlout($result['AwayTeamPrediction']);
-			}?>
+			} ?>
+			</b>
 			</td>
-			<td><?php htmlout($result['TotalPoints']); ?></td>
+			<td><?php if($result['TotalPoints'] == 0) {
+					htmlout('-');
+				} else {
+					htmlout($result['TotalPoints']);
+				} ?></td>
+			<?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('</i>') }; ?>
 		</tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
 <?php else: ?>
-<i>Match not yet locked down. Come back when it is...</i>
+<i>Match not yet locked down. Come back when it is...</i><br />
 <?php endif; ?>
 <div class="row">
 	<div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>

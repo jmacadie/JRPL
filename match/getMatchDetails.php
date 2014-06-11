@@ -90,8 +90,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 					mu.`DisplayName`,
 					ht.`Name` AS `HomeTeam`,
 					at.`Name` AS `AwayTeam`,
-					p.`HomeTeamGoals` AS `HomeTeamPrediction`,
-					p.`AwayTeamGoals` AS `AwayTeamPrediction`,
+					IFNULL(p.`HomeTeamGoals`,'No prediction') AS `HomeTeamPrediction`,
+					IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamPrediction`,
 					po.`TotalPoints`
 
 				FROM 
