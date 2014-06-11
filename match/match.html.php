@@ -96,8 +96,8 @@
 	</div>
 	<button class="btn btn-sm btn-primary" type="submit" id="btnSubmitResXS">Submit</button>
 	<input type="hidden" name="matchID" id="matchIDResXS" value="<?php htmlout($matchID); ?>">
-<div id="updateRes"></div>
 </form>
+<div id="updateRes"></div>
 <?php endif; ?>
 <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == TRUE): ?>
 <hr>

@@ -151,7 +151,7 @@ function HSVtoRGB($h,$s,$v)
 	return $out;
 }
 
-function getLeagueTable() {
+function getLeagueTable($link) {
 	
 	// Create temporary table to hold submitted matches count
 	$sql = "CREATE TEMPORARY TABLE `SubmittedMatches` (
@@ -163,8 +163,11 @@ function getLeagueTable() {
 	if (!$result)
 	{
 		$error = 'Error creating submitted matches temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
 	}
 	
 	// Add submitted matches count data to temporary table
@@ -175,10 +178,10 @@ function getLeagueTable() {
 						FROM `Match` m
 							LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
 						WHERE p.`UserID` = u.`UserID`
-							AND (p.`HomeTeamPoints` IS NOT NULL AND p.`AwayTeamPoints` IS NOT NULL)
-							AND (m.`HomeTeamPoints` IS NOT NULL AND m.`AwayTeamPoints` IS NOT NULL)) AS `Submitted`,
+							AND (p.`HomeTeamGoals` IS NOT NULL AND p.`AwayTeamGoals` IS NOT NULL)
+							AND (m.`ResultPostedBy` IS NOT NULL)) AS `Submitted`,
 						(SELECT COUNT(*)
-						FROM (SELECT `MatchID`, `UserID` FROM `Match`, `User` WHERE `ResultSubmittedBy` IS NOT NULL) mu
+						FROM (SELECT `MatchID`, `UserID` FROM `Match`, `User` WHERE `ResultPostedBy` IS NOT NULL) mu
 							LEFT JOIN `Prediction` p ON
 								p.`MatchID` = mu.`MatchID`
 								AND p.`UserID` = mu.`UserID`
@@ -190,8 +193,11 @@ function getLeagueTable() {
 	if (!$result)
 	{
 		$error = 'Error adding submitted matches data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
 	}
 	
 	// Create temporary table to hold points by user
@@ -206,8 +212,11 @@ function getLeagueTable() {
 	if (!$result)
 	{
 		$error = 'Error creating points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
 	}
 	
 	// Add points by user data to temporary table
@@ -236,8 +245,11 @@ function getLeagueTable() {
 	if (!$result)
 	{
 		$error = 'Error adding points by user data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
 	}
 	
 	// Create 2nd temporary table to hold points by user
@@ -247,8 +259,11 @@ function getLeagueTable() {
 	if (!$result)
 	{
 		$error = 'Error creating 2nd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
 	}
 	
 	// Final query
@@ -273,8 +288,11 @@ function getLeagueTable() {
 	if (!$result)
 	{
 		$error = 'Error fetching league table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-		sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
 	}
 	
 	// Build array of outputs 

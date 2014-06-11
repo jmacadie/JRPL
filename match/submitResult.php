@@ -134,10 +134,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 	}
 	
 	// Calculate everyone's points
-	calculatePoints ($matchID)
+	calculatePoints ($matchID,$link);
 	
 	// Send e-mail
-	sendResultsEmail($matchID);
+	sendResultsEmail($matchID,$link);
 	
 	// Test Code
 	/*header('Content-type: application/json');
@@ -154,7 +154,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 }
 
 // Calculate the points for a given match
-function calculatePoints ($matchID) {
+function calculatePoints ($matchID,$link) {
 
 	// Delete existing prediction first
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -197,8 +197,10 @@ function calculatePoints ($matchID) {
 		die();
     }
 	
-	// Grab results and process
-	$rowM = mysqli_fetch_array($resultM)
+	// Grab results
+	$rowM = mysqli_fetch_array($resultM);
+	$ht = $rowM['HomeTeamGoals'];
+	$at = $rowM['AwayTeamGoals'];
 	
 	// Grab predictions
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -223,20 +225,22 @@ function calculatePoints ($matchID) {
 		die();
     }
 	
+	$out = '';
+	
 	// Calculate points and INSERT them back into the DB
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	while ($rowP = mysqli_fetch_array($resultP)) {
 		
 		// First check right result
-		if ((($rowM['HomeTeamGoals'] > $rowM['AwayTeamGoals']) && ($rowP['HomeTeamGoals'] > $rowP['AwayTeamGoals'])) ||
-			(($rowM['HomeTeamGoals'] < $rowM['AwayTeamGoals']) && ($rowP['HomeTeamGoals'] < $rowP['AwayTeamGoals'])) ||
-			(($rowM['HomeTeamGoals'] = $rowM['AwayTeamGoals']) && ($rowP['HomeTeamGoals'] = $rowP['AwayTeamGoals']))) {
+		if ((($ht > $at) && ($rowP['HomeTeamGoals'] > $rowP['AwayTeamGoals'])) ||
+			(($ht < $at) && ($rowP['HomeTeamGoals'] < $rowP['AwayTeamGoals'])) ||
+			(($ht == $at) && ($rowP['HomeTeamGoals'] == $rowP['AwayTeamGoals']))) {
 				
 				// Right result so award a result point
 				$resultPoints = 1;
 				
 				// Then check exact score
-				if (($rowM['HomeTeamGoals'] = $rowP['HomeTeamGoals']) && ($rowM['AwayTeamGoals'] = $rowP['AwayTeamGoals'])) {
+				if (($ht == $rowP['HomeTeamGoals']) && ($at == $rowP['AwayTeamGoals'])) {
 						$scorePoints = 2;
 				} else {
 					$scorePoints = 0;
@@ -254,7 +258,7 @@ function calculatePoints ($matchID) {
 		// Build SQL
 		$sql = "INSERT INTO `Points`
 					(`UserID`,
-					`MatchID`
+					`MatchID`,
 					`ResultPoints`,
 					`ScorePoints`,
 					`TotalPoints`)
@@ -281,7 +285,7 @@ function calculatePoints ($matchID) {
 }
 
 // Send e-mail of the results from the posted match
-function sendResultsEmail ($matchID) {
+function sendResultsEmail ($matchID, $link) {
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Get match details
@@ -292,7 +296,7 @@ function sendResultsEmail ($matchID) {
 				at.`Name` AS `AwayTeam`,
 				at.`ShortName` AS `AwayTeamS`,
 				m.`HomeTeamGoals`,
-				m.``AwayTeamGoals`
+				m.`AwayTeamGoals`
 
             FROM `Match` m
 
@@ -300,7 +304,7 @@ function sendResultsEmail ($matchID) {
 					ht.`TeamID` = m.`HomeTeamID`
 				
 				INNER JOIN `Team` at ON
-					ht.`TeamID` = m.`AwayTeamID`
+					at.`TeamID` = m.`AwayTeamID`
 			
 			WHERE m.`MatchID` = " . $matchID . ";";
 
@@ -308,37 +312,42 @@ function sendResultsEmail ($matchID) {
     if (!$result)
     {
         $error = 'Error getting match details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-        sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
 	
 	// Get the data
-	$row = mysqli_fetch_array($result);
+	$row = mysqli_fetch_assoc($result);
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Get league table details
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $resultLeague = getLeagueTable();
+    $resultLeague = getLeagueTable($link);
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Get match result details
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     $sql = "SELECT
-                u.`DisplayName`,
+                mu.`DisplayName`,
                 IFNULL(p.`HomeTeamGoals`,'No prediction') AS `HomeTeamGoals`,
 				IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamGoals`,
 				IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
-            FROM `User` u
+            FROM
+				(SELECT `MatchID`, `UserID`, `DisplayName`
+				FROM `Match`, `User`
+				WHERE `MatchID` = " . $matchID . ") mu
 
 				LEFT JOIN `Prediction` p ON
-					p.`UserID` = u.`UserID`
+					p.`UserID` = mu.`UserID`
+					AND p.`MatchID` = mu.`MatchID`
 				
 				LEFT JOIN `Points` po ON
 					po.`MatchID` = p.`MatchID`
 					AND po.`UserID` = p.`UserID`
-			
-			WHERE p.`MatchID` = " . $matchID . "
 			
 			ORDER BY
 				po.`TotalPoints` DESC,
@@ -349,8 +358,11 @@ function sendResultsEmail ($matchID) {
     if (!$resultMatch)
     {
         $error = 'Error getting match result details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-        sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -443,12 +455,25 @@ function sendResultsEmail ($matchID) {
 			$league .= '<tr>' . chr(13);
 			$i = 1;
 		}
-		$scores = $rowLeague['scorePoints'] / 2;
+		
+		$score  = $rowLeague['scorePoints'] / 2;
 		$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
 		$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowLeague['name'] . '</td>' . chr(13);
-		$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . (($rowLeague['resultPoints'] == 0) : '-' ? $rowLeague['resultPoints']) . '</td>' . chr(13);
-		$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . (($rowLeague['scorePoints'] == 0) : '-' ? $rowLeague['scorePoints']/2) . '</td>' . chr(13);
-		$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . (($rowLeague['totalPoints'] == 0) : '-' ? $rowLeague['totalPoints']) . '</td>' . chr(13);
+		if ($rowLeague['resultPoints'] == 0) {
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">-</td>' . chr(13);
+		} else {
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowLeague['resultPoints'] . '</td>' . chr(13);
+		}
+		if ($rowLeague['scorePoints'] == 0) {
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">-</td>' . chr(13);
+		} else {
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $score . '</td>' . chr(13);
+		}
+		if ($rowLeague['totalPoints'] == 0) {
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">-</td>' . chr(13);
+		} else {
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowLeague['totalPoints'] . '</td>' . chr(13);
+		}
 		$league .= '</tr>' . chr(13);
 	
 	}
@@ -464,7 +489,7 @@ function sendResultsEmail ($matchID) {
 	$match = '<!-- Title -->' . chr(13);
 	$match .= '<tr>' . chr(13);
 	$match .= '<td colspan="3" style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
-	$match .= 'Details for individual match' . chr(13);
+	$match .= 'Details for match' . chr(13);
 	$match .= '</td>' . chr(13);
 	$match .= '</tr>' . chr(13);
 	$match .= '<!-- End of Title -->' . chr(13);
@@ -486,7 +511,7 @@ function sendResultsEmail ($matchID) {
 	// Counter for striped rows
 	$i = 0;
 	
-	while ($rowBody = mysqli_fetch_array($resultMatch)) {
+	while ($rowMatch = mysqli_fetch_array($resultMatch)) {
 	
 		if($i == 1) {
 			$match .= '<tr style="background-color: #f0f0ff;">' . chr(13);
@@ -495,25 +520,29 @@ function sendResultsEmail ($matchID) {
 			$match .= '<tr>' . chr(13);
 			$i = 1;
 		}
-		$scores = $rowLeague['scorePoints'] / 2;
-		$match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $resultMatch['DisplayName'] . '</td>' . chr(13);
+		$match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowMatch['DisplayName'] . '</td>' . chr(13);
 		$match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">';
-		if ($resultMatch['HomeTeamGoals'] == 'No prediction') {
+		if ($rowMatch['HomeTeamGoals'] == 'No prediction') {
 			$match .= '<i>No prediction</i>' . chr(13);
 		} else {
-			if ($resultMatch['HomeTeamGoals'] > $resultMatch['AwayTeamGoals']) {
+			if ($rowMatch['HomeTeamGoals'] > $rowMatch['AwayTeamGoals']) {
 				$match .= $row['HomeTeam'] . ' to win<br/>' . chr(13);
-				$match .= $resultMatch['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $resultMatch['AwayTeamGoals'];
-			} elseif ($resultMatch['AwayTeamGoals'] > $resultMatch['HomeTeamGoals']) {
+				$match .= $rowMatch['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamGoals'];
+			} elseif ($rowMatch['AwayTeamGoals'] > $rowMatch['HomeTeamGoals']) {
 				$match .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
-				$match .= $resultMatch['AwayTeamGoals'] . '&nbsp;-&nbsp;' . $resultMatch['HomeTeamGoals'];
+				$match .= $rowMatch['AwayTeamGoals'] . '&nbsp;-&nbsp;' . $rowMatch['HomeTeamGoals'];
 			} else {
 				$match .= 'Draw<br/>' . chr(13);
-				$match .= $resultMatch['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $resultMatch['AwayTeamGoals'];
+				$match .= $rowMatch['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamGoals'];
 			}
 		}
 		$match .= '</td>' . chr(13);
-		$match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . (($resultMatch['TotalPoints'] == 0) : '-' ? $resultMatch['TotalPoints']) . '</td>' . chr(13);
+		if ($rowMatch['TotalPoints'] == 0) {
+			$match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">-</td>' . chr(13);
+		} else {
+			$match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowMatch['TotalPoints'] . '</td>' . chr(13);
+		}
+		
 		$match .= '</tr>' . chr(13);
 	
 	}
@@ -540,14 +569,17 @@ function sendResultsEmail ($matchID) {
     // Update DB to log e-mail being sent
     $sql = "UPDATE `Emails`
             SET `ResultsSent` = 1
-            WHERE `MatchID`=" . $row['MatchID'];
+            WHERE `MatchID` = " . $matchID;
 
     $resultBody = mysqli_query($link, $sql);
     if (!$resultBody)
     {
         $error = 'Error updating email sent table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-        sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
-        exit();
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
 
 }

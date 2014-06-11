@@ -87,33 +87,34 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 		
 		// Query to pull match data from DB
 		$sql = "SELECT
-					u.`DisplayName`,
+					mu.`DisplayName`,
 					ht.`Name` AS `HomeTeam`,
 					at.`Name` AS `AwayTeam`,
 					p.`HomeTeamGoals` AS `HomeTeamPrediction`,
 					p.`AwayTeamGoals` AS `AwayTeamPrediction`,
 					po.`TotalPoints`
 
-				FROM `User` u
+				FROM 
+					(SELECT `MatchID`, `HomeTeamID`, `AwayTeamID`, `UserID`, `DisplayName`
+					FROM `Match`, `User`
+					WHERE `MatchID` = " . $matchID . ") mu
+					
 					LEFT JOIN `Prediction` p ON
-						p.UserID = u.`UserID`
-					LEFT JOIN `Match` m ON
-						m.`MatchID` = p.`MatchID`
+						p.`UserID` = mu.`UserID`
+						AND p.`MatchID` = mu.`MatchID`
 					LEFT JOIN `Team` ht ON
-						ht.`TeamID` = m.`HomeTeamID`
+						ht.`TeamID` = mu.`HomeTeamID`
 					LEFT JOIN `Team` at ON
-						at.`TeamID` = m.`AwayTeamID`
+						at.`TeamID` = mu.`AwayTeamID`
 					LEFT JOIN `Points` po ON
 						po.`MatchID` = p.`MatchID`
 						AND po.`UserID` = p.`UserID`
-					
-				WHERE m.`MatchID` = " . $matchID . "
 				
 				ORDER BY
 					po.`TotalPoints` DESC,
 					(p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
 					p.`HomeTeamGoals` DESC,
-					p.`UserID` ASC;";
+					mu.`UserID` ASC;";
 		
 		// Run query and handle any failure
 		$result = mysqli_query($link, $sql);
