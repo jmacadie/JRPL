@@ -232,7 +232,7 @@ function sendEmail($to,$subject,$css,$body) {
 	// Body - Write details
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	$MESSAGE_BODY .= '<body>' . chr(13);
-	$MESSAGE_BODY .= 'to: ' .$to . '<br /><br />' . chr(13);
+	//$MESSAGE_BODY .= 'to: ' .$to . '<br /><br />' . chr(13);
 	if (is_array($body)) {
 		$MESSAGE_BODY .= emailBody($body);
 	} else {
@@ -244,8 +244,8 @@ function sendEmail($to,$subject,$css,$body) {
 	$MESSAGE_BODY .= '</html>' . chr(13);
 	
 	// Send e-mail
-	mail('james.macadie@telerealtrillium.com', $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
-	//mail($to, $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
+	//mail('james.macadie@telerealtrillium.com', $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
+	mail($to, $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
 
 }
 

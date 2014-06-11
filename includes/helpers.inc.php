@@ -231,13 +231,14 @@ function getLeagueTable($link) {
 					(SELECT
 						u.`UserID`,
 						IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
-						po.`ResultPoints` AS `ResultPoints`,
-						po.`ScorePoints` AS `ScorePoints`,
-						po.`TotalPoints` AS `TotalPoints`
+						IFNULL(po.`ResultPoints`,0) AS `ResultPoints`,
+						IFNULL(po.`ScorePoints`,0) AS `ScorePoints`,
+						IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
-					FROM `Points` po
-						INNER JOIN `User` u ON
-							u.`UserID` = po.`UserID`) tmp
+					FROM `User` u
+					
+						LEFT JOIN `Points` po
+								po.`UserID` = u.`UserID`) tmp
 
 					GROUP BY tmp.`DisplayName`; ";
 
