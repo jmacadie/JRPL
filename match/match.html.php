@@ -163,7 +163,7 @@
 	<tbody>
 		<?php foreach ($arrPredictions as $result): ?>
 		<tr>
-			<?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('<i>') }; ?>
+			<?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('<i>'); }; ?>
 			<td><?php htmlout($result['DisplayName']); ?></td>
 			<td><b>
 			<?php if($result['HomeTeamPrediction'] == 'No prediction') {
@@ -193,7 +193,7 @@
 				} else {
 					htmlout($result['TotalPoints']);
 				} ?></td>
-			<?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('</i>') }; ?>
+			<?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('</i>'); }; ?>
 		</tr>
 		<?php endforeach; ?>
 	</tbody>
