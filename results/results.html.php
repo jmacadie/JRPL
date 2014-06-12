@@ -22,15 +22,15 @@
 				} else {
 					htmlout($row['submitted']);
 				} ?></td>
-			<td><?php if($row['resultPoints'] == 0) {
+			<td><?php if($row['results'] == 0) {
 					htmlout('-');
 				} else {
-					htmlout($row['resultPoints']);
+					htmlout($row['results']);
 				} ?></td>
-			<td><?php if($row['scorePoints'] == 0) {
+			<td><?php if($row['scores'] == 0) {
 					htmlout('-');
 				} else {
-					htmlout($row['scorePoints']);
+					htmlout($row['scores']);
 				} ?></td>
 			<td><?php if($row['totalPoints'] == 0) {
 					htmlout('-');

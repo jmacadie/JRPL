@@ -159,6 +159,20 @@ function getLeagueTable($link, $stage='') {
 		$stageStr .= '0';
 	}
 	
+	// Drop temporary table to hold submitted matches count
+	$sql = "DROP TABLE IF EXISTS `SubmittedMatches` ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error dropping submitted matches temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
 	// Create temporary table to hold submitted matches count
 	$sql = "CREATE TEMPORARY TABLE `SubmittedMatches` (
 					`UserID` INT NOT NULL,
@@ -201,11 +215,25 @@ function getLeagueTable($link, $stage='') {
 							AND p.`PredictionID` IS NULL) AS `NotSubmitted`
 						
 					FROM `User` u ; ";
-
+	
 	$result = mysqli_query($link, $sql);
 	if (!$result)
 	{
 		$error = 'Error adding submitted matches data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
+	// Drop temporary table to hold points by user
+	$sql = "DROP TABLE IF EXISTS `PointsByUser` ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error dropping points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
 		$arr = array('result' => 'No', 'message' => $error);
@@ -251,18 +279,32 @@ function getLeagueTable($link, $stage='') {
 						FROM
 							(SELECT `MatchID`, `UserID`, `DisplayName`, `FirstName`, `LastName`
 							FROM `Match`, `User`
-							WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
+							WHERE `StageID` IN (" . $stageStr . ")) mu #`ResultPostedBy` IS NOT NULL AND 
 						
 							LEFT JOIN `Points` po ON
 								po.`UserID` = mu.`UserID`
 								AND po.`MatchID` = mu.`MatchID`) tmp
 
 					GROUP BY tmp.`DisplayName`; ";
-
+	
 	$result = mysqli_query($link, $sql);
 	if (!$result)
 	{
 		$error = 'Error adding points by user data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
+	// Drop 2nd temporary table to hold points by user
+	$sql = "DROP TABLE IF EXISTS `PointsByUser2` ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error dropping 2nd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
 		$arr = array('result' => 'No', 'message' => $error);
@@ -321,8 +363,8 @@ function getLeagueTable($link, $stage='') {
 			'name' => $row['DisplayName'],
 			'submitted' => $row['Submitted'],
 			'notSubmitted' => $row['NotSubmitted'],
-			'resultPoints' => $row['ResultPoints'],
-			'scorePoints' => $row['TeamScorePoints'],
+			'results' => $row['ResultPoints'],
+			'scores' => ($row['ScorePoints'] / 2),
 			'totalPoints' => $row['TotalPoints']);
 	}
 	

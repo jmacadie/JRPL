@@ -456,18 +456,17 @@ function sendResultsEmail ($matchID, $link) {
 			$i = 1;
 		}
 		
-		$score  = $rowLeague['scorePoints'] / 2;
 		$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
 		$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowLeague['name'] . '</td>' . chr(13);
-		if ($rowLeague['resultPoints'] == 0) {
+		if ($rowLeague['results'] == 0) {
 			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">-</td>' . chr(13);
 		} else {
-			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowLeague['resultPoints'] . '</td>' . chr(13);
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowLeague['results'] . '</td>' . chr(13);
 		}
-		if ($rowLeague['scorePoints'] == 0) {
+		if ($rowLeague['scores'] == 0) {
 			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">-</td>' . chr(13);
 		} else {
-			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $score . '</td>' . chr(13);
+			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowLeague['scores'] . '</td>' . chr(13);
 		}
 		if ($rowLeague['totalPoints'] == 0) {
 			$league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">-</td>' . chr(13);
