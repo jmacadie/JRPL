@@ -170,23 +170,22 @@
 				echo('No prediction');
 			} elseif($result['HomeTeamPrediction'] > $result['AwayTeamPrediction']) {
 				htmlout($result['HomeTeam']);
-				echo(' win<br/>');
+				echo(' win</b><br/>');
 				htmlout($result['HomeTeamPrediction']);
 				echo(' - ');
 				htmlout($result['AwayTeamPrediction']);
 			} elseif ($result['HomeTeamPrediction'] < $result['AwayTeamPrediction']) {
 				htmlout($result['AwayTeam']);
-				echo(' win<br/>');
+				echo(' win</b><br/>');
 				htmlout($result['AwayTeamPrediction']);
 				echo(' - ');
 				htmlout($result['HomeTeamPrediction']);
 			} else {
-				echo('Draw<br/>');
+				echo('Draw</b><br/>');
 				htmlout($result['HomeTeamPrediction']);
 				echo(' - ');
 				htmlout($result['AwayTeamPrediction']);
 			} ?>
-			</b>
 			</td>
 			<td><?php if($result['TotalPoints'] == 0) {
 					htmlout('-');

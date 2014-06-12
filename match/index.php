@@ -3,7 +3,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
 //Check if matchID has been posted
-if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0)) {
+if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 // MatchID has been properly posted so proceed
 	
 	// Call the getMatchDetails script to load all the varaibles for the match page

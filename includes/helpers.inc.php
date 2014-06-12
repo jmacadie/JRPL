@@ -1,16 +1,13 @@
 <?php
-function html($text)
-{
+function html($text) {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
-function htmlout($text)
-{
+function htmlout($text) {
     echo html($text);
 }
 
-function bbcode2html($text)
-{
+function bbcode2html($text) {
     $text = html($text);
 
     // [B]old
@@ -44,13 +41,11 @@ function bbcode2html($text)
     return $text;
 }
 
-function bbcodeout($text)
-{
+function bbcodeout($text) {
     echo bbcode2html($text);
 }
 
-function int($int)
-{
+function int($int) {
 
     // First check if it's a numeric value as either a string or number
     if(is_numeric($int) === TRUE)
@@ -76,8 +71,7 @@ function int($int)
     }
 }
 
-function quickSort( $arr, $left = 0 , $right = NULL )
-{
+function quickSort( $arr, $left = 0 , $right = NULL ) {
 	// when the call is recursive we need to change
 	//the array passed to the function earlier
 	static $array = array();
@@ -120,8 +114,7 @@ function quickSort( $arr, $left = 0 , $right = NULL )
 	return $array;
 }
 
-function HSVtoRGB($h,$s,$v)
-{
+function HSVtoRGB($h,$s,$v) {
 
 	$hDash = $h/60;
 	
@@ -151,7 +144,20 @@ function HSVtoRGB($h,$s,$v)
 	return $out;
 }
 
-function getLeagueTable($link) {
+function getLeagueTable($link, $stage='') {
+	
+	// Sort out selected stages
+	if (($stage == '') || (!is_array($stage))) {
+		$stageStr = '1,2,3,4,5';
+	} else {
+		$stageStr = '';
+		if ($stage[0]) { $stageStr .= '1,'; }
+		if ($stage[1]) { $stageStr .= '2,'; }
+		if ($stage[2]) { $stageStr .= '3,'; }
+		if ($stage[3]) { $stageStr .= '4,'; }
+		if ($stage[4]) { $stageStr .= '5,'; }
+		$stageStr .= '0';
+	}
 	
 	// Create temporary table to hold submitted matches count
 	$sql = "CREATE TEMPORARY TABLE `SubmittedMatches` (
@@ -174,19 +180,26 @@ function getLeagueTable($link) {
 	$sql = "INSERT INTO `SubmittedMatches`
 					SELECT
 						u.`UserID`,
+						
 						(SELECT COUNT(*)
 						FROM `Match` m
 							LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
 						WHERE p.`UserID` = u.`UserID`
+							AND m.`StageID` IN (" . $stageStr . ")
 							AND (p.`HomeTeamGoals` IS NOT NULL AND p.`AwayTeamGoals` IS NOT NULL)
 							AND (m.`ResultPostedBy` IS NOT NULL)) AS `Submitted`,
+							
 						(SELECT COUNT(*)
-						FROM (SELECT `MatchID`, `UserID` FROM `Match`, `User` WHERE `ResultPostedBy` IS NOT NULL) mu
+						FROM
+							(SELECT `MatchID`, `UserID`
+							FROM `Match`, `User`
+							WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
 							LEFT JOIN `Prediction` p ON
 								p.`MatchID` = mu.`MatchID`
 								AND p.`UserID` = mu.`UserID`
 						WHERE mu.`UserID` = u.`UserID`
 							AND p.`PredictionID` IS NULL) AS `NotSubmitted`
+						
 					FROM `User` u ; ";
 
 	$result = mysqli_query($link, $sql);
@@ -228,17 +241,21 @@ function getLeagueTable($link) {
 						SUM(tmp.`ScorePoints`) AS `ScorePoints`,
 						SUM(tmp.`TotalPoints`) AS `TotalPoints`
 					FROM
-					(SELECT
-						u.`UserID`,
-						IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
-						IFNULL(po.`ResultPoints`,0) AS `ResultPoints`,
-						IFNULL(po.`ScorePoints`,0) AS `ScorePoints`,
-						IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
+						(SELECT
+							mu.`UserID`,
+							IFNULL(mu.`DisplayName`,CONCAT(mu.`FirstName`,' ',mu.`LastName`)) AS `DisplayName`,
+							IFNULL(po.`ResultPoints`,0) AS `ResultPoints`,
+							IFNULL(po.`ScorePoints`,0) AS `ScorePoints`,
+							IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
-					FROM `User` u
-					
-						LEFT JOIN `Points` po
-								po.`UserID` = u.`UserID`) tmp
+						FROM
+							(SELECT `MatchID`, `UserID`, `DisplayName`, `FirstName`, `LastName`
+							FROM `Match`, `User`
+							WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
+						
+							LEFT JOIN `Points` po ON
+								po.`UserID` = mu.`UserID`
+								AND po.`MatchID` = mu.`MatchID`) tmp
 
 					GROUP BY tmp.`DisplayName`; ";
 
