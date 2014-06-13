@@ -209,8 +209,8 @@ function sendEmail($to,$subject,$css,$body) {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Email header
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	$mailHeader = "From: jules@julianrimet.com\r\n";
-	$mailHeader .= "Reply-To: jules@julianrimet.com\r\n";
+	$mailHeader = "From: julian@julianrimet.com\r\n";
+	$mailHeader .= "Reply-To: julian@julianrimet.com\r\n";
 	$mailHeader .= "Content-type: text/html; charset=iso-8859-1\r\n";
 	
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

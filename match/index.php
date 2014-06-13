@@ -6,10 +6,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 // MatchID has been properly posted so proceed
 	
-	// Call the getMatchDetails script to load all the varaibles for the match page
+	// Call the getMatchDetails script to load all the variables for the match page
 	include 'getMatchDetails.php';
 	
-	// Sort out the previous and next links based on the ring varaible
+	// Sort out the previous and next links based on the ring variable
 	if (isset($_GET['ring'])) {
 		
 		//Convert hex string back into binary
@@ -47,7 +47,7 @@ if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 		
 	} else {
 		
-		// Absent the ring varaiable just increment the Match ID
+		// Absent the ring variable just increment the Match ID
 		$prevID = max($_GET['id'] - 1, 1);
 		$prev = '../match?id=' . $prevID;
 		$nextID = min($_GET['id'] + 1, 64);

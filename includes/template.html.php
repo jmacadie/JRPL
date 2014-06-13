@@ -21,6 +21,9 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 	
+	<!-- Responsive Tables CSS -->
+	<link rel="stylesheet" href="../assets/css/rwd-table.min.css">
+	
 	<!-- Custom styles for this template -->
 	<link type="text/css" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/css/JRPL.css" rel="stylesheet">
 
