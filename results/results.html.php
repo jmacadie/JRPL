@@ -1,12 +1,10 @@
 <h1>Tables</h1>
 <div id="messageTables"></div>
 <hr>
-<h3>
-	Overall
-	<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tOverallCont">
-		hide / unhide table
-	</button>
-</h3>
+<h3>Overall</h3>
+<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tOverallCont" id="btnOverallCont">
+	hide / unhide table
+</button>
 <div id="tOverallCont" class="collapse in">
 	<div class="table-responsive" data-pattern="priority-columns">
 		<table class="table table-small-font table-striped">
@@ -62,13 +60,11 @@
 	</div>
 </div>
 <hr>
-<h3>
-	Group Stages
-	<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tGSCont">
-		hide / unhide table
-	</button>
-</h3>
-<div id="tGSCont" class="collapse">
+<h3>Group Stages</h3>
+<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tGSCont" id="btnGSCont">
+	hide / unhide table
+</button>
+<div id="tGSCont" class="collapse in">
 	<div class="table-responsive" data-pattern="priority-columns">
 		<table class="table table-small-font table-striped">
 			<thead>
@@ -123,13 +119,11 @@
 	</div>
 </div>
 <hr>
-<h3>
-	Last 16
-	<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tL16Cont">
-		hide / unhide table
-	</button>
-</h3>
-<div id="tL16Cont" class="collapse">
+<h3>Last 16</h3>
+<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tL16Cont" id="btnL16Cont">
+	hide / unhide table
+</button>
+<div id="tL16Cont" class="collapse in">
 	<div class="table-responsive" data-pattern="priority-columns">
 		<table class="table table-small-font table-striped">
 			<thead>
@@ -184,13 +178,11 @@
 	</div>
 </div>
 <hr>
-<h3>
-	Semi-Finals, Quarter-Finals, 3<sup>rd</sup> 4<sup>th</sup> Place Play-off & Final
-	<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tRCont">
-		hide / unhide table
-	</button>
-</h3>
-<div id="tRCont" class="collapse">
+<h3>Semi-Finals, Quarter-Finals, 3<sup>rd</sup> 4<sup>th</sup> Place Play-off & Final</h3>
+<button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#tRCont" id="btnRCont">
+	hide / unhide table
+</button>
+<div id="tRCont" class="collapse in">
 	<div class="table-responsive" data-pattern="priority-columns">
 		<table class="table table-small-font table-striped">
 			<thead>
