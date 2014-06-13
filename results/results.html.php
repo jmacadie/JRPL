@@ -1,7 +1,12 @@
 <h1>Tables</h1>
 <div id="messageTables"></div>
-<h3>Overall</h3>
-<div class="table-responsive" data-pattern="priority-columns" data-addfocusbtn=false>
+<h3>
+	Overall
+	<button type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#tOverallCont">
+		hide / unhide table
+	</button>
+</h3>
+<div id="tOverallCont" class="table-responsive collapse in" data-pattern="priority-columns">
 	<table class="table table-small-font table-striped" id ="tOverall">
 		<thead>
 			<tr>

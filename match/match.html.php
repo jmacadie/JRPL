@@ -102,7 +102,7 @@
 <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == TRUE): ?>
 <hr>
 <h4 class="form-heading">Your Prediction</h4>
-<?php if($lockedDown) echo('<i>Match locked down. No more updates to predictions possible</i><br />'); ?>
+<?php if($lockedDown) echo('<p><i>Match locked down. No more updates to predictions possible</i></p>'); ?>
 <!-- Layout for tablets and bigger -->
 <form class="hidden-xs" role="form">
 	<?php if($lockedDown) echo('<fieldset disabled>'); ?>
@@ -198,7 +198,7 @@
 	</tbody>
 </table>
 <?php else: ?>
-<i>Match not yet locked down. Come back when it is...</i><br />
+<p><i>Match not yet locked down. Come back when it is...</i></p>
 <?php endif; ?>
 <div class="row">
 	<div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
