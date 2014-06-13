@@ -268,18 +268,22 @@ function getLeagueTable($link, $stage='') {
 						SUM(tmp.`ResultPoints`) AS `ResultPoints`,
 						SUM(tmp.`ScorePoints`) AS `ScorePoints`,
 						SUM(tmp.`TotalPoints`) AS `TotalPoints`
+						
 					FROM
 						(SELECT
-							mu.`UserID`,
-							IFNULL(mu.`DisplayName`,CONCAT(mu.`FirstName`,' ',mu.`LastName`)) AS `DisplayName`,
+							u.`UserID`,
+							IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
 							IFNULL(po.`ResultPoints`,0) AS `ResultPoints`,
 							IFNULL(po.`ScorePoints`,0) AS `ScorePoints`,
 							IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
-						FROM
-							(SELECT `MatchID`, `UserID`, `DisplayName`, `FirstName`, `LastName`
-							FROM `Match`, `User`
-							WHERE `StageID` IN (" . $stageStr . ")) mu #`ResultPostedBy` IS NOT NULL AND 
+						FROM `User` u
+							
+							LEFT JOIN
+								(SELECT `MatchID`, `UserID`
+								FROM `Match`, `User`
+								WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
+									ON mu.`UserID` = u.`UserID`
 						
 							LEFT JOIN `Points` po ON
 								po.`UserID` = mu.`UserID`
@@ -326,11 +330,42 @@ function getLeagueTable($link, $stage='') {
 		die();
 	}
 	
+	// Drop 3rd temporary table to hold points by user
+	$sql = "DROP TABLE IF EXISTS `PointsByUser3` ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error dropping 3rd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
+	// Create 3rd temporary table to hold points by user
+	$sql = "CREATE TEMPORARY TABLE `PointsByUser3` SELECT * FROM `PointsByUser`; ";
+	
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error creating 3rd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
 	// Final query
 	$sql = "SELECT
 					(SELECT COUNT(*) + 1
 					FROM `PointsByUser2` pbu2
-					WHERE pbu2.`TotalPoints`>pbu.`TotalPoints`) AS `Rank`,
+					WHERE pbu2.`TotalPoints` > pbu.`TotalPoints`) AS `Rank`,
+					(SELECT COUNT(*)
+					FROM `PointsByUser3` pbu3
+					WHERE pbu3.`TotalPoints` = pbu.`TotalPoints`) AS `RankCount`,
 					pbu.*,
 					sm.`Submitted`,
 					sm.`NotSubmitted`
@@ -360,6 +395,7 @@ function getLeagueTable($link, $stage='') {
 	{
 		$out[] = array(
 			'rank' => $row['Rank'],
+			'rankCount' => $row['RankCount'],
 			'name' => $row['DisplayName'],
 			'submitted' => $row['Submitted'],
 			'notSubmitted' => $row['NotSubmitted'],
