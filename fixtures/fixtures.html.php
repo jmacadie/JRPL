@@ -12,8 +12,8 @@
 			<div class="panel-body">
 				<div class="checkbox">
 				  <label>
-					<input type="checkbox" id="ckbLockedMatches" value="">
-					Exclude locked-down matches
+					<input type="checkbox" id="ckbPlayedMatches" value="" checked>
+					Exclude played matches
 				  </label>
 				</div>
 				<div class="checkbox">

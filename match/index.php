@@ -61,7 +61,8 @@ if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 		$prevID = $_GET['id'] - 1;
 		if ($prevID == 0) $prevID == 64;
 		$prev = '../match?id=' . $prevID;
-		$nextID = min($_GET['id'] + 1, 64);
+		
+		$nextID = $_GET['id'] + 1;
 		if ($nextID == 65) $nextID == 1;
 		$next = '../match?id=' . $nextID;
 		

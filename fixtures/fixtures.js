@@ -60,7 +60,7 @@ function getMatchesData() {
 		type: 'POST',
 		data: 
 			{action: "updateMatches",
-			excLocked: $("#ckbLockedMatches").is(':checked'),
+			excPlayed: $("#ckbPlayedMatches").is(':checked'),
 			excPredicted: $("#ckbPredictedMatches").is(':checked'),
 			groupA: groupA,
 			groupB: groupB,

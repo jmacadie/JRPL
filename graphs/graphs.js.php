@@ -136,7 +136,7 @@
 		$ckb = $(this);
 		j = $ckb.attr('value')*1 - 1;
 		if ($ckb.is(':checked')) {
-			series[j] = {visibleInLegend: true, pointSize: 2, lineWidth: 2};
+			series[j] = {visibleInLegend: true, pointSize: 3, lineWidth: 3};
 		} else {
 			series[j] = {color: '#dddddd', visibleInLegend: false, pointSize: 0, lineWidth: 1};
 		}
@@ -173,8 +173,8 @@
 			height: h,
 			width: w,
 			legend: {position: 'in'},
-			hAxis: {textPosition: 'none'},
-			vAxis: {textPosition: 'none'},
+			hAxis: {textPosition: 'none', baselineColor: 'transparent', gridlines: {color: 'transparent'}},
+			vAxis: {textPosition: 'none', baselineColor: 'transparent', gridlines: {color: 'transparent'}},
 			series: getSeries()};
 		
 		// Draw the chart
@@ -186,14 +186,7 @@
         chart.draw(dataRel, options);
 		
 		// Set the options
-		options = {
-			chartArea: {width:'100%', height:'100%'},
-			height: h,
-			width: w,
-			legend: {position: 'in'},
-			hAxis: {textPosition: 'none'},
-			vAxis: {textPosition: 'none', direction: -1},
-			series: getSeries()};
+		options.vAxis.direction= -1;
 		
 		// Draw the chart
         chart = new google.visualization.LineChart(document.getElementById('cPosition'));

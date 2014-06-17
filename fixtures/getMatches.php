@@ -17,7 +17,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		
 	// Assign values
 	$userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
-	$excLocked = (isset($_POST['excLocked'])) ? ($_POST['excLocked'] === 'true') : true;
+	$excPlayed = (isset($_POST['excPlayed'])) ? ($_POST['excPlayed'] === 'true') : true;
 	$excPredicted = (isset($_POST['excPredicted'])) ? ($_POST['excPredicted'] === 'true') : true;
 	$groupA = (isset($_POST['groupA'])) ? ($_POST['groupA'] === 'true') : true;
 	$groupB = (isset($_POST['groupB'])) ? ($_POST['groupB'] === 'true') : true;
@@ -37,7 +37,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 	
 	// Make sure submitted data is clean
 	$userID = mysqli_real_escape_string($link, $userID);
-	$excLocked = mysqli_real_escape_string($link, $excLocked);
+	$excPlayed = mysqli_real_escape_string($link, $excPlayed);
 	$excPredicted = mysqli_real_escape_string($link, $excPredicted);
 	$groupA = mysqli_real_escape_string($link, $groupA);
 	$groupB = mysqli_real_escape_string($link, $groupB);
@@ -186,7 +186,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		$sql .= "(s.`Name` = 'Final')";
 	}
 	$sql .= ")";
-	if ($excLocked) $sql .= " AND DATE_ADD(NOW(), INTERVAL 30 MINUTE) < TIMESTAMP(m.`Date`, m.`KickOff`)";
+	if ($excPlayed) $sql .= " AND m.`ResultPostedBy` IS NULL";
 	if ($excPredicted) $sql .= " AND p.`PredictionID` IS NULL";
 	$sql .= " ORDER BY m.`Date` ASC, m.`KickOff` ASC;";
 	
