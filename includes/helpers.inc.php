@@ -144,6 +144,15 @@ function HSVtoRGB($h,$s,$v) {
 	return $out;
 }
 
+function ring_base_convert ($ring) {
+	$out = '';
+	for ($i = 0; $i < strlen($ring); $i++) {
+		$tmp = base_convert($ring[$i], 16, 2);
+		$out .= str_pad($tmp, 4, "0", STR_PAD_LEFT);
+	}
+	return $out;
+}
+
 function getLeagueTable($link, $stage='') {
 	
 	// Sort out selected stages
@@ -406,4 +415,129 @@ function getLeagueTable($link, $stage='') {
 	
 	return $out;
 }
+
+function getGraphData () {
+	
+	// Get DB connection
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Get data, only grab matches with submitted results
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Create temporary table to hold cumulative points by match & user 
+	$sql = "CREATE TEMPORARY TABLE `CumulativePointsByMatchUser` (
+					`MatchID` INT NOT NULL,
+					`UserID` INT NOT NULL,
+					`Points` INT NOT NULL) ; ";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error creating cumulative points by match & user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
+	// Add cumulative points by match & user data to temporary table
+	$sql = "INSERT INTO `CumulativePointsByMatchUser`
+					SELECT
+						m.`MatchID`,
+						tmp.`UserID`,
+						SUM(tmp.`Points`) AS `Points`
+					
+					FROM
+						(SELECT
+								mu.`MatchID`,
+								mu.`UserID`,
+								IFNULL(po.`TotalPoints`,0) AS `Points`
+
+						FROM
+							(SELECT m.`MatchID`, u.`UserID`
+							FROM `Match` m, `User` u
+							WHERE m.`ResultPostedBy` IS NOT NULL) mu
+							
+							LEFT JOIN `Points` po ON
+								po.`UserID` = mu.`UserID`
+								AND po.`MatchID` = mu.`MatchID`) tmp
+					
+					INNER JOIN `Match` m ON
+						m.`MatchID` >= tmp.`MatchID`
+						AND m.`ResultPostedBy` IS NOT NULL
+					
+					GROUP BY
+						m.`MatchID`,
+						tmp.`UserID`;";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error adding cumulative points by match & user data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
+	// Create 2nd temporary table to hold points by user
+	$sql = "CREATE TEMPORARY TABLE `CumulativePointsByMatchUser2` SELECT * FROM `CumulativePointsByMatchUser`; ";
+	
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error creating 2nd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+	
+	// Final query
+	$sql = "SELECT
+				(SELECT COUNT(*) + 1
+				FROM `CumulativePointsByMatchUser2` cpmu2
+				WHERE cpmu2.`Points` > cpmu.`Points`
+					AND cpmu2.`MatchID` = cpmu.`MatchID`) AS `Rank`,
+				IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
+				CONCAT(ht.`Name`,' vs. ',`at`.`Name`) AS `Match`,
+				cpmu.*
+			
+			FROM `CumulativePointsByMatchUser` cpmu
+				INNER JOIN `Match` m ON m.`MatchID` = cpmu.`MatchID`
+				INNER JOIN `User` u ON u.`UserID` = cpmu.`UserID`
+				INNER JOIN `Team` ht ON ht.`TeamID` = m.`HomeTeamID`
+				INNER JOIN `Team` at ON at.`TeamID` = m.`AwayTeamID`
+			
+			ORDER BY cpmu.`MatchID` ASC, cpmu.`UserID` ASC";
+
+	$result = mysqli_query($link, $sql);
+	if (!$result)
+	{
+		$error = 'Error fetching match details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+	}
+
+	while ($row = mysqli_fetch_array($result))
+	{
+		$out[] = array(
+			'matchID' => $row['MatchID'],
+			'match' => $row['Match'],
+			'rank' => $row['Rank'],
+			'userID' => $row['UserID'],
+			'name' => $row['DisplayName'],
+			'points' => $row['Points']);
+	}
+	
+	return $out;
+}
+
 ?>

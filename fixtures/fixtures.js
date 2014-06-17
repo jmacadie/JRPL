@@ -145,16 +145,18 @@ function processMatchesReturn (data) {
 
 	} else { // Data came back OK so build HTML and then display it
 		
+		var homeFlag = '';
+		var awayFlag = '';
 		var date = '';
 		var time = '';
 		
 		// Initialise the result variable to hold which matches have been selected
 		var result = [];
-		for (var i = 1; i <= 64; i++) { result.push(0); }
+		for (var i = 0; i < 64; i++) { result.push(0); }
 		
 		// Record which matches have actually been selected
 		$.each(data.data, function(entryIndex, entry){
-			result[entry['MatchID']] = 1;
+			result[entry['MatchID']-1] = 1;
 		});
 		
 		// Concat resultand then convert to hex
@@ -167,6 +169,10 @@ function processMatchesReturn (data) {
         result = [];
 		
 		$.each(data.data, function(entryIndex, entry){
+			
+			// Sort out flag links
+			homeFlag = (entry['HomeTeamS'] == '') ? 'tmp' : entry['HomeTeamS'].toLowerCase();
+			awayFlag = (entry['AwayTeamS'] == '') ? 'tmp' : entry['AwayTeamS'].toLowerCase();
 			
 			// Display Date Header if the first Match or date has changed
 			if ((entryIndex === 0) || (entry['Date'] != date)) {
@@ -188,13 +194,13 @@ function processMatchesReturn (data) {
 			
 			// Have own row to show flags on phones, in-line on anything bigger
             result.push('<div class="row visible-xs">');
-			result.push('<div class="col-xs-4 text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + entry['HomeTeamS'].toLowerCase() + '.png"></div>');
-			result.push('<div class="col-xs-4 col-xs-offset-4 text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + entry['AwayTeamS'].toLowerCase() + '.png"></div>');
+			result.push('<div class="col-xs-4 text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + homeFlag + '.png"></div>');
+			result.push('<div class="col-xs-4 col-xs-offset-4 text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + awayFlag + '.png"></div>');
 			result.push('</div>');
 			
 			// Main row with team names, flags and result on
 			result.push('<div class="row">');
-			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + entry['HomeTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
+			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + homeFlag + '.png"></div>'); // in-line flag for devices bigger than a phone
 			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['HomeTeam'] + '</div>'); // Centred name for phones
 			result.push('<div class="col-sm-2 hidden-xs text-right lead">' + entry['HomeTeam'] + '</div>'); // Full name for tablets & desktops
 			result.push('<div class="col-xs-1 text-center lead"><b>' + ((entry['HomeTeamGoals'] === null) ? '' : entry['HomeTeamGoals']) + '</b></div>'); // Score
@@ -202,7 +208,7 @@ function processMatchesReturn (data) {
 			result.push('<div class="col-xs-1 text-center lead"><b>' + ((entry['AwayTeamGoals'] === null) ? '' : entry['AwayTeamGoals']) + '</b></div>'); // Score
 			result.push('<div class="col-sm-2 hidden-xs text-left lead">' + entry['AwayTeam'] + '</div>'); // Full name for tablets & desktops
 			result.push('<div class="col-xs-4 visible-xs text-center">' + entry['AwayTeam'] + '</div>');  // Centred name for phones
-			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + entry['AwayTeamS'].toLowerCase() + '.png"></div>'); // in-line flag for devices bigger than a phone
+			result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + awayFlag + '.png"></div>'); // in-line flag for devices bigger than a phone
 			result.push('</div>');
 			
 			// Row for prediction, if logged in

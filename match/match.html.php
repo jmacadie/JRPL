@@ -11,7 +11,7 @@
 	<!-- Layout for tablets and bigger -->
 	<div class="row hidden-xs">
 		<div class="col-sm-4 text-right">
-			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($homeTeamS)); ?>.png">
+			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png">
 			<?php htmlout($homeTeam); ?>
 		</div>
 		<div class="col-sm-4 text-center">
@@ -21,13 +21,13 @@
 		</div>
 		<div class="col-sm-4 text-left">
 			<?php htmlout($awayTeam); ?>
-			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($awayTeamS)); ?>.png">
+			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png">
 		</div>
 	</div>
 	<!-- Layout for phones -->
 	<div class="row visible-xs text-left">
 		<div class="col-xs-2">
-			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($homeTeamS)); ?>.png">
+			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png">
 		</div>
 		<div class="col-xs-6">
 			<?php htmlout($homeTeam); ?>
@@ -41,7 +41,7 @@
 	</div>
 	<div class="row visible-xs text-left">
 		<div class="col-xs-2">
-			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout(strtolower($awayTeamS)); ?>.png">
+			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png">
 		</div>
 		<div class="col-xs-6">
 			<?php htmlout($awayTeam); ?>

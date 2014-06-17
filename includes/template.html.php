@@ -72,15 +72,14 @@
 						'<li class="active"><a href="./">Fixtures</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'fixtures/">Fixtures</a></li>'); ?>
 					<?php echo($tab == 'tables' ?
-						'<li class="active"><a href="./">Results</a></li>' :
-						'<li><a href="'.($tab == 'home' ? '' : '../').'results/">Results</a></li>'); ?>
+						'<li class="active"><a href="./">Tables</a></li>' :
+						'<li><a href="'.($tab == 'home' ? '' : '../').'tables/">Tables</a></li>'); ?>
+					<?php echo($tab == 'graphs' ?
+						'<li class="active"><a href="./">Graphs</a></li>' :
+						'<li><a href="'.($tab == 'home' ? '' : '../').'graphs/">Graphs</a></li>'); ?>
 					<?php echo($tab == 'rules' ?
 						'<li class="active"><a href="./">Rules</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'rules/">Rules</a></li>'); ?>
-					<?php if (isset($_SESSION['isAdmin']) and $_SESSION['isAdmin'] == TRUE)
-						echo($tab == 'admin' ?
-							'<li class="active"><a href="./">Admin</a></li>' :
-							'<li><a href="'.($tab == 'home'?'':'../').'admin/">Admin</a></li>'); ?>
 				</ul>
 				<?php if (!isset($_SESSION['loggedIn']) or $_SESSION['loggedIn'] == FALSE): ?>
 					<ul class="nav navbar-nav navbar-right">

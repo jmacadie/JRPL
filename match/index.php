@@ -9,13 +9,23 @@ if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 	// Call the getMatchDetails script to load all the variables for the match page
 	include 'getMatchDetails.php';
 	
+	// Sort out flag links
+	if ($homeTeamS == '') {
+		$homeFlag = 'tmp';
+	} else {
+		$homeFlag = strtolower($homeTeamS);
+	}
+	if ($awayTeamS == '') {
+		$awayFlag = 'tmp';
+	} else {
+		$awayFlag = strtolower($awayTeamS);
+	}
+	
 	// Sort out the previous and next links based on the ring variable
-	if (isset($_GET['ring'])) {
+	if (isset($_GET['ring']) || ($_GET['ring'] == 0)) {
 		
 		//Convert hex string back into binary
-		$tmp = base_convert($_GET['ring'], 16, 2);
-		//TODO: cope with ring being all zeros
-		// ought not to happen else how did we get here?
+		$tmp = ring_base_convert($_GET['ring']);
 		
 		// Set previous match link by looping back until we hit a match
 		// which is set in the ring variable, with a 1
@@ -48,9 +58,11 @@ if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 	} else {
 		
 		// Absent the ring variable just increment the Match ID
-		$prevID = max($_GET['id'] - 1, 1);
+		$prevID = $_GET['id'] - 1;
+		if ($prevID == 0) $prevID == 64;
 		$prev = '../match?id=' . $prevID;
 		$nextID = min($_GET['id'] + 1, 64);
+		if ($nextID == 65) $nextID == 1;
 		$next = '../match?id=' . $nextID;
 		
 	}

@@ -175,7 +175,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Seni Finals')";
+		$sql .= "(s.`Name` = 'Semi Finals')";
 	}
 	if ($final) {
 		if ($firstFilter) {
