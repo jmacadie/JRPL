@@ -43,8 +43,7 @@
 
 	<?php
 	// set logged in variables
-	if (userIsLoggedIn())
-	{
+	if (userIsLoggedIn()) {
 		if (isset($_SESSION['displayName'])) $displayName = $_SESSION['displayName'];
 		if (isset($_SESSION['firstName'])) $firstName = $_SESSION['firstName'];
 		if (isset($_SESSION['lastName'])) $lastName = $_SESSION['lastName'];

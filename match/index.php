@@ -2,6 +2,9 @@
 // Make sure all relevant includes are loaded
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
+// Call log in function to make sure logged in status is correctly set
+userIsLoggedIn();
+
 //Check if matchID has been posted
 if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 // MatchID has been properly posted so proceed

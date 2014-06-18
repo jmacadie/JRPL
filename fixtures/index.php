@@ -2,9 +2,8 @@
 // Make sure all relevant includes are loaded
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Main page set-up
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Call log in function to make sure logged in status is correctly set
+userIsLoggedIn();
 
 // Set tab variable to indicate point to fixtures tab
 $tab = 'fixtures';

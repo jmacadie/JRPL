@@ -93,10 +93,10 @@ function checkRMCookie() {
 		
 		// Write the SQL
 		$sql = "SELECT COUNT(*)
-				FROM `RememberMe` rm
-				WHERE rm.`UserID` = " . $userID . "
-					AND rm.`SeriesID` = " . $seriesID . "
-					AND rm.`token` = " . $tokenh . ";";
+				FROM `RememberMe`
+				WHERE `UserID` = " . $userID . "
+					AND `SeriesID` = " . $seriesID . "
+					AND `Token` = " . $tokenh . ";";
 		
 		// Run the SQL and process any error
 		$result = mysqli_query($link, $sql);
@@ -127,9 +127,10 @@ function checkRMCookie() {
 			
 			// Write the SQL
 			$sql = "UPDATE `RememberMe`
-					SET rm.`token` = " . $tokenh . "
-					WHERE rm.`UserID` = " . $userID . "
-						AND rm.`SeriesID` = " . $seriesID . ";"
+					SET `Token` = " . $tokenh . ",
+						`DateAdded` = NOW()
+					WHERE `UserID` = " . $userID . "
+						AND `SeriesID` = " . $seriesID . ";"
 			
 			// Run the SQL and process any error
 			$result = mysqli_query($link, $sql);
@@ -149,9 +150,9 @@ function checkRMCookie() {
 			
 			// Write the SQL
 			$sql = "SELECT COUNT(*)
-					FROM `RememberMe` rm
-					WHERE rm.`UserID` = " . $userID . "
-						AND rm.`SeriesID` = " . $seriesID . ";";
+					FROM `RememberMe`
+					WHERE `UserID` = " . $userID . "
+						AND `SeriesID` = " . $seriesID . ";";
 			
 			// Run the SQL and process any error
 			$result = mysqli_query($link, $sql);
@@ -168,7 +169,7 @@ function checkRMCookie() {
 				
 				// Write the SQL
 				$sql = "DELETE FROM `RememberMe`
-						WHERE rm.`UserID` = " . $userID . ";"
+						WHERE `UserID` = " . $userID . ";"
 				
 				// Run the SQL and process any error
 				$result = mysqli_query($link, $sql);
@@ -229,9 +230,9 @@ function setRMCookie($userID) {
 	
 	// Write the SQL
 	$sql = "INSERT INTO `RememberMe`
-				(`UserID`,`SeriesID`,`Token`)
+				(`UserID`,`SeriesID`,`Token`,`DateAdded`)
 			VALUES
-				(" . $userID . ", " . $seriesID . ", " . $tokenh . ");"
+				(" . $userID . ", " . $seriesID . ", " . $tokenh . ", NOW());"
 	
 	// Run the SQL and process any error
 	$result = mysqli_query($link, $sql);
