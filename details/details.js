@@ -21,7 +21,7 @@ $(document).ready(function() {
 function doUpdate() {
 
     // Send request
-    $.post("updateDetails.php",
+    $.post("../includes/login.php",
 
         {action: "update",
             firstName: $("#firstName").val(),

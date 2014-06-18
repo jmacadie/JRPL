@@ -10,19 +10,13 @@
 <h3>
 	<!-- Layout for tablets and bigger -->
 	<div class="row hidden-xs">
-		<div class="col-sm-4 text-right">
-			<img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png">
-			<?php htmlout($homeTeam); ?>
-		</div>
-		<div class="col-sm-4 text-center">
-			<span id="homeTeamGoals"><?php htmlout($homeTeamGoals); ?></span>
-			-
-			<span id="awayTeamGoals"><?php htmlout($awayTeamGoals); ?></span>
-		</div>
-		<div class="col-sm-4 text-left">
-			<?php htmlout($awayTeam); ?>
-			<img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png">
-		</div>
+		<div class="col-sm-2 text-center"><img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png"></div>
+		<div class="col-sm-2 text-right lead"><?php htmlout($homeTeam); ?></div>
+		<div class="col-sm-1 text-center lead"><b><span id="homeTeamGoals"><?php htmlout($homeTeamGoals); ?></span></b></div>
+		<div class="col-sm-2 text-center">vs.</div>
+		<div class="col-sm-1 text-center lead"><b><span id="awayTeamGoals"><?php htmlout($awayTeamGoals); ?></span></b></div>
+		<div class="col-sm-2 text-left lead"><?php htmlout($awayTeam); ?></div>
+		<div class="col-sm-2 text-center"><img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png"></div>
 	</div>
 	<!-- Layout for phones -->
 	<div class="row visible-xs text-left">

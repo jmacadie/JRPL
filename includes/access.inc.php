@@ -1,258 +1,481 @@
 <?php
 
-function userIsLoggedIn()
-{
+// Function to process logging in
+function userIsLoggedIn() {
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Log In
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    if (isset($_POST['action']) and $_POST['action'] === 'login')
-    {
-
-        if (!isset($_POST['email']) or $_POST['email'] == '')
-        {
+	
+	// Check request has been properly posted
+    if (isset($_POST['action']) && $_POST['action'] === 'login') {
+		
+		// Check the email has been posted & filled in
+        if (!isset($_POST['email']) || $_POST['email'] == '') {
             $GLOBALS['loginError'] = 'Please fill in e-mail address field';
-            return FALSE;
-        }
-
+            return false;
+		}
+		
+		// Hash the posted password
         $password = md5($_POST['password'] . 'jrp');
-        if (correctPassword($_POST['email'], $password))
-        {
+		
+		// Validate the email & (hashed) password combination
+        if (correctPassword($_POST['email'], $password)){
+			
+			// Correct log in details provided
+			// Load the user info into the session
 			setUserSessionInfo($_POST['email']);
-            return TRUE;
-        }
-        else
-        {
+			
+			// Set remember me cookie, if asked for
+			if (isset($_POST['remeberMe']) && $_POST['remeberMe'] === 'true') {
+				setRMCookie($_SESSION['userID']);
+			}
+			
+			// return success
+            return true;
+			
+        } else {
+			
+			// Wipe the session information
             unsetUserSessionInfo();
-
-            if (databaseContainsUser($_POST['email']))
-            {
+			
+			// Return error based on type of failure
+            if (databaseContainsUser($_POST['email'])) {
                 $GLOBALS['loginError'] = 'The password was incorrect';
-                return FALSE;
-            }
-            else
-            {
+                return false;
+            } else {
                 $GLOBALS['loginError'] = 'The specified email address does not exist';
-                return FALSE;
+                return false;
             }
         }
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Log Out
+    // Next check session for logged in status
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    if (isset($_POST['action']) and $_POST['action'] === 'logout')
-    {
-        unsetUserSessionInfo();
-        header('Location: .');
-        exit();
+    if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
+		// Check by re-validating the e-mail and (hashed) password
+        return correctPassword($_SESSION['email'], $_SESSION['password']);
     }
-
+	
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Finally check remember me cookie
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Update details
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	if (isset($_COOKIE['rmUserID']) && isset($_COOKIE['rmSeriesID']) && isset($_COOKIE['rmToken'])) {
+		
+		return  checkRMCookie();
+		
+    } else {
+		// if everything fails then the user is no logged in
+        return false;
+    }
+}
 
-    if (isset($_POST['action']) and $_POST['action'] === 'update')
-    {
+// Function to check remember me cookie
+function checkRMCookie() {
+	
+	// Check cookie data is properly set
+	if (isset($_COOKIE['rmUserID']) && isset($_COOKIE['rmSeriesID']) && isset($_COOKIE['rmToken'])) {
+	
+		// Get link to database
+		include 'db.inc.php';
+		
+		// Make data safe
+		$userID = mysqli_real_escape_string($link, $_COOKIE['rmUserID']);
+		$seriesID = mysqli_real_escape_string($link, $_COOKIE['rmSeriesID']);
+		$token = mysqli_real_escape_string($link, $_COOKIE['rmToken']);
+		
+		// Hash the token
+        $tokenh = md5($token . 'jrp');
+		
+		// Test if cookie is ok
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		// Write the SQL
+		$sql = "SELECT COUNT(*)
+				FROM `RememberMe` rm
+				WHERE rm.`UserID` = " . $userID . "
+					AND rm.`SeriesID` = " . $seriesID . "
+					AND rm.`token` = " . $tokenh . ";";
+		
+		// Run the SQL and process any error
+		$result = mysqli_query($link, $sql);
+		if (!$result) {
+			$error = 'Error selecting user details';
+			include 'error/index.php';
+			exit();
+		}
+		
+		// Check results of query and act accordingly
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		$row = mysqli_fetch_row($result);
+		if ($row[0] > 0) {
+		// Cookie matches
+			
+			// Create a new token
+			$token = round(mt_rand(0, 1000000000));
+			
+			// Hash the token to store in the DB
+			$tokenh = md5($token . 'jrp');
+			
+			//   Re-issue cookie with new token
+			setcookie('rmToken', $token, time() + (30 * 86400), '/'); // 30 days
+			
+			//   Update token on DB
+			// ~~~~~~~~~~~~~~~~~~~~~~~~~
+			
+			// Write the SQL
+			$sql = "UPDATE `RememberMe`
+					SET rm.`token` = " . $tokenh . "
+					WHERE rm.`UserID` = " . $userID . "
+						AND rm.`SeriesID` = " . $seriesID . ";"
+			
+			// Run the SQL and process any error
+			$result = mysqli_query($link, $sql);
+			if (!$result) {
+				$error = 'Error selecting user details';
+				include 'error/index.php';
+				exit();
+			}
+			
+			// Set return value for function to true
+			$out = true;
+			
+		} else {
+		// Cookie does not match
+			
+			// Check if userID & seriesID combo exists (i.e. just token was wrong)
+			
+			// Write the SQL
+			$sql = "SELECT COUNT(*)
+					FROM `RememberMe` rm
+					WHERE rm.`UserID` = " . $userID . "
+						AND rm.`SeriesID` = " . $seriesID . ";";
+			
+			// Run the SQL and process any error
+			$result = mysqli_query($link, $sql);
+			if (!$result) {
+				$error = 'Error selecting user details';
+				include 'error/index.php';
+				exit();
+			}
+			
+			if ($row[0] > 0) {
+			
+				// Delete all user's cookies from DB
+				// ~~~~~~~~~~~~~~~~~~~~~~~~~
+				
+				// Write the SQL
+				$sql = "DELETE FROM `RememberMe`
+						WHERE rm.`UserID` = " . $userID . ";"
+				
+				// Run the SQL and process any error
+				$result = mysqli_query($link, $sql);
+				if (!$result) {
+					$error = 'Error selecting user details';
+					include 'error/index.php';
+					exit();
+				}
+				
+				//TODO: should write back a warning about suspected cookie theft
+			}
+			
+			// Delete the cookies
+			setcookie('rmUserID', '', time() - 3600, '/');
+			setcookie('rmSeriesID', '', time() - 3600, '/');
+			setcookie('rmToken', '', time() - 3600, '/');
+			
+			// Unset session info
+			unsetUserSessionInfo();
+			
+			// Set return value for function to false
+			$out = false;
+		}
+		
+		// Free result set
+		mysqli_free_result($result);
 
+		// Close connection
+		mysqli_close($link);
+
+		// Pass back the result
+		return $out;
+	
+	} else {
+		return false;
+	}
+
+}
+
+// Function to set remember me cookies
+function setRMCookie($userID) {
+	
+	// Get link to database
+	include 'db.inc.php';
+	
+	// Make data safe
+    $userID = mysqli_real_escape_string($link, $userID);
+	
+	// Create new seriesID & token
+	$seriesID = round(mt_rand(0, 1000000000));
+	$token = round(mt_rand(0, 1000000000));
+	
+	// Hash the token to store in the DB
+	$tokenh = md5($token . 'jrp');
+	
+	// Write UserID, seriesID & token to DB
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Write the SQL
+	$sql = "INSERT INTO `RememberMe`
+				(`UserID`,`SeriesID`,`Token`)
+			VALUES
+				(" . $userID . ", " . $seriesID . ", " . $tokenh . ");"
+	
+	// Run the SQL and process any error
+	$result = mysqli_query($link, $sql);
+	if (!$result) {
+		$error = 'Error selecting user details';
+		include 'error/index.php';
+		$out = false;
+	} else {
+		// Set cookies with same values
+		setcookie('rmUserID', $userID, time() + (30 * 86400), '/'); // 30 days
+		setcookie('rmSeriesID', $seriesID, time() + (30 * 86400), '/'); // 30 days
+		setcookie('rmToken', $token, time() + (30 * 86400), '/'); // 30 days
+		$out = true;
+	}
+	
+	// Free result set
+    mysqli_free_result($result);
+	
+	// Close connection
+    mysqli_close($link);
+	
+	// Pass back the result
+	return $out;
+	
+}
+
+// Function to process updating details
+function updateDetails() {
+	
+	// Check request has been properly posted
+    if (isset($_POST['action']) and $_POST['action'] === 'update') {
+		
+		// Grab posted details
         if (isset($_POST['displayName'])) $displayName = $_POST['displayName'];
         if (isset($_POST['firstName'])) $firstName = $_POST['firstName'];
         if (isset($_POST['lastName'])) $lastName = $_POST['lastName'];
         if (isset($_POST['email'])) $email = $_POST['email'];
         if (isset($_POST['pwd'])) $password = $_POST['pwd'];
         if (isset($_POST['pwd2'])) $password2 = $_POST['pwd2'];
-
+		
+		// Start session and grab UserID from it
         session_start();
         if (isset($_SESSION['userID'])) $userID = $_SESSION['userID'];
-
-        if ($password <> $password2)
-        {
+		
+		// If the two passwords don't match then throw an error
+        if ($password <> $password2) {
             $GLOBALS['loginError'] = 'The passwords do not match';
-            return FALSE;
+            return false;
         }
-        
-        if ($password == '')
-        {
-            $updatePasswords=FALSE;
-        }
-        else
-        {
-            $updatePasswords=TRUE;
-        }
-
+		
+		// Set flag for whether we're updating passwords or not
+		// allows form to be posted with blanks for passwords and not hev them updated
+        $updatePasswords = ($password != '');
+		
+		// Hash the password
         $password = md5($password . 'jrp');
-
+		
+		// Open a link to the database
         include 'db.inc.php';
-
+		
+		// Make data safe
         $displayName = mysqli_real_escape_string($link, $displayName);
         $firstName = mysqli_real_escape_string($link, $firstName);
         $lastName = mysqli_real_escape_string($link, $lastName);
         $email = mysqli_real_escape_string($link, $email);
         $password = mysqli_real_escape_string($link, $password);
         $userID = mysqli_real_escape_string($link, $userID);
-
-        if ($updatePasswords)
-        {
+		
+		// Write the SQL command depending on whether we're updating the password or not
+        if ($updatePasswords) {
             $sql = "UPDATE `User`
-                    SET `DisplayName` = '$displayName',
-                        `FirstName` = '$firstName',
-                        `LastName` = '$lastName',
-                        `Email` = '$email',
-                        `Password` = '$password'
-                    WHERE `UserID`=$userID";
-        }
-        else
-        {
+                    SET `DisplayName` = '" . $displayName . "',
+                        `FirstName` = '" . $firstName . "',
+                        `LastName` = '" . $lastName . "',
+                        `Email` = '" . $email . "',
+                        `Password` = '" . $password . "'
+                    WHERE `UserID` = " . $userID . " ";
+        } else {
             $sql = "UPDATE `User`
-                    SET `DisplayName` = '$displayName',
-                        `FirstName` = '$firstName',
-                        `LastName` = '$lastName',
-                        `Email` = '$email'
-                    WHERE `UserID`=$userID";
+                    SET `DisplayName` = '" . $displayName . "',
+                        `FirstName` = '" . $firstName . "',
+                        `LastName` = '" . $lastName . "',
+                        `Email` = '" . $email . "'
+                    WHERE `UserID` = " . $userID . ";";
         }
-
+		
+		// Run the query and pass back the error on failure
         $result = mysqli_query($link, $sql);
-        if (!$result)
-        {
-            $error = 'Error updating details';
-            include 'error.html.php';
-            exit();
+        if (!$result) {
+            $GLOBALS['loginError'] = 'Error updating details';
+            return false;
         }
-
+		
+		// Load the user info into the session
         setUserSessionInfo($email);
 		
-		return TRUE;
+		return true;
 
     }
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Check logged in status
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-    if (isset($_SESSION['loggedIn']) and $_SESSION['loggedIn']==TRUE)
-    {
-
-        return correctPassword($_SESSION['email'], $_SESSION['password']);
-
-    }
-    else
-    {
-        return FALSE;
-    }
 }
 
-function correctPassword($email, $password)
-{
-    include 'db.inc.php';
-
+// Function to check email and (hashed) password combination exists in the database
+function correctPassword($email, $password) {
+    
+	// Get link to database
+	include 'db.inc.php';
+	
+	// Make data safe
     $email = mysqli_real_escape_string($link, $email);
     $password = mysqli_real_escape_string($link, $password);
-
+	
+	// Write the SQL
     $sql = "SELECT COUNT(*) FROM `User`
-            WHERE `Email`='$email' AND `Password`='$password'";
-    $result = mysqli_query($link, $sql);
-    if (!$result)
-    {
+            WHERE `Email` = '" . $email . "'
+				AND `Password` = '" . $password . "';";
+    
+	// Run the SQL and process any error
+	$result = mysqli_query($link, $sql);
+    if (!$result) {
         $error = 'Error searching for user password combination';
         include 'error/index.php';
         exit();
     }
-    $row = mysqli_fetch_array($result);
-
-    if ($row[0] > 0)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+	
+	// Read the result
+    $row = mysqli_fetch_row($result);
+    $out = ($row[0] > 0);
+	
+	// Free result set
+    mysqli_free_result($result);
+	
+	// Close connection
+    mysqli_close($link);
+	
+	// Pass back the result
+	return $out;
 }
 
-function databaseContainsUser($email)
-{
-    include 'db.inc.php';
-
+// Function to determine if the user is in the database
+function databaseContainsUser($email) {
+    
+	// Get link to database
+	include 'db.inc.php';
+	
+	// Make data safe
     $email = mysqli_real_escape_string($link, $email);
-
+	
+	// Write the SQL
     $sql = "SELECT COUNT(*) FROM `User`
-            WHERE `Email`='$email'";
-    $result = mysqli_query($link, $sql);
-    if (!$result)
-    {
+            WHERE `Email`='" . $email . "';";
+    
+	// Run the SQL and process any error
+	$result = mysqli_query($link, $sql);
+    if (!$result) {
         $error = 'Error searching for user';
         include 'error/index.php';
         exit();
     }
-    $row = mysqli_fetch_array($result);
-
-    if ($row[0] > 0)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+	
+	// Read the result 
+    $row = mysqli_fetch_row($result);
+    $out = ($row[0] > 0);
+	
+	// Free result set
+    mysqli_free_result($result);
+	
+	// Close connection
+    mysqli_close($link);
+	
+	// Pass back the result
+	return $out;
 }
 
-function userHasRole($role)
-{
-    include 'db.inc.php';
-
+// Function to determine if the current user has a particular role
+function userHasRole($role) {
+    
+	// Get link to database
+	include 'db.inc.php';
+	
+	// Make data safe
     $userID = mysqli_real_escape_string($link, $_SESSION['userID']);
     $role = mysqli_real_escape_string($link, $role);
-
-    $sql = "SELECT COUNT(*) FROM `User` u
-            INNER JOIN `UserRole` ur ON ur.UserID = u.`UserID`
-            INNER JOIN `Role` r ON r.RoleID = ur.`RoleID`
-            WHERE u.`UserID` = $userID AND r.`Name`='$role'";
-    $result = mysqli_query($link, $sql);
-    if (!$result)
-    {
+	
+	// Write the SQL
+    $sql = "SELECT COUNT(*)
+			FROM `User` u
+				INNER JOIN `UserRole` ur ON ur.UserID = u.`UserID`
+				INNER JOIN `Role` r ON r.RoleID = ur.`RoleID`
+            WHERE u.`UserID` = " . $userID . "
+				AND r.`Name` = '" . $role. "';";
+    
+	// Run the SQL and process any error
+	$result = mysqli_query($link, $sql);
+    if (!$result) {
         $error = 'Error searching for user roles';
         include 'error/index.php';
         exit();
     }
-    $row = mysqli_fetch_array($result);
-
-    if ($row[0] > 0)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+	
+	// Read the result 
+    $row = mysqli_fetch_row($result);
+    $out = ($row[0] > 0);
+	
+	// Free result set
+    mysqli_free_result($result);
+	
+	// Close connection
+    mysqli_close($link);
+	
+	// Pass back the result
+	return $out;
 }
 
-function setUserSessionInfo($email)
-{
-    include 'db.inc.php';
+// Function to set session variables based on user info that is in the database
+function setUserSessionInfo($email) {
+    
+	// Get link to database
+	include 'db.inc.php';
 	
-    // Make e-mail string safe
+    // Make data safe
     $email = mysqli_real_escape_string($link, $email);
 
     // Get all fields except role
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Write the SQL
     $sql = "SELECT `UserID`,`Password`,`FirstName`,`LastName`,`DisplayName`
             FROM `User` u
-            WHERE u.`Email` = '".$email."'
-            LIMIT 1";
-
+            WHERE u.`Email` = '" . $email . "'
+            LIMIT 1;";
+	
+	// Run the SQL and process any error
     $result = mysqli_query($link, $sql);
-    if (!$result)
-    {
+    if (!$result) {
         $error = 'Error selecting user details';
         include 'error/index.php';
         exit();
     }
-    $row = mysqli_fetch_array($result);
+    $row = mysqli_fetch_assoc($result);
 	
     // Set session variables
     session_start();
-    $_SESSION['loggedIn'] = TRUE;
+    $_SESSION['loggedIn'] = true;
     $_SESSION['email'] = $email;
     $_SESSION['userID'] = $row['UserID'];
     $_SESSION['password'] = $row['Password'];
@@ -261,34 +484,37 @@ function setUserSessionInfo($email)
     $_SESSION['displayName'] = $row['DisplayName'];
 	
     // Get admin role
-    $userID = $row['UserID'];
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Write the SQL
     $sql = "SELECT COUNT(*) FROM `User` u
             INNER JOIN `UserRole` ur ON ur.`UserID` = u.`UserID`
             INNER JOIN `Role` r ON r.`RoleID` = ur.`RoleID`
-            WHERE u.`UserID` = ".$userID." AND r.`Role`='Admin'";
+            WHERE u.`UserID` = " . $_SESSION['userID'] . " AND r.`Role`='Admin'";
 	
+	// Run the SQL and process any error
     $result = mysqli_query($link, $sql);
-    if (!$result)
-    {
+    if (!$result) {
         $error = 'Error selecting user roles';
         include 'error/index.php';
         exit();
     }
-    $row = mysqli_fetch_array($result);
-
-    if ($row[0] > 0)
-    {
-        $_SESSION['isAdmin'] = TRUE;
-    }
-    else
-    {
-        $_SESSION['isAdmin'] = FALSE;
-    }
+	
+	// Set the session variable based on the result
+    $row = mysqli_fetch_row($result);
+    $_SESSION['isAdmin'] = ($row[0] > 0);
+	
+	// Free result set
+    mysqli_free_result($result);
+	
+	// Close connection
+    mysqli_close($link);
 
 }
 
-function unsetUserSessionInfo()
-{
+// Unset all the session info when a user logs off or has wrong 
+// log in credentials
+function unsetUserSessionInfo() {
     session_start();
     //unset($_SESSION['loggedIn']);
     $_SESSION['loggedIn'] = FALSE;

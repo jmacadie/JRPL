@@ -21,11 +21,12 @@ $(document).ready(function() {
 function doLogIn() {
 
     // Send request
-    $.post("login.php",
+    $.post("../includes/login.php",
 
         {action: "login",
             email: $("#logInEmail").val(),
-            password: $("#logInPassword").val()},
+            password: $("#logInPassword").val(),
+			rememberMe: $("#logInRemeberMe").is(':checked')},
 
         function(xml) {
             var result;
@@ -48,7 +49,7 @@ function doLogIn() {
 				// Remove enter key over-ride
                 $(document).off('keydown');
 				
-				// Load home page once done
+				// Load details page once done
                 location="http://julianrimet.com/details";
 
             }

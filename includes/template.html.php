@@ -80,6 +80,10 @@
 					<?php echo($tab == 'rules' ?
 						'<li class="active"><a href="./">Rules</a></li>' :
 						'<li><a href="'.($tab == 'home' ? '' : '../').'rules/">Rules</a></li>'); ?>
+					<?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true) {
+						echo($tab == 'admin' ?
+							'<li class="active"><a href="./">Admin</a></li>' :
+							'<li><a href="'.($tab == 'home' ? '' : '../').'admin/">Admin</a></li>'); } ?>
 				</ul>
 				<?php if (!isset($_SESSION['loggedIn']) or $_SESSION['loggedIn'] == FALSE): ?>
 					<ul class="nav navbar-nav navbar-right">
