@@ -27,7 +27,7 @@ function userIsLoggedIn() {
 			setUserSessionInfo($_POST['email']);
 			
 			// Set remember me cookie, if asked for
-			if (isset($_POST['remeberMe']) && $_POST['remeberMe'] === 'true') {
+			if (isset($_POST['rememberMe']) && $_POST['rememberMe'] === 'true') {
 				setRMCookie($_SESSION['userID']);
 			}
 			
@@ -96,14 +96,17 @@ function checkRMCookie() {
 				FROM `RememberMe`
 				WHERE `UserID` = " . $userID . "
 					AND `SeriesID` = " . $seriesID . "
-					AND `Token` = " . $tokenh . ";";
+					AND `Token` = '" . $tokenh . "';";
 		
 		// Run the SQL and process any error
 		$result = mysqli_query($link, $sql);
 		if (!$result) {
-			$error = 'Error selecting user details';
-			include 'error/index.php';
-			exit();
+			$error = 'Error finding count of existing cookies: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+			
+			header('Content-type: application/json');
+			$arr = array('result' => 'No', 'message' => $error);
+			echo json_encode($arr);
+			die();
 		}
 		
 		// Check results of query and act accordingly
@@ -119,26 +122,34 @@ function checkRMCookie() {
 			// Hash the token to store in the DB
 			$tokenh = md5($token . 'jrp');
 			
-			//   Re-issue cookie with new token
-			setcookie('rmToken', $token, time() + (30 * 86400), '/'); // 30 days
-			
 			//   Update token on DB
 			// ~~~~~~~~~~~~~~~~~~~~~~~~~
 			
 			// Write the SQL
 			$sql = "UPDATE `RememberMe`
-					SET `Token` = " . $tokenh . ",
+					SET `Token` = '" . $tokenh . "',
 						`DateAdded` = NOW()
 					WHERE `UserID` = " . $userID . "
-						AND `SeriesID` = " . $seriesID . ";"
+						AND `SeriesID` = " . $seriesID . ";";
 			
 			// Run the SQL and process any error
 			$result = mysqli_query($link, $sql);
 			if (!$result) {
-				$error = 'Error selecting user details';
-				include 'error/index.php';
-				exit();
+				$error = 'Error updating token for cookie: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+				
+				header('Content-type: application/json');
+				$arr = array('result' => 'No', 'message' => $error);
+				echo json_encode($arr);
+				die();
 			}
+			
+			//   Re-issue cookies with new token
+			setcookie('rmUserID', $userID, time() + (30 * 86400), '/'); // 30 days
+			setcookie('rmSeriesID', $seriesID, time() + (30 * 86400), '/'); // 30 days
+			setcookie('rmToken', $token, time() + (30 * 86400), '/'); // 30 days
+			
+			// Load the user info into the session
+			setUserSessionInfo('', $userID);
 			
 			// Set return value for function to true
 			$out = true;
@@ -157,9 +168,12 @@ function checkRMCookie() {
 			// Run the SQL and process any error
 			$result = mysqli_query($link, $sql);
 			if (!$result) {
-				$error = 'Error selecting user details';
-				include 'error/index.php';
-				exit();
+				$error = 'Error finding count of existing cookies with non-matching tokens: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+				
+				header('Content-type: application/json');
+				$arr = array('result' => 'No', 'message' => $error);
+				echo json_encode($arr);
+				die();
 			}
 			
 			if ($row[0] > 0) {
@@ -169,23 +183,21 @@ function checkRMCookie() {
 				
 				// Write the SQL
 				$sql = "DELETE FROM `RememberMe`
-						WHERE `UserID` = " . $userID . ";"
+						WHERE `UserID` = " . $userID . ";";
 				
 				// Run the SQL and process any error
 				$result = mysqli_query($link, $sql);
 				if (!$result) {
-					$error = 'Error selecting user details';
-					include 'error/index.php';
-					exit();
+					$error = 'Error deleting existing cookies: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+					
+					header('Content-type: application/json');
+					$arr = array('result' => 'No', 'message' => $error);
+					echo json_encode($arr);
+					die();
 				}
 				
 				//TODO: should write back a warning about suspected cookie theft
 			}
-			
-			// Delete the cookies
-			setcookie('rmUserID', '', time() - 3600, '/');
-			setcookie('rmSeriesID', '', time() - 3600, '/');
-			setcookie('rmToken', '', time() - 3600, '/');
 			
 			// Unset session info
 			unsetUserSessionInfo();
@@ -193,9 +205,6 @@ function checkRMCookie() {
 			// Set return value for function to false
 			$out = false;
 		}
-		
-		// Free result set
-		mysqli_free_result($result);
 
 		// Close connection
 		mysqli_close($link);
@@ -232,14 +241,17 @@ function setRMCookie($userID) {
 	$sql = "INSERT INTO `RememberMe`
 				(`UserID`,`SeriesID`,`Token`,`DateAdded`)
 			VALUES
-				(" . $userID . ", " . $seriesID . ", " . $tokenh . ", NOW());"
+				(" . $userID . ", " . $seriesID . ", '" . $tokenh . "', NOW());";
 	
 	// Run the SQL and process any error
 	$result = mysqli_query($link, $sql);
 	if (!$result) {
-		$error = 'Error selecting user details';
-		include 'error/index.php';
-		$out = false;
+		$error = 'Error adding new cookie details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
 	} else {
 		// Set cookies with same values
 		setcookie('rmUserID', $userID, time() + (30 * 86400), '/'); // 30 days
@@ -247,9 +259,6 @@ function setRMCookie($userID) {
 		setcookie('rmToken', $token, time() + (30 * 86400), '/'); // 30 days
 		$out = true;
 	}
-	
-	// Free result set
-    mysqli_free_result($result);
 	
 	// Close connection
     mysqli_close($link);
@@ -322,7 +331,7 @@ function updateDetails() {
 		// Run the query and pass back the error on failure
         $result = mysqli_query($link, $sql);
         if (!$result) {
-            $GLOBALS['loginError'] = 'Error updating details';
+            $GLOBALS['loginError'] = 'Error updating details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
             return false;
         }
 		
@@ -353,17 +362,17 @@ function correctPassword($email, $password) {
 	// Run the SQL and process any error
 	$result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = 'Error searching for user password combination';
-        include 'error/index.php';
-        exit();
+        $error = 'Error searching for user password combination: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
 	
 	// Read the result
     $row = mysqli_fetch_row($result);
     $out = ($row[0] > 0);
-	
-	// Free result set
-    mysqli_free_result($result);
 	
 	// Close connection
     mysqli_close($link);
@@ -388,17 +397,17 @@ function databaseContainsUser($email) {
 	// Run the SQL and process any error
 	$result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = 'Error searching for user';
-        include 'error/index.php';
-        exit();
+        $error = 'Error searching for user: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
 	
 	// Read the result 
     $row = mysqli_fetch_row($result);
     $out = ($row[0] > 0);
-	
-	// Free result set
-    mysqli_free_result($result);
 	
 	// Close connection
     mysqli_close($link);
@@ -428,17 +437,17 @@ function userHasRole($role) {
 	// Run the SQL and process any error
 	$result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = 'Error searching for user roles';
-        include 'error/index.php';
-        exit();
+        $error = 'Error searching for user roles: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
 	
 	// Read the result 
     $row = mysqli_fetch_row($result);
     $out = ($row[0] > 0);
-	
-	// Free result set
-    mysqli_free_result($result);
 	
 	// Close connection
     mysqli_close($link);
@@ -448,7 +457,7 @@ function userHasRole($role) {
 }
 
 // Function to set session variables based on user info that is in the database
-function setUserSessionInfo($email) {
+function setUserSessionInfo($email = '', $id = 0) {
     
 	// Get link to database
 	include 'db.inc.php';
@@ -459,25 +468,36 @@ function setUserSessionInfo($email) {
     // Get all fields except role
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	if ($email == '') {
 	// Write the SQL
-    $sql = "SELECT `UserID`,`Password`,`FirstName`,`LastName`,`DisplayName`
-            FROM `User` u
-            WHERE u.`Email` = '" . $email . "'
-            LIMIT 1;";
+		$sql = "SELECT `UserID`,`Email`,`Password`,`FirstName`,`LastName`,`DisplayName`
+				FROM `User` u
+				WHERE u.`UserID` = " . $id . "
+				LIMIT 1;";
+	} else {
+		$sql = "SELECT `UserID`,`Email`,`Password`,`FirstName`,`LastName`,`DisplayName`
+				FROM `User` u
+				WHERE u.`Email` = '" . $email . "'
+				LIMIT 1;";
+
+	}
 	
 	// Run the SQL and process any error
     $result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = 'Error selecting user details';
-        include 'error/index.php';
-        exit();
+        $error = 'Error selecting user details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
     $row = mysqli_fetch_assoc($result);
 	
     // Set session variables
     session_start();
     $_SESSION['loggedIn'] = true;
-    $_SESSION['email'] = $email;
+    $_SESSION['email'] = $row['email'];
     $_SESSION['userID'] = $row['UserID'];
     $_SESSION['password'] = $row['Password'];
     $_SESSION['firstName'] = $row['FirstName'];
@@ -496,17 +516,17 @@ function setUserSessionInfo($email) {
 	// Run the SQL and process any error
     $result = mysqli_query($link, $sql);
     if (!$result) {
-        $error = 'Error selecting user roles';
-        include 'error/index.php';
-        exit();
+        $error = 'Error selecting user roles: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
     }
 	
 	// Set the session variable based on the result
     $row = mysqli_fetch_row($result);
     $_SESSION['isAdmin'] = ($row[0] > 0);
-	
-	// Free result set
-    mysqli_free_result($result);
 	
 	// Close connection
     mysqli_close($link);
@@ -516,6 +536,7 @@ function setUserSessionInfo($email) {
 // Unset all the session info when a user logs off or has wrong 
 // log in credentials
 function unsetUserSessionInfo() {
+
     session_start();
     //unset($_SESSION['loggedIn']);
     $_SESSION['loggedIn'] = FALSE;
@@ -526,6 +547,11 @@ function unsetUserSessionInfo() {
     unset($_SESSION['lastName']);
     unset($_SESSION['displayName']);
     unset($_SESSION['isAdmin']);
+	
+	// Delete the cookies
+	setcookie('rmUserID', '', time() - 3600, '/');
+	setcookie('rmSeriesID', '', time() - 3600, '/');
+	setcookie('rmToken', '', time() - 3600, '/');
 }
 
 ?>

@@ -12,12 +12,12 @@ if (isset($_POST['action']) && $_POST['action'] === 'login') {
 	if (userIsLoggedIn()) {
 		// prepare success xml data
 		header('Content-type: application/json');
-		$arr = array('logInResult' => 'Yes', 'logInMessage' => '');
+		$arr = array('result' => 'Yes', 'message' => '');
 		echo json_encode($arr);
 	} else {
 		// prepare failure xml data
 		header('Content-type: application/json');
-		$arr = array('logInResult' => 'No', 'logInMessage' => $GLOBALS['loginError']);
+		$arr = array('result' => 'No', 'message' => $GLOBALS['loginError']);
 		echo json_encode($arr);
 	}
 
@@ -38,12 +38,12 @@ if (isset($_POST['action']) && $_POST['action'] === 'update') {
 	if (updateDetails()) {
 		// prepare success xml data
 		header('Content-type: application/json');
-		$arr = array('logInResult' => 'Yes', 'logInMessage' => '');
+		$arr = array('result' => 'Yes', 'message' => '');
 		echo json_encode($arr);
 	} else {
 		// prepare failure xml data
 		header('Content-type: application/json');
-		$arr = array('logInResult' => 'No', 'logInMessage' => $GLOBALS['loginError']);
+		$arr = array('result' => 'No', 'message' => $GLOBALS['loginError']);
 		echo json_encode($arr);
 	}
 

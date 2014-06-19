@@ -33,21 +33,21 @@ function doUpdate() {
 
         function(xml) {
             var result;
-            if (xml.logInResult == "No") {
+            if (xml.result == "No") {
 
                 // Build HTML for error message
                 result = [
                     '<div class="alert alert-danger alert-dismissable">',
 					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
                     '<h4>Update Error</h4>',
-                    xml.logInMessage,
+                    xml.message,
                     '</div>',
                 ];
 
                 // Output error message to page
                 $("#updateMessage").html(result.join(''));
 
-            } else if (xml.logInResult == "Yes") {
+            } else if (xml.result == "Yes") {
 				
 				// Build HTML for return message
                 result = [

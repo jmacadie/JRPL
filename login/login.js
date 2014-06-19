@@ -30,21 +30,21 @@ function doLogIn() {
 
         function(xml) {
             var result;
-            if (xml.logInResult == "No") {
+            if (xml.result == "No") {
 
                 // Build HTML for error message
                 result = [
                     '<div class="alert alert-danger alert-dismissable">',
 					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
                     '<h4>Log In Error</h4>',
-                    xml.logInMessage,
+                    xml.message,
                     '</div>',
                 ];
 
                 // Output error message to modal form
                 $("#logInMessage").html(result.join(''));
 
-            } else if (xml.logInResult == "Yes") {
+            } else if (xml.result == "Yes") {
 				
 				// Remove enter key over-ride
                 $(document).off('keydown');
