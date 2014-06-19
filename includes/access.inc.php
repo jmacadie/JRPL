@@ -464,6 +464,7 @@ function setUserSessionInfo($email = '', $id = 0) {
 	
     // Make data safe
     $email = mysqli_real_escape_string($link, $email);
+	$id = mysqli_real_escape_string($link, $id);
 
     // Get all fields except role
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -497,7 +498,7 @@ function setUserSessionInfo($email = '', $id = 0) {
     // Set session variables
     session_start();
     $_SESSION['loggedIn'] = true;
-    $_SESSION['email'] = $row['email'];
+    $_SESSION['email'] = $row['Email'];
     $_SESSION['userID'] = $row['UserID'];
     $_SESSION['password'] = $row['Password'];
     $_SESSION['firstName'] = $row['FirstName'];
@@ -508,9 +509,10 @@ function setUserSessionInfo($email = '', $id = 0) {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	// Write the SQL
-    $sql = "SELECT COUNT(*) FROM `User` u
-            INNER JOIN `UserRole` ur ON ur.`UserID` = u.`UserID`
-            INNER JOIN `Role` r ON r.`RoleID` = ur.`RoleID`
+    $sql = "SELECT COUNT(*)
+			FROM `User` u
+				INNER JOIN `UserRole` ur ON ur.`UserID` = u.`UserID`
+				INNER JOIN `Role` r ON r.`RoleID` = ur.`RoleID`
             WHERE u.`UserID` = " . $_SESSION['userID'] . " AND r.`Role`='Admin'";
 	
 	// Run the SQL and process any error
