@@ -213,16 +213,27 @@ function processMatchesReturn (data) {
 			
 			// Row for prediction, if logged in
 			if (data.loggedIn == 1) {
-				result.push('<div class="row"><div class="col-xs-12 text-left">');
+				result.push('<div class="row">');
 				if (entry['HomeTeamPrediction'] === null) {
+					result.push('<div class="col-xs-12 text-left">');
 					result.push('<i>Not yet predicted</i>');
 				} else {
+					result.push('<div class="col-xs-2 text-left"><i>Predicted:</i></div>'); // Head up prediction row
+					result.push('<div class="col-xs-2 visible-xs text-right">' + entry['HomeTeamS'] + '</div>'); // Short name for phones
+					result.push('<div class="col-sm-2 hidden-xs text-right">' + entry['HomeTeam'] + '</div>'); // Full name for tablets & desktops
+					result.push('<div class="col-xs-1 text-center>' + entry['HomeTeamPrediction'] + '</div>'); // Score
+					result.push('<div class="col-xs-2 text-center">-</div>'); // Divider
+					result.push('<div class="col-xs-1 text-center">' + entry['AwayTeamPrediction'] + '</div>'); // Score
+					result.push('<div class="col-sm-4 hidden-xs text-left">' + entry['AwayTeam'] + '</div>'); // Full name for tablets & desktops
+					result.push('<div class="col-xs-4 visible-xs text-left">' + entry['AwayTeamS'] + '</div>');  // Short name for phones
+					result.push('</div>');
+					result.push('<div class="row"><div class="col-xs-12 text-center">');
 					if (entry['HomeTeamPrediction'] > entry['AwayTeamPrediction']) {
-						result.push('Predicted: <b>' + entry['HomeTeam'] + ' Win</b> ' + entry['HomeTeamPrediction'] + ' - ' + entry['AwayTeamPrediction']);
+						result.push('<b>' + entry['HomeTeam'] + ' Win</b>');
 					} else if (entry['HomeTeamPrediction'] < entry['AwayTeamPrediction']) {
-						result.push('Predicted: <b>' + entry['AwayTeam'] + ' Win</b> ' + entry['AwayTeamPrediction'] + ' - ' + entry['HomeTeamPrediction']);
+						result.push('<b>' + entry['AwayTeam'] + ' Win</b>');
 					} else {
-						result.push('Predicted: <b>Draw</b> ' + entry['HomeTeamPrediction'] + ' - ' + entry['AwayTeamPrediction']);
+						result.push('<b>Draw</b>');
 					}
 				}
 				result.push('</div></div>');
