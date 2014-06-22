@@ -73,21 +73,18 @@ hr {
 /*
  * Fixtures page
  */
- 
- .flag {
-	border: 1px solid #c7c6c6;
- }
- 
-.matchRow a,
-.matchRow a * {
-  text-decoration: none;
-  color: #000;
-}
 
+.flag {
+	border: 1px solid #c7c6c6;
+}
+.matchRow a .row,
+.matchRow a .row * {
+	text-decoration: none;
+	color: #000;
+}
 .matchRow  .col-xs-1{
 	padding: 0;
 }
-
 .matchRow {
 	background-color: #f2f2f4; /*#f7f7f9;*/
 	padding-top: 10px;
@@ -100,6 +97,11 @@ hr {
 	margin-right: 0;
 	margin-left: 0;
 }
+.matchRow  .prediction,
+.matchRow  a .prediction,
+.matchRow  a .prediction *{
+	background-color: #e8f2ff;
+}
 
 @media (min-width: 768px) {
 	.matchRow {
@@ -109,6 +111,10 @@ hr {
 	.matchRow  .row{
 		margin-right: -15px;
 		margin-left: -15px;
+	}
+	.matchRow  .prediction{
+		margin-right: 0;
+		margin-left: 0;
 	}
 }
 

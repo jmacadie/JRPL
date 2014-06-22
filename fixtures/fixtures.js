@@ -86,6 +86,8 @@ function getMatchesData() {
 
 }
 
+// Function to covert binary number to hex
+// used to encode the ring variables as hex is more efficient pass around than a 64 length binary string
 function bin2hex(s) {
     var i, k, part, accum, ret = '';
     for (i = s.length-1; i >= 3; i -= 4) {
@@ -213,21 +215,15 @@ function processMatchesReturn (data) {
 			
 			// Row for prediction, if logged in
 			if (data.loggedIn == 1) {
-				result.push('<div class="row">');
+				result.push('<div class="row prediction">');
 				if (entry['HomeTeamPrediction'] === null) {
 					result.push('<div class="col-xs-12 text-left">');
 					result.push('<i>Not yet predicted</i>');
-				} else {
-					result.push('<div class="col-xs-2 text-left"><i>Predicted:</i></div>'); // Head up prediction row
-					result.push('<div class="col-xs-2 visible-xs text-right">' + entry['HomeTeamS'] + '</div>'); // Short name for phones
-					result.push('<div class="col-sm-2 hidden-xs text-right">' + entry['HomeTeam'] + '</div>'); // Full name for tablets & desktops
-					result.push('<div class="col-xs-1 text-center>' + entry['HomeTeamPrediction'] + '</div>'); // Score
-					result.push('<div class="col-xs-2 text-center">-</div>'); // Divider
-					result.push('<div class="col-xs-1 text-center">' + entry['AwayTeamPrediction'] + '</div>'); // Score
-					result.push('<div class="col-sm-4 hidden-xs text-left">' + entry['AwayTeam'] + '</div>'); // Full name for tablets & desktops
-					result.push('<div class="col-xs-4 visible-xs text-left">' + entry['AwayTeamS'] + '</div>');  // Short name for phones
 					result.push('</div>');
-					result.push('<div class="row"><div class="col-xs-12 text-center">');
+				} else {
+					// Prediction for phones
+					result.push('<div class="col-xs-3 visible-xs text-left"><i>Predicted:</i></div>');
+					result.push('<div class="col-xs-6 visible-xs text-center">');
 					if (entry['HomeTeamPrediction'] > entry['AwayTeamPrediction']) {
 						result.push('<b>' + entry['HomeTeam'] + ' Win</b>');
 					} else if (entry['HomeTeamPrediction'] < entry['AwayTeamPrediction']) {
@@ -235,8 +231,25 @@ function processMatchesReturn (data) {
 					} else {
 						result.push('<b>Draw</b>');
 					}
+					result.push('</div>'); // Close prediction
+					// Prediction for tabets and desktops
+					result.push('<div class="col-sm-2 hidden-xs text-left"><i>Predicted:</i></div>'); // Head up prediction row
+					result.push('<div class="col-sm-8 hidden-xs text-center">'); // prediction
+					if (entry['HomeTeamPrediction'] > entry['AwayTeamPrediction']) {
+						result.push('<b>' + entry['HomeTeam'] + ' Win</b>');
+					} else if (entry['HomeTeamPrediction'] < entry['AwayTeamPrediction']) {
+						result.push('<b>' + entry['AwayTeam'] + ' Win</b>');
+					} else {
+						result.push('<b>Draw</b>');
+					}
+					result.push('</div>'); // Close prediction
+					result.push('</div>'); // Close row
+					result.push('<div class="row prediction">');
+					result.push('<div class="col-xs-1 col-xs-offset-4 text-center">' + entry['HomeTeamPrediction'] + '</div>'); // Score
+					result.push('<div class="col-xs-2 text-center">-</div>'); // Divider
+					result.push('<div class="col-xs-1 text-center">' + entry['AwayTeamPrediction'] + '</div>'); // Score
 				}
-				result.push('</div></div>');
+				result.push('</div>');
 			}
 			
 			// Row for locked down status
