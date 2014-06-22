@@ -180,10 +180,10 @@ function processMatchesReturn (data) {
 			if ((entryIndex === 0) || (entry['Date'] != date)) {
 				date = entry['Date'];
 				result.push('<h3>' + date + '</h3>');
-			}
-			
+				time = entry['KickOff'];
+				result.push('<h4>' + time.slice(0,5) + '</h4>');
+			} else if (entry['KickOff'] != time) {
 			// Display Time Header if the first Match or kick-off has changed
-			if ((entryIndex === 0) || (entry['KickOff'] != time)) {
 				time = entry['KickOff'];
 				result.push('<h4>' + time.slice(0,5) + '</h4>');
 			}
@@ -250,13 +250,6 @@ function processMatchesReturn (data) {
 					result.push('<div class="col-xs-1 text-center">' + entry['AwayTeamPrediction'] + '</div>'); // Score
 				}
 				result.push('</div>');
-			}
-			
-			// Row for locked down status
-			if (entry['LockedDown'] == 1) {
-				result.push('<div class="row"><div class="col-xs-12 text-left">');
-				result.push('Locked Down');
-				result.push('</div></div>');
 			}
 			
 			// Close link and wrapping div
