@@ -128,7 +128,7 @@ while ($row = mysqli_fetch_array($result))
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - write predictions table
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	$predictions .= '<!-- content -->' . chr(13);
+	$predictions = '<!-- content -->' . chr(13);
 	$predictions .= '<tr>' . chr(13);
 	$predictions .= '<td st-content="fulltext-content">' . chr(13);
 	$predictions .= '<table border="0" width="100%" cellpadding="4" cellspacing="0" border="0" align="left" class="devicewidth">' . chr(13);
