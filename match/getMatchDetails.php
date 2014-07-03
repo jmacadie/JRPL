@@ -23,10 +23,10 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 				m.`MatchID`,
 				DATE_FORMAT(m.`Date`, '%W, %D %M %Y') AS `Date`,
 				m.`KickOff`,
-				ht.`Name` AS `HomeTeam`,
-				at.`Name` AS `AwayTeam`,
-				ht.`ShortName` AS `HomeTeamS`,
-				at.`ShortName` AS `AwayTeamS`,
+				IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`,
+				IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
+				IFNULL(ht.`ShortName`,'') AS `HomeTeamS`,
+				IFNULL(at.`ShortName`,'') AS `AwayTeamS`,
 				m.`HomeTeamGoals`,
 				m.`AwayTeamGoals`,
 				CONCAT(v.`Name`, ', ', v.`City`) AS `Venue`,
@@ -39,10 +39,14 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 				END AS `LockedDown`
 
 			FROM `Match` m
-				INNER JOIN `Team` ht ON
-					ht.`TeamID` = m.`HomeTeamID`
-				INNER JOIN `Team` at ON
-					at.`TeamID` = m.`AwayTeamID`
+				INNER JOIN `TournamentRole` trht ON
+					trht.`TournamentRoleID` = m.`HomeTeamID`
+				LEFT JOIN `Team` ht ON
+					ht.`TeamID` = trht.`TeamID`
+				INNER JOIN `TournamentRole` trat ON
+					trat.`TournamentRoleID` = m.`AwayTeamID`
+				LEFT JOIN `Team` at ON
+					at.`TeamID` = trat.`TeamID`
 				INNER JOIN `Venue` v ON
 					v.`VenueID` = m.`VenueID`
 				INNER JOIN `Broadcaster` b ON
@@ -88,8 +92,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 		// Query to pull match data from DB
 		$sql = "SELECT
 					mu.`DisplayName`,
-					ht.`Name` AS `HomeTeam`,
-					at.`Name` AS `AwayTeam`,
+					IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`,
+					IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
 					IFNULL(p.`HomeTeamGoals`,'No prediction') AS `HomeTeamPrediction`,
 					IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamPrediction`,
 					po.`TotalPoints`
@@ -102,10 +106,14 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && ($_GET['id'] > 0))
 					LEFT JOIN `Prediction` p ON
 						p.`UserID` = mu.`UserID`
 						AND p.`MatchID` = mu.`MatchID`
+					INNER JOIN `TournamentRole` trht ON
+						trht.`TournamentRoleID` = mu.`HomeTeamID`
 					LEFT JOIN `Team` ht ON
-						ht.`TeamID` = mu.`HomeTeamID`
+						ht.`TeamID` = trht.`TeamID`
+					INNER JOIN `TournamentRole` trat ON
+						trat.`TournamentRoleID` = mu.`AwayTeamID`
 					LEFT JOIN `Team` at ON
-						at.`TeamID` = mu.`AwayTeamID`
+						at.`TeamID` = trat.`TeamID`
 					LEFT JOIN `Points` po ON
 						po.`MatchID` = p.`MatchID`
 						AND po.`UserID` = p.`UserID`

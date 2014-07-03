@@ -16,14 +16,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/calcMrMen.php';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $sql = "SELECT
 			m.`MatchID`,
-			ht.`Name` AS `HomeTeam`,
-			ht.`ShortName` AS `HomeTeamS`,
-			at.`Name` AS `AwayTeam`,
-			at.`ShortName` AS `AwayTeamS`
+			IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`,
+			IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
+			IFNULL(ht.`ShortName`,'') AS `HomeTeamS`,
+			IFNULL(at.`ShortName`,'') AS `AwayTeamS`
         FROM `Match` m
 			INNER JOIN `Emails` e ON e.`MatchID` = m.`MatchID`
-			INNER JOIN `Team` ht ON ht.`TeamID` = m.`HomeTeamID`
-			INNER JOIN `Team` at ON at.`TeamID` = m.`AwayTeamID`
+			INNER JOIN `TournamentRole` trht ON trht.`TournamentRoleID` = m.`HomeTeamID`
+			LEFT JOIN `Team` ht ON ht.`TeamID` = trht.`TeamID`
+			INNER JOIN `TournamentRole` trat ON trat.`TournamentRoleID` = m.`AwayTeamID`
+			LEFT JOIN `Team` at ON at.`TeamID` = trat.`TeamID`
 		WHERE
 			e.`PredictionsSent` = 0
 			AND DATE_ADD(NOW(), INTERVAL 30 MINUTE) > TIMESTAMP(m.`Date`, m.`KickOff`);";

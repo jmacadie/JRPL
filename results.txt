@@ -1,0 +1,8 @@
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'A')";
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'B')";
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'C')";
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'D')";
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'E')";
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'F')";
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'G')";
+./fixtures/getMatches.php:		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'H')";

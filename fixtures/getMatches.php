@@ -9,7 +9,7 @@ if (!isset($_SESSION)) session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Get data for Event Session table
+// Get data for selected fixtures
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
@@ -58,15 +58,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 	$firstFilter = true;
 	
 	// Query to pull match data from DB
-	// TODO: Change column names in predictions table to reference goals not points
 	$sql = "SELECT
 				m.`MatchID`,
 				DATE_FORMAT(m.`Date`, '%W, %D %M %Y') AS `Date`,
 				m.`KickOff`,
-				ht.`Name` AS `HomeTeam`,
-				at.`Name` AS `AwayTeam`,
-				ht.`ShortName` AS `HomeTeamS`,
-				at.`ShortName` AS `AwayTeamS`,
+				IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`,
+				IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
+				IFNULL(ht.`ShortName`,'') AS `HomeTeamS`,
+				IFNULL(at.`ShortName`,'') AS `AwayTeamS`,
 				m.`HomeTeamGoals`,
 				m.`AwayTeamGoals`,
 				p.`HomeTeamGoals` AS `HomeTeamPrediction`,
@@ -77,10 +76,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 				END AS `LockedDown`
 
 			FROM `Match` m
-				INNER JOIN `Team` ht ON
-					ht.`TeamID` = m.`HomeTeamID`
-				INNER JOIN `Team` at ON
-					at.`TeamID` = m.`AwayTeamID`
+				INNER JOIN `TournamentRole` trht ON
+					trht.`TournamentRoleID` = m.`HomeTeamID`
+				LEFT JOIN `Team` ht ON
+					ht.`TeamID` = trht.`TeamID`
+				INNER JOIN `TournamentRole` trat ON
+					trat.`TournamentRoleID` = m.`AwayTeamID`
+				LEFT JOIN `Team` at ON
+					at.`TeamID` = trat.`TeamID`
+				LEFT JOIN `Group` g ON
+					g.`GroupID` = trht.`FromGroupID`
 				INNER JOIN `Stage` s ON
 					s.`StageID` = m.`StageID`
 				LEFT JOIN `Prediction` p ON
@@ -95,7 +100,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'A')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'A')";
 	}
 	if ($groupB) {
 		if ($firstFilter) {
@@ -103,7 +108,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'B')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'B')";
 	}
 	if ($groupC) {
 		if ($firstFilter) {
@@ -111,7 +116,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'C')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'C')";
 	}
 	if ($groupD) {
 		if ($firstFilter) {
@@ -119,7 +124,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'D')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'D')";
 	}
 	if ($groupE) {
 		if ($firstFilter) {
@@ -127,7 +132,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'E')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'E')";
 	}
 	if ($groupF) {
 		if ($firstFilter) {
@@ -135,7 +140,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'F')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'F')";
 	}
 	if ($groupG) {
 		if ($firstFilter) {
@@ -143,7 +148,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'G')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'G')";
 	}
 	if ($groupH) {
 		if ($firstFilter) {
@@ -151,7 +156,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 		} else {
 			$sql .= " OR ";
 		}
-		$sql .= "(s.`Name` = 'Group Stages' AND ht.`Group` = 'H')";
+		$sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'H')";
 	}
 	if ($last16) {
 		if ($firstFilter) {

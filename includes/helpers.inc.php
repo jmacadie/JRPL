@@ -504,14 +504,16 @@ function getGraphData () {
 				WHERE cpmu2.`Points` > cpmu.`Points`
 					AND cpmu2.`MatchID` = cpmu.`MatchID`) AS `Rank`,
 				IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
-				CONCAT(ht.`Name`,' vs. ',`at`.`Name`) AS `Match`,
+				CONCAT(IFNULL(ht.`Name`,trht.`Name`),' vs. ',IFNULL(at.`Name`,trat.`Name`)) AS `Match`,
 				cpmu.*
 			
 			FROM `CumulativePointsByMatchUser` cpmu
 				INNER JOIN `Match` m ON m.`MatchID` = cpmu.`MatchID`
 				INNER JOIN `User` u ON u.`UserID` = cpmu.`UserID`
-				INNER JOIN `Team` ht ON ht.`TeamID` = m.`HomeTeamID`
-				INNER JOIN `Team` at ON at.`TeamID` = m.`AwayTeamID`
+				INNER JOIN `TournamentRole` trht ON trht.`TournamentRoleID` = m.`HomeTeamID`
+				LEFT JOIN `Team` ht ON ht.`TeamID` = trht.`TeamID`
+				INNER JOIN `TournamentRole` trat ON trat.`TournamentRoleID` = m.`AwayTeamID`
+				LEFT JOIN `Team` at ON at.`TeamID` = trat.`TeamID`
 			
 			ORDER BY cpmu.`MatchID` ASC, cpmu.`UserID` ASC";
 
