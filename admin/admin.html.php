@@ -45,6 +45,7 @@
 												<button type="submit" class="btn btn-primary">Update</button>
 											</div>
 										</form>
+										<div class="messageTR col-sm-12"></div>
 										</div>
 										<hr>
 									<?php endif; ?>
