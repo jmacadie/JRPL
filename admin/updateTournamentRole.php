@@ -56,8 +56,8 @@ if (!isset($_POST['action']) || !isset($_POST['tournamentRoleID']) || !isset($_P
 if ($_POST['action'] == 'updateTournamentRole') {
 		
 	// Assign values
-	$tournamentRoleID = (isset($_POST['tournamentRoleID']));
-	$teamID = (isset($_POST['teamID']));
+	$tournamentRoleID = $_POST['tournamentRoleID'];
+	$teamID = $_POST['teamID'];
 	
 	// Get DB connection
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -76,7 +76,7 @@ if ($_POST['action'] == 'updateTournamentRole') {
 		die();
 	}
 	
-	if (!int($teamID) || ($teamID < 1)) {
+	if (!int($teamID) || ($teamID < 0)) {
 		// build results into output JSON file
 		header('Content-type: application/json');
 		$arr = array(
@@ -88,7 +88,9 @@ if ($_POST['action'] == 'updateTournamentRole') {
 	
 	// UPDATE the match table with the posted data
 	$sql = "UPDATE `TournamentRole`
-			SET `TeamID` = " . $teamID . "
+			SET `TeamID` = ";
+	if ($teamID == 0) { $sql .= 'NULL'; } else { $sql .= $teamID; }
+	$sql .= "
 			WHERE `TournamentRoleID` = " . $tournamentRoleID . ";";
 	
 	// Run query and handle any failure
