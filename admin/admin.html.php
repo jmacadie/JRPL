@@ -29,7 +29,7 @@
 												<label for="tr-<?php echo($row['tournamentRoleID']); ?>"><?php echo($row['tournamentRole']); ?>:</label>
 												<?php $flag = ($row['teamS'] === NULL) ? 'tmp' : strtolower($row['teamS']); ?>
 												<img alt="<?php echo($row['team']); ?>" class="flag" src="../assets/img/flags/<?php echo($flag); ?>.png">
-												<?php echo($row['team']); ?>
+												<span class="tr-team"><?php echo($row['team']); ?></span>
 											</div>
 											<div class="col-sm-5 text-left">
 												<select class="form-control" id="tr-<?php echo($row['tournamentRoleID']); ?>">
@@ -45,8 +45,8 @@
 												<button type="submit" class="btn btn-primary">Update</button>
 											</div>
 										</form>
-										<div class="messageTR col-sm-12"></div>
 										</div>
+										<div class="row"><div class="messageTR col-sm-12"></div></div>
 										<hr>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -73,7 +73,7 @@
 												<label for="tr-<?php echo($row['tournamentRoleID']); ?>"><?php echo($row['tournamentRole']); ?>:</label>
 												<?php $flag = ($row['teamS'] === NULL) ? 'tmp' : strtolower($row['teamS']); ?>
 												<img alt="<?php echo($row['team']); ?>" class="flag" src="../assets/img/flags/<?php echo($flag); ?>.png">
-												<?php echo($row['team']); ?>
+												<span class="tr-team"><?php echo($row['team']); ?></span>
 											</div>
 											<div class="col-sm-5 text-left">
 												<select class="form-control" id="tr-<?php echo($row['tournamentRoleID']); ?>">
@@ -90,6 +90,7 @@
 											</div>
 										</form>
 										</div>
+										<div class="row"><div class="messageTR col-sm-12"></div></div>
 										<hr>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -116,7 +117,7 @@
 												<label for="tr-<?php echo($row['tournamentRoleID']); ?>"><?php echo($row['tournamentRole']); ?>:</label>
 												<?php $flag = ($row['teamS'] === NULL) ? 'tmp' : strtolower($row['teamS']); ?>
 												<img alt="<?php echo($row['team']); ?>" class="flag" src="../assets/img/flags/<?php echo($flag); ?>.png">
-												<?php echo($row['team']); ?>
+												<span class="tr-team"><?php echo($row['team']); ?></span>
 											</div>
 											<div class="col-sm-5 text-left">
 												<select class="form-control" id="tr-<?php echo($row['tournamentRoleID']); ?>">
@@ -133,6 +134,7 @@
 											</div>
 										</form>
 										</div>
+										<div class="row"><div class="messageTR col-sm-12"></div></div>
 										<hr>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -159,7 +161,7 @@
 												<label for="tr-<?php echo($row['tournamentRoleID']); ?>"><?php echo($row['tournamentRole']); ?>:</label>
 												<?php $flag = ($row['teamS'] === NULL) ? 'tmp' : strtolower($row['teamS']); ?>
 												<img alt="<?php echo($row['team']); ?>" class="flag" src="../assets/img/flags/<?php echo($flag); ?>.png">
-												<?php echo($row['team']); ?>
+												<span class="tr-team"><?php echo($row['team']); ?></span>
 											</div>
 											<div class="col-sm-5 text-left">
 												<select class="form-control" id="tr-<?php echo($row['tournamentRoleID']); ?>">
@@ -176,6 +178,7 @@
 											</div>
 										</form>
 										</div>
+										<div class="row"><div class="messageTR col-sm-12"></div></div>
 										<hr>
 									<?php endif; ?>
 								<?php endforeach; ?>
@@ -202,7 +205,7 @@
 												<label for="tr-<?php echo($row['tournamentRoleID']); ?>"><?php echo($row['tournamentRole']); ?>:</label>
 												<?php $flag = ($row['teamS'] === NULL) ? 'tmp' : strtolower($row['teamS']); ?>
 												<img alt="<?php echo($row['team']); ?>" class="flag" src="../assets/img/flags/<?php echo($flag); ?>.png">
-												<?php echo($row['team']); ?>
+												<span class="tr-team"><?php echo($row['team']); ?></span>
 											</div>
 											<div class="col-sm-5 text-left">
 												<select class="form-control" id="tr-<?php echo($row['tournamentRoleID']); ?>">
@@ -219,6 +222,7 @@
 											</div>
 										</form>
 										</div>
+										<div class="row"><div class="messageTR col-sm-12"></div></div>
 										<hr>
 									<?php endif; ?>
 								<?php endforeach; ?>

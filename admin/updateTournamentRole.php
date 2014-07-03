@@ -95,8 +95,7 @@ if ($_POST['action'] == 'updateTournamentRole') {
 	
 	// Run query and handle any failure
 	$result = mysqli_query($link, $sql);
-	if (!$result)
-	{
+	if (!$result) {
 		$error = 'Error updating tournament role: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
@@ -104,12 +103,44 @@ if ($_POST['action'] == 'updateTournamentRole') {
 		echo json_encode($arr);
 		die();
 	}
+	
+	// Get submitted team details back
+	if ($teamID != 0) {
+		
+		// Build the SQL
+		$sql = "SELECT `Name`, `ShortName`
+				FROM `Team`
+				WHERE `TeamID` = " . $teamID . ";";
+		
+		// Run query and handle any failure
+		$result = mysqli_query($link, $sql);
+		if (!$result) {
+			$error = 'Error getting team details back: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+			
+			header('Content-type: application/json');
+			$arr = array('result' => 'No', 'message' => $error);
+			echo json_encode($arr);
+			die();
+		}
 
+		// Store results
+		$row = mysqli_fetch_assoc($result);
+		$team = $row['Name'];
+		$teamS = $row['ShortName'];
+		
+	} else {
+		// Team was unset, return blanks
+		$team = '';
+		$teamS = '';
+	}
+	
 	// build results into output JSON file
 	header('Content-type: application/json');
 	$arr = array(
 		'result' => 'Yes'
-		,'message' => '');
+		,'message' => ''
+		,'team' => $team
+		,'teamS' => $teamS);
 	echo json_encode($arr);
 
 }

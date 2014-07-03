@@ -5,7 +5,7 @@ $(document).ready(function() {
 	$("#accordionTournamentRoles").find('button').click(function(e) {
 		e.preventDefault();
 		var $sel = $(this).closest('form').find('select');
-		updateTournamentRole($sel.attr('id').substring(3), $sel.val(), $sel.closest('.row').find('.message'));
+		updateTournamentRole($sel.attr('id').substring(3), $sel.val(), $sel.closest('div.row').next('div.row').find('.message'));
 	});
 
 });
@@ -59,7 +59,21 @@ function processUpdateTRReturn (data, $message) {
 				
 		// Output error message
 		$message.html(result.join(''));
-
+		
+	} else {
+		
+		var $row = $message.closest('div.row').prev('div.row');
+		
+		// Set the flag
+		var flag = (data.teamS == '') : 'tmp' ? data.teamS ;
+		$row.find('img.flag').attr('src') = '../assets/img/flags/' + flag + '.png';
+		
+		// Set the team name
+		$row.find('span.tr-team').html(data.team);
+		
+		// Close "submitting data" alert
+        $message.alert('close');
+		
 	}
 	
 }
