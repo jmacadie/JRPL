@@ -17,12 +17,14 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
 // Query to pull tournament role data from DB
 $sql = "SELECT
+			tr.`TournamentRoleID`,
 			s.`Name` AS `Stage`,
 			tr.`Name` AS `TournamentRole`,
 			t.`TeamID`,
-			t.`Team`,
-			IFNULL(gt.`TeamID`, IFNULL(ht.`TeamID`, at.`TeamID`)) AS `SelectTeamID`,
-			IFNULL(gt.`Name`, IFNULL(ht.`Name`, at.`Name`)) AS `SelectTeam`
+			t.`Name` AS `Team`,
+			t.`ShortName` AS `TeamS`,
+			IFNULL(gt.`TeamID`, st.`TeamID`) AS `SelectTeamID`,
+			IFNULL(gt.`Name`, st.`Name`) AS `SelectTeam`
 
 		FROM `TournamentRole` tr
 			
@@ -32,26 +34,25 @@ $sql = "SELECT
 			LEFT JOIN `Team` t ON
 				t.`TeamID` = tr.`TeamID`
 			
+			LEFT JOIN `TournamentRole` trg ON
+				trg.`FromGroupID` = tr.`FromGroupID` AND trg.`StageID` = 1
 			LEFT JOIN `Team` gt ON
-				gt.`GroupID` = tr.`GroupID`
+				gt.`TeamID` = trg.`TeamID`
 				
-			LEFT JOIN (SELECT `MatchID`,`HomeTeamID` AS `TeamID` FROM `Match`) htm ON
-				htm.`MatchID` = tr.`FromMatchID`
-			LEFT JOIN `TournamentRole` trht ON
-				trht.`TournamentRoleID` = htm.`TeamID`
-			LEFT JOIN `Team` ht ON
-				ht.`TeamID` = trht.`TeamID`
-			
-			LEFT JOIN (SELECT `MatchID`,`AwayTeamID` AS `TeamID` FROM `Match`) atm ON
-				atm.`MatchID` = tr.`FromMatchID`
-			LEFT JOIN `TournamentRole` trat ON
-				trat.`TournamentRoleID` = atm.`TeamID`
-			LEFT JOIN `Team` at ON
-				at.`TeamID` = trat.`TeamID`
+			LEFT JOIN
+				(SELECT `MatchID`,`HomeTeamID` AS `TeamID` FROM `Match` UNION ALL
+				SELECT `MatchID`,`AwayTeamID` AS `TeamID` FROM `Match`) m ON
+				m.`MatchID` = tr.`FromMatchID`
+			LEFT JOIN `TournamentRole` trt ON
+				trt.`TournamentRoleID` = m.`TeamID`
+			LEFT JOIN `Team` st ON
+				st.`TeamID` = trt.`TeamID`
 		
 		ORDER BY
 			s.`StageID` ASC,
-			tr.TournamentID ASC";
+			tr.`TournamentRoleID` ASC,
+			gt.`TeamID` ASC,
+			st.`TeamID` ASC";
 
 // Run query and handle any failure
 $result = mysqli_query($link, $sql);
@@ -80,17 +81,19 @@ while($row = mysqli_fetch_assoc($result)) {
 		}
 
 		// Reset tr variables
-		$tr == $row['TournamentRole'];
+		$tr = $row['TournamentRole'];
 		
 		// Reset temp output arrays
 		$arrTROut = array();
 		$arrTRTOut = array();
 
 		// Set up initial outputs for this Tournament Role
+		$arrTROut['tournamentRoleID'] = $row['TournamentRoleID'];
 		$arrTROut['tournamentRole'] = $tr;
 		$arrTROut['stage'] = $row['Stage'];
 		$arrTROut['teamID'] = $row['TeamID'];
 		$arrTROut['team'] = $row['Team'];
+		$arrTROut['teamS'] = $row['TeamS'];
 		 
 	}
 	
