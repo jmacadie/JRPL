@@ -28,48 +28,48 @@
 		<div class="col-sm-2 text-center"><img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png"></div>
 	</div>
 	<!-- Team origin details for tablets and bigger -->
-	<div class="row hidden-xs">
-		<div class="col-sm-5 text-left">
+	<div class="row hidden-xs text-left">
+		<div class="col-sm-5">
 			<div id="homeOrigin" class="panel panel-default" style="display: none;">
 				<div class="panel-body">
 				<a href="../match/?id=<?php htmlout($homeTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
-				<div class="row text-center">
+				<div class="row text-center"><p>
 					<div class="col-xs-12"><?php htmlout($homeTeamStage); ?></div>
-				</div>
+				</p></div>
 				<small>
-					<div class="row">
+					<div class="row"><p>
 						<div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
 						<div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
 						<div class="col-xs-3 text-left"><?php htmlout($homeTeamHomeTeamGoals); ?></div>
-					</div>
-					<div class="row">
+					</p></div>
+					<div class="row"><p>
 						<div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
 						<div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
-						<div class="col-xs-3 text-left"><?php htmlout($homeTeamAwayTeamGoals); ?></div>
-					</div>
+						<div class="col-xs-3"><?php htmlout($homeTeamAwayTeamGoals); ?></div>
+					</p></div>
 				</small>
 				</a>
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-5 col-sm-offset-2 text-left">
+		<div class="col-sm-5 col-sm-offset-2">
 			<div id="awayOrigin" class="panel panel-default" style="display: none;">
 				<div class="panel-body">
 				<a href="../match/?id=<?php htmlout($awayTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
-				<div class="row text-center">
+				<div class="row text-center"><p>
 					<div class="col-xs-12"><?php htmlout($awayTeamStage); ?></div>
-				</div>
+				</p></div>
 				<small>
-					<div class="row">
+					<div class="row"><p>
 						<div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
 						<div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
-						<div class="col-xs-3 text-left"><?php htmlout($awayTeamHomeTeamGoals); ?></div>
-					</div>
-					<div class="row">
+						<div class="col-xs-3"><?php htmlout($awayTeamHomeTeamGoals); ?></div>
+					</p></div>
+					<div class="row"><p>
 						<div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
 						<div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
-						<div class="col-xs-3 text-left"><?php htmlout($awayTeamAwayTeamGoals); ?></div>
-					</div>
+						<div class="col-xs-3"><?php htmlout($awayTeamAwayTeamGoals); ?></div>
+					</p></div>
 				</small>
 				</a>
 				</div>
@@ -89,6 +89,36 @@
 		</div>
 	</div>
 	<div class="row visible-xs text-left">
+		<div class="col-xs-2">
+			<button id="btnHomeOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+		</div>
+	</div>
+	<div class="row visible-xs text-left">
+		<div class="col-xs-12">
+			<div id="homeOriginXS" class="panel panel-default" style="display: none;">
+				<div class="panel-body">
+				<a href="../match/?id=<?php htmlout($homeTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
+				<div class="row text-center"><p>
+					<div class="col-xs-12"><?php htmlout($homeTeamStage); ?></div>
+				</p></div>
+				<small>
+					<div class="row"><p>
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
+						<div class="col-xs-3"><?php htmlout($homeTeamHomeTeamGoals); ?></div>
+					</p></div>
+					<div class="row"><p>
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
+						<div class="col-xs-3"><?php htmlout($homeTeamAwayTeamGoals); ?></div>
+					</p></div>
+				</small>
+				</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row visible-xs text-left">
 		<div class="col-xs-6 col-xs-offset-2"><small>vs.</small></div>
 	</div>
 	<div class="row visible-xs text-left">
@@ -100,6 +130,36 @@
 		</div>
 		<div class="col-xs-4" id="awayTeamGoalsXS">
 			<?php htmlout($awayTeamGoals); ?>
+		</div>
+	</div>
+	<div class="row visible-xs text-left">
+		<div class="col-xs-2">
+			<button id="btnAwayOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+		</div>
+	</div>
+	<div class="row visible-xs text-left">
+		<div class="col-xs-12">
+			<div id="awayOriginXS" class="panel panel-default" style="display: none;">
+				<div class="panel-body">
+				<a href="../match/?id=<?php htmlout($awayTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
+				<div class="row text-center"><p>
+					<div class="col-xs-12"><?php htmlout($awayTeamStage); ?></div>
+				</p></div>
+				<small>
+					<div class="row"><p>
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
+						<div class="col-xs-3"><?php htmlout($awayTeamHomeTeamGoals); ?></div>
+					</p></div>
+					<div class="row"><p>
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
+						<div class="col-xs-3"><?php htmlout($awayTeamAwayTeamGoals); ?></div>
+					</div>
+				</small>
+				</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </h3>

@@ -50,6 +50,32 @@ $(document).ready(function() {
 		}
 		$('#awayOrigin').slideToggle('slow');
 	});
+	
+	// Add click handler to show / hide home team origin
+	$("#btnHomeOriginXS").click(function(e) {
+		e.preventDefault();
+		var $this =$(this);
+		$this.blur();
+		if ($this.attr('data-state') == 'show') {
+			$this.attr('data-state','hide').html('Hide Origin');
+		} else {
+			$this.attr('data-state','show').html('Show Origin');
+		}
+		$('#homeOriginXS').slideToggle('slow');
+	});
+	
+	// Add click handler to show / hide away team origin
+	$("#btnAwayOriginXS").click(function(e) {
+		e.preventDefault();
+		var $this =$(this);
+		$this.blur();
+		if ($this.attr('data-state') == 'show') {
+			$this.attr('data-state','hide').html('Hide Origin');
+		} else {
+			$this.attr('data-state','show').html('Show Origin');
+		}
+		$('#awayOriginXS').slideToggle('slow');
+	});
 
 });
 
