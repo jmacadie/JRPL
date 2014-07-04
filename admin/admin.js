@@ -5,7 +5,7 @@ $(document).ready(function() {
 	$("#accordionTournamentRoles").find('button').click(function(e) {
 		e.preventDefault();
 		var $sel = $(this).closest('form').find('select');
-		updateTournamentRole($sel.attr('id').substring(3), $sel.val(), $sel.closest('div.row').next('div.row').find('.message'));
+		updateTournamentRole($sel.attr('id').substring(3), $sel.val(), $sel.closest('div.row').next('div.row').find('.messageTR'));
 	});
 
 });
@@ -65,14 +65,15 @@ function processUpdateTRReturn (data, $message) {
 		var $row = $message.closest('div.row').prev('div.row');
 		
 		// Set the flag
-		var flag = (data.teamS == '') : 'tmp' ? data.teamS ;
-		$row.find('img.flag').attr('src') = '../assets/img/flags/' + flag + '.png';
+		var flag = (data.teamS == '') ? 'tmp' : data.teamS.toLowerCase();
+		flag = '../assets/img/flags/' + flag + '.png';
+		$row.find('img.flag').attr('src', flag);
 		
 		// Set the team name
 		$row.find('span.tr-team').html(data.team);
 		
 		// Close "submitting data" alert
-        $message.alert('close');
+        $message.html('');
 		
 	}
 	
