@@ -24,6 +24,32 @@ $(document).ready(function() {
 		e.preventDefault();
 		submitResult($("#matchIDResXS").val(), $("#homeScoreResXS").val(), $("#awayScoreResXS").val());
 	});
+	
+	// Add click handler to show / hide home team origin
+	$("#btnHomeOrigin").click(function(e) {
+		e.preventDefault();
+		var $this =$(this);
+		$this.blur();
+		if ($this.attr('data-state') == 'show') {
+			$this.attr('data-state','hide').html('Hide Origin');
+		} else {
+			$this.attr('data-state','show').html('Show Origin');
+		}
+		$('#homeOrigin').slideToggle('slow');
+	});
+	
+	// Add click handler to show / hide away team origin
+	$("#btnAwayOrigin").click(function(e) {
+		e.preventDefault();
+		var $this =$(this);
+		$this.blur();
+		if ($this.attr('data-state') == 'show') {
+			$this.attr('data-state','hide').html('Hide Origin');
+		} else {
+			$this.attr('data-state','show').html('Show Origin');
+		}
+		$('#awayOrigin').slideToggle('slow');
+	});
 
 });
 

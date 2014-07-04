@@ -2,7 +2,8 @@
 	<div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
 	<div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
 </div>
-<h3><?php htmlout($date); ?><br />
+<h3><?php htmlout($stage); ?><br />
+	<?php htmlout($date); ?><br />
 	<?php htmlout(substr($kickOff, 0, 5)); ?><br />
 	<small><?php htmlout($venue); ?><br/>
 	<?php htmlout($broadcaster); ?></small>
@@ -11,12 +12,69 @@
 	<!-- Layout for tablets and bigger -->
 	<div class="row hidden-xs">
 		<div class="col-sm-2 text-center"><img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png"></div>
-		<div class="col-sm-2 text-right lead"><?php htmlout($homeTeam); ?></div>
+		<div class="col-sm-2 text-right">
+			<span class="lead"><?php htmlout($homeTeam); ?></span>
+			<br />
+			<button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+		</div>
 		<div class="col-sm-1 text-center lead"><b><span id="homeTeamGoals"><?php htmlout($homeTeamGoals); ?></span></b></div>
 		<div class="col-sm-2 text-center">vs.</div>
 		<div class="col-sm-1 text-center lead"><b><span id="awayTeamGoals"><?php htmlout($awayTeamGoals); ?></span></b></div>
-		<div class="col-sm-2 text-left lead"><?php htmlout($awayTeam); ?></div>
+		<div class="col-sm-2 text-left lead">
+			<span class="lead"><?php htmlout($awayTeam); ?></span>
+			<br />
+			<button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+		</div>
 		<div class="col-sm-2 text-center"><img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png"></div>
+	</div>
+	<!-- Team origin details for tablets and bigger -->
+	<div class="row hidden-xs">
+		<div class="col-sm-5 text-left">
+			<div id="homeOrigin" class="panel panel-default" style="display: none;">
+				<div class="panel-body">
+				<a href="../match/?id=<?php htmlout($homeTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
+				<div class="row text-center">
+					<div class="col-xs-12"><?php htmlout($homeTeamStage); ?></div>
+				</div>
+				<small>
+					<div class="row">
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
+						<div class="col-xs-3 text-left"><?php htmlout($homeTeamHomeTeamGoals); ?></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
+						<div class="col-xs-3 text-left"><?php htmlout($homeTeamAwayTeamGoals); ?></div>
+					</div>
+				</small>
+				</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5 col-sm-offset-2 text-left">
+			<div id="awayOrigin" class="panel panel-default" style="display: none;">
+				<div class="panel-body">
+				<a href="../match/?id=<?php htmlout($awayTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
+				<div class="row text-center">
+					<div class="col-xs-12"><?php htmlout($awayTeamStage); ?></div>
+				</div>
+				<small>
+					<div class="row">
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
+						<div class="col-xs-3 text-left"><?php htmlout($awayTeamHomeTeamGoals); ?></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
+						<div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
+						<div class="col-xs-3 text-left"><?php htmlout($awayTeamAwayTeamGoals); ?></div>
+					</div>
+				</small>
+				</a>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- Layout for phones -->
 	<div class="row visible-xs text-left">

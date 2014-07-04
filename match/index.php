@@ -10,16 +10,12 @@ if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
 	include 'getMatchDetails.php';
 	
 	// Sort out flag links
-	if ($homeTeamS == '') {
-		$homeFlag = 'tmp';
-	} else {
-		$homeFlag = strtolower($homeTeamS);
-	}
-	if ($awayTeamS == '') {
-		$awayFlag = 'tmp';
-	} else {
-		$awayFlag = strtolower($awayTeamS);
-	}
+	$homeFlag = ($homeTeamS == '') ? 'tmp' : strtolower($homeTeamS);
+	$awayFlag = ($awayTeamS == '') ? 'tmp' : strtolower($awayTeamS);
+	$homeHomeFlag = ($homeTeamHomeTeamS == '') ? 'tmp' : strtolower($homeTeamHomeTeamS);
+	$homeAwayFlag = ($homeTeamAwayTeamS == '') ? 'tmp' : strtolower($homeTeamAwayTeamS);
+	$awayHomeFlag = ($awayTeamHomeTeamS == '') ? 'tmp' : strtolower($awayTeamHomeTeamS);
+	$awayAwayFlag = ($awayTeamAwayTeamS == '') ? 'tmp' : strtolower($awayTeamAwayTeamS);
 	
 	// Sort out the previous and next links based on the ring variable
 	if (isset($_GET['ring']) || ($_GET['ring'] == 0)) {
