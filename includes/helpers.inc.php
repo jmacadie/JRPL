@@ -7,44 +7,6 @@ function htmlout($text) {
     echo html($text);
 }
 
-function bbcode2html($text) {
-    $text = html($text);
-
-    // [B]old
-    $text = preg_replace('/\[B](.+?)\[\/B]/i', '<strong>$1</strong>', $text);
-
-    // [I]talic
-    $text = preg_replace('/\[I](.+?)\[\/I]/i', '<em>$1</em>', $text);
-
-    // Convert Windows (\r\n) to Unix (\n)
-    $text = str_replace("\r\n", "\n", $text);
-
-    // Convert Macintosh (\r) to Unix (\n)
-    $text = str_replace("\r", "\n", $text);
-
-    // Paragraphs
-    $text = '<p>' . str_replace("\n\n", '</p><p>', $text) . '</p>';
-
-    // Line breaks
-    $text = str_replace("\n", '<br/>', $text);
-
-    // [URL]link[/URL]
-    $text = preg_replace(
-            '/\[URL]([-a-z0-9._~:\/?#@!$&\'()*+,;=%]+)\[\/URL]/i',
-            '<a href="$1">$1</a>', $text);
-
-    // [URL=url]link[/URL]
-    $text = preg_replace(
-            '/\[URL=([-a-z0-9._~:\/?#@!$&\'()*+,;=%]+)](.+?)\[\/URL]/i',
-            '<a href="$1">$2</a>', $text);
-
-    return $text;
-}
-
-function bbcodeout($text) {
-    echo bbcode2html($text);
-}
-
 function int($int) {
 
     // First check if it's a numeric value as either a string or number
@@ -114,36 +76,6 @@ function quickSort( $arr, $left = 0 , $right = NULL ) {
 	return $array;
 }
 
-function HSVtoRGB($h,$s,$v) {
-
-	$hDash = $h/60;
-	
-	$c = $s * $v;
-	$x = $c*(1-abs(fmod($hDash,2)-1));
-	$m = $v - $c;
-	
-	switch ($hDash) {
-			case ($hDash < 1) : $r=$c; $g=$x; $b=0; break;
-			case ($hDash < 2) : $r=$x; $g=$c; $b=0; break;
-			case ($hDash < 3) : $r=0; $g=$c; $b=$x; break;
-			case ($hDash < 4) : $r=0; $g=$x; $b=$c; break;
-			case ($hDash < 5) : $r=$x; $g=0; $b=$c; break;
-			case ($hDash <= 6) : $r=$c; $g=0; $b=$x; break;
-			default : $r=0; $g=0; $b=0;
-		}
-	
-	$r = round(($r+$m)*255);
-	$g = round(($g+$m)*255);
-	$b = round(($b+$m)*255);
-	
-	$out = array(
-		'r' => $r,
-		'g' => $g,
-		'b' => $b);
-	
-	return $out;
-}
-
 function ring_base_convert ($ring) {
 	$out = '';
 	for ($i = 0; $i < strlen($ring); $i++) {
@@ -153,7 +85,311 @@ function ring_base_convert ($ring) {
 	return $out;
 }
 
-function getLeagueTable($link, $stage='') {
+// Calculate the all the points systems for a given match
+function calculatePoints($matchID) {
+	
+	calculateStandardPoints($matchID);
+	calculateAutoQuizPoints($matchID);
+	
+}
+
+// Calculate the standard points for a given match
+function calculateStandardPoints($matchID) {
+	
+	// Get DB connection
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+
+	// Delete existing prediction first
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "DELETE FROM `Points`
+			WHERE
+				`MatchID` = " . $matchID . "
+				AND `ScoringSystemID` = 1;";
+	
+	// Run SQL and trap any errors
+    $result = mysqli_query($link, $sql);
+    if (!$result) {
+        $error = "Error deleting previous standard points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Grab match result
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "SELECT
+				`HomeTeamGoals`,
+				`AwayTeamGoals`
+			FROM `Match`
+			WHERE `MatchID` = " . $matchID . ";";
+	
+	// Run SQL and trap any errors
+    $resultM = mysqli_query($link, $sql);
+    if (!$resultM) {
+        $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Grab results
+	$rowM = mysqli_fetch_array($resultM);
+	$ht = $rowM['HomeTeamGoals'];
+	$at = $rowM['AwayTeamGoals'];
+	
+	// Grab predictions
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "SELECT
+				`UserID`,
+				`HomeTeamGoals`,
+				`AwayTeamGoals`
+			FROM `Prediction`
+			WHERE `MatchID` = " . $matchID . ";";
+	
+	// Run SQL and trap any errors
+    $resultP = mysqli_query($link, $sql);
+    if (!$resultP) {
+        $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Calculate points and INSERT them back into the DB
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	while ($rowP = mysqli_fetch_array($resultP)) {
+		
+		// First check right result
+		if ((($ht > $at) && ($rowP['HomeTeamGoals'] > $rowP['AwayTeamGoals'])) ||
+			(($ht < $at) && ($rowP['HomeTeamGoals'] < $rowP['AwayTeamGoals'])) ||
+			(($ht == $at) && ($rowP['HomeTeamGoals'] == $rowP['AwayTeamGoals']))) {
+				
+				// Right result so award a result point
+				$resultPoints = 1;
+				
+				// Then check exact score
+				if (($ht == $rowP['HomeTeamGoals']) && ($at == $rowP['AwayTeamGoals'])) {
+						$scorePoints = 2;
+				} else {
+					$scorePoints = 0;
+				}
+				
+		} else {
+			// Not the right result so no points all round
+			$resultPoints = 0;
+			$scorePoints = 0;
+		}
+		
+		// Calculate the total points
+		$totalPoints = $resultPoints + $scorePoints;
+		
+		// Build SQL
+		$sql = "INSERT INTO `Points`
+					(`ScoringSystemID`,
+					`UserID`,
+					`MatchID`,
+					`ResultPoints`,
+					`ScorePoints`,
+					`TotalPoints`)
+				VALUES
+					(1,
+					" . $rowP['UserID'] . ",
+					" . $matchID . ",
+					" . $resultPoints . ",
+					" . $scorePoints . ",
+					" . $totalPoints . ");";
+		
+		// Run SQL and trap any errors
+		$result = mysqli_query($link, $sql);
+		if (!$result) {
+			$error = "Error inserting standard points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+			
+			header('Content-type: application/json');
+			$arr = array('result' => 'No', 'message' => $error);
+			echo json_encode($arr);
+			die();
+		}
+	
+	}
+}
+
+// Calculate the AutoQuiz points for a given match
+function calculateAutoQuizPoints($matchID) {
+	
+	// Get DB connection
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+
+	// Delete existing prediction first
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "DELETE FROM `Points`
+			WHERE
+				`MatchID` = " . $matchID . "
+				AND `ScoringSystemID` = 2;";
+	
+	// Run SQL and trap any errors
+    $result = mysqli_query($link, $sql);
+    if (!$result) {
+        $error = "Error deleting previous AutoQuiz points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Grab match result
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "SELECT
+				`HomeTeamGoals`,
+				`AwayTeamGoals`
+			FROM `Match`
+			WHERE `MatchID` = " . $matchID . ";";
+	
+	// Run SQL and trap any errors
+    $resultM = mysqli_query($link, $sql);
+    if (!$resultM) {
+        $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Grab results
+	$rowM = mysqli_fetch_array($resultM);
+	$ht = $rowM['HomeTeamGoals'];
+	$at = $rowM['AwayTeamGoals'];
+	
+	// Grab predictions
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Build SQL
+    $sql = "SELECT
+				`UserID`,
+				`HomeTeamGoals`,
+				`AwayTeamGoals`
+			FROM `Prediction`
+			WHERE `MatchID` = " . $matchID . ";";
+	
+	// Run SQL and trap any errors
+    $resultP = mysqli_query($link, $sql);
+    if (!$resultP) {
+        $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+        
+		header('Content-type: application/json');
+		$arr = array('result' => 'No', 'message' => $error);
+		echo json_encode($arr);
+		die();
+    }
+	
+	// Loop through predictions and do initial result processing
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// Set variables
+	$numUsers = 0;
+	$numResultUsers = 0;
+	$numScoreUsers = 0;
+	$arrPoints = array();
+	
+	// Loop through all predictions made
+	while ($rowP = mysqli_fetch_array($resultP)) {
+		
+		// Increment the number of users counter
+		$numUsers++;
+		
+		// Reset single user output array
+		$out = array();
+		$out['userID'] = $rowP['UserID'];
+		
+		// First check right result
+		if ((($ht > $at) && ($rowP['HomeTeamGoals'] > $rowP['AwayTeamGoals'])) ||
+			(($ht < $at) && ($rowP['HomeTeamGoals'] < $rowP['AwayTeamGoals'])) ||
+			(($ht == $at) && ($rowP['HomeTeamGoals'] == $rowP['AwayTeamGoals']))) {
+				
+				// Increment the number of correct users counter
+				$numResultUsers++;
+				
+				// Right result so award a result point
+				$out['result'] = 1;
+				
+				// Then check exact score
+				if (($ht == $rowP['HomeTeamGoals']) && ($at == $rowP['AwayTeamGoals'])) {
+					$numScoreUsers++;
+					$out['score'] = 1;
+				} else {
+					$out['score'] = 0;
+				}
+				
+		} else {
+			// Not the right result so no points all round
+			$out['result'] = 0;
+			$out['score'] = 0;
+		}
+		
+		// Add single user output array
+		$arrPoints[] = $out;
+	}
+	
+	// Calculate points and INSERT them back into the DB
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	foreach ($arrPoints as $user) {
+				
+		// Calculate the total points
+		$resultPoints = $user['result'] * $numResultUsers / $numUsers;
+		$scorePoints = $user['score'] * $numScoreUsers / $numUsers;
+		$totalPoints = $resultPoints + $scorePoints;
+		
+		// Build SQL
+		$sql = "INSERT INTO `Points`
+					(`ScoringSystemID`,
+					`UserID`,
+					`MatchID`,
+					`ResultPoints`,
+					`ScorePoints`,
+					`TotalPoints`)
+				VALUES
+					(2,
+					" . $user['userID'] . ",
+					" . $matchID . ",
+					" . $resultPoints . ",
+					" . $scorePoints . ",
+					" . $totalPoints . ");";
+		
+		// Run SQL and trap any errors
+		$result = mysqli_query($link, $sql);
+		if (!$result) {
+			$error = "Error inserting AutoQuiz points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+			
+			header('Content-type: application/json');
+			$arr = array('result' => 'No', 'message' => $error);
+			echo json_encode($arr);
+			die();
+		}
+	}
+}
+
+// Generate data for tables
+function getLeagueTable($scoringSystem=1, $stage='') {
+	
+	// Get DB connection
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 	
 	// Sort out selected stages
 	if (($stage == '') || (!is_array($stage))) {
@@ -295,7 +531,8 @@ function getLeagueTable($link, $stage='') {
 									ON mu.`UserID` = u.`UserID`
 						
 							LEFT JOIN `Points` po ON
-								po.`UserID` = mu.`UserID`
+								po.`ScoringSystemID` = " . $scoringSystem . "
+								AND po.`UserID` = mu.`UserID`
 								AND po.`MatchID` = mu.`MatchID`) tmp
 
 					GROUP BY tmp.`DisplayName`; ";
@@ -416,7 +653,8 @@ function getLeagueTable($link, $stage='') {
 	return $out;
 }
 
-function getGraphData () {
+// Generate data for graphs
+function getGraphData ($scoringSystem=1) {
 	
 	// Get DB connection
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -461,7 +699,8 @@ function getGraphData () {
 							WHERE m.`ResultPostedBy` IS NOT NULL) mu
 							
 							LEFT JOIN `Points` po ON
-								po.`UserID` = mu.`UserID`
+								po.`ScoringSystemID` = " . $scoringSystem . "
+								AND po.`UserID` = mu.`UserID`
 								AND po.`MatchID` = mu.`MatchID`) tmp
 					
 					INNER JOIN `Match` m ON
