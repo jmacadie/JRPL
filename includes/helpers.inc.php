@@ -331,9 +331,12 @@ function calculateAutoQuizPoints($matchID) {
 				
 				// Then check exact score
 				if (($ht == $rowP['HomeTeamGoals']) && ($at == $rowP['AwayTeamGoals'])) {
+					// Increment the number of correct users counter
 					$numScoreUsers++;
-					$out['score'] = 1;
+					// Right exact score so award a score point
+					$out['score'] = 2;
 				} else {
+					// Wrong exact score so no score points
 					$out['score'] = 0;
 				}
 				
@@ -351,9 +354,9 @@ function calculateAutoQuizPoints($matchID) {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	foreach ($arrPoints as $user) {
 				
-		// Calculate the total points
-		$resultPoints = $user['result'] * $numResultUsers / $numUsers;
-		$scorePoints = $user['score'] * $numScoreUsers / $numUsers;
+		// Calculate the actual points
+		$resultPoints = ($numResultUsers == 0) ? 0 : ($user['result'] * $numUsers / $numResultUsers);
+		$scorePoints = ($numScoreUsers == 0) ? 0 : ($user['score'] * $numUsers / $numScoreUsers);
 		$totalPoints = $resultPoints + $scorePoints;
 		
 		// Build SQL
