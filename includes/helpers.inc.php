@@ -33,7 +33,7 @@ function int($int) {
     }
 }
 
-function quickSort( $arr, $left = 0 , $right = NULL ) {
+function quickSort($arr, $left = 0 , $right = NULL) {
 	// when the call is recursive we need to change
 	//the array passed to the function earlier
 	static $array = array();
@@ -389,7 +389,7 @@ function calculateAutoQuizPoints($matchID) {
 }
 
 // Generate data for tables
-function getLeagueTable($scoringSystem=1, $stage='') {
+function getLeagueTable($scoringSystem = 1, $stage = '') {
 	
 	// Get DB connection
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -657,7 +657,7 @@ function getLeagueTable($scoringSystem=1, $stage='') {
 }
 
 // Generate data for graphs
-function getGraphData ($scoringSystem=1) {
+function getGraphData ($scoringSystem = 1) {
 	
 	// Get DB connection
 	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -782,6 +782,8 @@ function getGraphData ($scoringSystem=1) {
 	}
 	
 	return $out;
+}
+
 }
 
 ?>
