@@ -784,6 +784,4 @@ function getGraphData ($scoringSystem = 1) {
 	return $out;
 }
 
-}
-
 ?>
