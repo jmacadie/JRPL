@@ -7,8 +7,8 @@
 // Make sure all relevant includes are loaded
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
-// Set scoring system
-if (!isset($_SESSION['scoringSystem']) || !int($_SESSION['scoringSystem']) || ($_SESSION['scoringSystem'] < 1)) $_SESSION['scoringSystem'] = 1;
+// Run scoring system checks and set-up
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/processScoringSystem.inc.php';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Load the graph data

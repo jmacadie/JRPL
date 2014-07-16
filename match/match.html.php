@@ -264,6 +264,8 @@
 <hr>
 <h4>All Predictions</h4>
 <?php if ($lockedDown): ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/scoringSystemForm.html.php'; ?>
+<hr>
 <table class="table table-striped">
 	<thead>
 		<tr>

@@ -1,6 +1,15 @@
 <?php
 // Make sure all relevant includes are loaded
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Set-up
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Make sure all relevant includes are loaded
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
+
+// Run scoring system checks and set-up
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/processScoringSystem.inc.php';
 
 //Check if matchID has been posted
 if (isset($_GET['id']) && int($_GET['id']) && ($_GET['id'] > 0)) {
