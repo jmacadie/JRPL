@@ -10,7 +10,7 @@ if (!isset($_SESSION['scoringSystem']) || !int($_SESSION['scoringSystem']) || ($
 
 // Check that ID parameter has been properly formed
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if (!isset($_GET['id']) || !int($_GET['id']) || ($_GET['id'] < 1)) {
+if (!isset($gMatchID) || !int($gMatchID) || ($gMatchID < 1)) {
 	// TODO: This doesn't work as we're not running an AJAX request here
 	$error = 'Match ID not properly formed';
 	
@@ -26,7 +26,7 @@ if (!isset($_GET['id']) || !int($_GET['id']) || ($_GET['id'] < 1)) {
 	
 // Assign values
 $userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
-$matchID = $_GET['id'] + 0;
+$matchID = $gMatchID + 0;
 
 // Get DB connection
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';

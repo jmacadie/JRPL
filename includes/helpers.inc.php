@@ -38,7 +38,7 @@ function int($int) {
 }
 
 // Implementation of the Quick Sort algorithm
-function quickSort($arr, $left = 0 , $right = NULL) {
+function quickSort($arr, $left = 0, $right = NULL) {
 	// when the call is recursive we need to change
 	//the array passed to the function earlier
 	static $array = array();
