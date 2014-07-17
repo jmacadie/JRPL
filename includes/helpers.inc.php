@@ -499,8 +499,8 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
 	$sql = "CREATE TEMPORARY TABLE `PointsByUser` (
 					`UserID` INT NOT NULL,
 					`DisplayName` VARCHAR(100) NOT NULL,
-					`ResultPoints` DECIMAL(6,2) INT NOT NULL,
-					`ScorePoints` DECIMAL(6,2) INT NOT NULL,
+					`ResultPoints` DECIMAL(6,2) NOT NULL,
+					`ScorePoints` DECIMAL(6,2) NOT NULL,
 					`TotalPoints` DECIMAL(6,2) NOT NULL) ; ";
 
 	$result = mysqli_query($link, $sql);

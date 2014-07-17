@@ -12,18 +12,18 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/processScoringSystem.inc.php';
 
 // Check $_GET and $_SESSION variables for Match ID
-if (isset($_GET['id']) {
+if (isset($_GET['id'])) {
 	$gMatchID = $_GET['id'];
 	$_SESSION['matchID'] = $gMatchID;
-} elseif (isset($_SESSION['matchID']) {
+} elseif (isset($_SESSION['matchID'])) {
 	$gMatchID = $_SESSION['matchID'];
 }
 
 // Check $_GET and $_SESSION variables for Ring
-if (isset($_GET['ring']) {
+if (isset($_GET['ring'])) {
 	$gRing = $_GET['ring'];
 	$_SESSION['ring'] = $gRing;
-} elseif (isset($_SESSION['ring']) {
+} elseif (isset($_SESSION['ring'])) {
 	$gRing = $_SESSION['ring'];
 }
 
