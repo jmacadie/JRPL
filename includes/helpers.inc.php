@@ -1,12 +1,16 @@
 <?php
+
+// Helper function to escape any HTML special characters in a string
 function html($text) {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
+// Wrapper to echo text whilst escaping any HTML special characters
 function htmlout($text) {
     echo html($text);
 }
 
+// Function to test if variable passed === integer
 function int($int) {
 
     // First check if it's a numeric value as either a string or number
@@ -33,6 +37,7 @@ function int($int) {
     }
 }
 
+// Implementation of the Quick Sort algorithm
 function quickSort($arr, $left = 0 , $right = NULL) {
 	// when the call is recursive we need to change
 	//the array passed to the function earlier
@@ -76,6 +81,7 @@ function quickSort($arr, $left = 0 , $right = NULL) {
 	return $array;
 }
 
+// Convert hex ring to binary string equivalent
 function ring_base_convert ($ring) {
 	$out = '';
 	for ($i = 0; $i < strlen($ring); $i++) {
@@ -493,9 +499,9 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
 	$sql = "CREATE TEMPORARY TABLE `PointsByUser` (
 					`UserID` INT NOT NULL,
 					`DisplayName` VARCHAR(100) NOT NULL,
-					`ResultPoints` INT NOT NULL,
-					`ScorePoints` INT NOT NULL,
-					`TotalPoints` INT NOT NULL) ; ";
+					`ResultPoints` DECIMAL(6,2) INT NOT NULL,
+					`ScorePoints` DECIMAL(6,2) INT NOT NULL,
+					`TotalPoints` DECIMAL(6,2) NOT NULL) ; ";
 
 	$result = mysqli_query($link, $sql);
 	if (!$result)
@@ -670,11 +676,10 @@ function getGraphData ($scoringSystem = 1) {
 	$sql = "CREATE TEMPORARY TABLE `CumulativePointsByMatchUser` (
 					`MatchID` INT NOT NULL,
 					`UserID` INT NOT NULL,
-					`Points` INT NOT NULL) ; ";
+					`Points` DECIMAL(6,2) NOT NULL) ; ";
 
 	$result = mysqli_query($link, $sql);
-	if (!$result)
-	{
+	if (!$result) {
 		$error = 'Error creating cumulative points by match & user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
@@ -715,8 +720,7 @@ function getGraphData ($scoringSystem = 1) {
 						tmp.`UserID`;";
 
 	$result = mysqli_query($link, $sql);
-	if (!$result)
-	{
+	if (!$result) {
 		$error = 'Error adding cumulative points by match & user data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
@@ -729,8 +733,7 @@ function getGraphData ($scoringSystem = 1) {
 	$sql = "CREATE TEMPORARY TABLE `CumulativePointsByMatchUser2` SELECT * FROM `CumulativePointsByMatchUser`; ";
 	
 	$result = mysqli_query($link, $sql);
-	if (!$result)
-	{
+	if (!$result) {
 		$error = 'Error creating 2nd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
@@ -760,8 +763,7 @@ function getGraphData ($scoringSystem = 1) {
 			ORDER BY cpmu.`MatchID` ASC, cpmu.`UserID` ASC";
 
 	$result = mysqli_query($link, $sql);
-	if (!$result)
-	{
+	if (!$result) {
 		$error = 'Error fetching match details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 		
 		header('Content-type: application/json');
@@ -770,8 +772,7 @@ function getGraphData ($scoringSystem = 1) {
 		die();
 	}
 
-	while ($row = mysqli_fetch_array($result))
-	{
+	while ($row = mysqli_fetch_array($result)) {
 		$out[] = array(
 			'matchID' => $row['MatchID'],
 			'match' => $row['Match'],
