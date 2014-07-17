@@ -304,7 +304,7 @@
 			<td><?php if($result['TotalPoints'] == 0) {
 					htmlout('-');
 				} else {
-					$out = (int($row['TotalPoints'])) ? round($row['TotalPoints']) : $row['TotalPoints'];
+					$out = (int($result['TotalPoints'])) ? round($result['TotalPoints']) : $result['TotalPoints'];
 					htmlout($out);
 				} ?></td>
 			<?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('</i>'); }; ?>
