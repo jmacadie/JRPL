@@ -124,7 +124,7 @@ if ($lockedDown == 1) {
 				IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
 				IFNULL(p.`HomeTeamGoals`,'No prediction') AS `HomeTeamPrediction`,
 				IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamPrediction`,
-				po.`TotalPoints`
+				ROUND(po.`TotalPoints`, 2) AS `TotalPoints`
 
 			FROM 
 				(SELECT `MatchID`, `HomeTeamID`, `AwayTeamID`, `UserID`, `DisplayName`
