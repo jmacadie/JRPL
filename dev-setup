@@ -1,0 +1,22 @@
+# Script to set up files to run in dev environment
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Set correct ownership and permissions on symlink
+sudo chown -h root:www /var/www/html
+
+# Navigate to root directory
+cd ~/code/JRPL/JRPL-WC2014/
+
+# Change ownership of all files
+sudo chown -R ec2-user:www .
+
+# Change permissions of all files
+find . -type f -exec chmod 640 {} \;
+find . -type d -exec chmod 750 {} \;
+
+# Make scripts executable
+chmod 740 dev-setup
+
+# Change DB access
+
+
