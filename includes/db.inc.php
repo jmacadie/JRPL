@@ -76,7 +76,7 @@ recommended because there is a bug in that version -- a veritable one -- that
 causes Apache to crash when it attempts to open the "deletejoke" file.
 
 */
-$link = mysqli_connect('localhost', 'julianri_admin', '8@xgT54^1n'); /* 8@xgT54^1n */
+$link = mysqli_connect('localhost', 'root', '8@xgT54^1n');
 if (!$link)
 {
     $error = 'Unable to connect to the database server';
