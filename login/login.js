@@ -50,7 +50,8 @@ function doLogIn() {
                 $(document).off('keydown');
 				
 				// Load details page once done
-                location="http://julianrimet.com/details";
+                var loc = window.location.origin + "/details/";
+		location = loc;
 
             }
         });
