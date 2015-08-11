@@ -76,7 +76,7 @@ recommended because there is a bug in that version -- a veritable one -- that
 causes Apache to crash when it attempts to open the "deletejoke" file.
 
 */
-$link = mysqli_connect('localhost', 'root', '8@xgT54^1n');
+$link = mysqli_connect('localhost', 'jrpl.dev.user', 'ytfgbv77');
 if (!$link)
 {
     $error = 'Unable to connect to the database server';
@@ -91,7 +91,7 @@ if (!mysqli_set_charset($link, 'utf8'))
     exit();
 }
 
-if (!mysqli_select_db($link, 'julianri_worldcup2014'))
+if (!mysqli_select_db($link, 'jrpl.dev'))
 {
     $error = 'Unable to locate the database';
     include 'error/index.php';
