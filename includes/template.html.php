@@ -59,7 +59,13 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="http://www.julianrimet.com">JRPL</a>
+				<?php 
+				$ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true : false;
+				$host = isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST'];
+				$url = "http" . (($ssl) ? "s" : "") . "://" . $host;
+				$url = htmlspecialchars($url, ENT_QUOTES, "UTF-8");
+				?>
+				<a class="navbar-brand" href="<?php echo($url); ?>">JRPL</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
