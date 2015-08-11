@@ -27,11 +27,11 @@
 	<!-- Custom styles for this template -->
 	<link type="text/css" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/css/JRPL.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+ 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 
 	<!-- Fav and touch icons -->
 	<link rel="icon" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/ico/favicon.png" type="image/x-icon">
