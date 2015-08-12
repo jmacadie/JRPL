@@ -77,15 +77,15 @@ causes Apache to crash when it attempts to open the "deletejoke" file.
 
 */
 
-if ($_SERVER['SERVER_NAME'] == 'julianrimet.com') {
+if (getenv('ENVIR') == 'Production') {
     $user = 'jrpl_prod_user';
 	$pwd = getenv('DB_PWD');
 	$db = 'jrpl_prod';
-} elseif ($_SERVER['SERVER_NAME'] == 'test.julianrimet.com') {
+} elseif (getenv('ENVIR') == 'Test') {
     $user = 'jrpl_test_user';
 	$pwd = getenv('DB_PWD');
 	$db = 'jrpl_test';
-} elseif ($_SERVER['SERVER_NAME'] == 'dev.julianrimet.com') {
+} elseif (getenv('ENVIR') == 'Development') {
     $user = 'jrpl_dev_user';
 	$pwd = getenv('DB_PWD');
 	$db = 'jrpl_dev';
