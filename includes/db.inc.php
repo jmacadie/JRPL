@@ -76,7 +76,22 @@ recommended because there is a bug in that version -- a veritable one -- that
 causes Apache to crash when it attempts to open the "deletejoke" file.
 
 */
-$link = mysqli_connect('localhost', 'jrpl_dev_user', 'ytfgbv77');
+
+if ($_SERVER['SERVER_NAME'] == 'julianrimet.com') {
+    $user = 'jrpl_prod_user';
+	$pwd = getenv('DB_PWD');
+	$db = 'jrpl_prod';
+} elseif ($_SERVER['SERVER_NAME'] == 'test.julianrimet.com') {
+    $user = 'jrpl_test_user';
+	$pwd = getenv('DB_PWD');
+	$db = 'jrpl_test';
+} elseif ($_SERVER['SERVER_NAME'] == 'dev.julianrimet.com') {
+    $user = 'jrpl_dev_user';
+	$pwd = getenv('DB_PWD');
+	$db = 'jrpl_dev';
+}
+
+$link = mysqli_connect('localhost', $user, $pwd);
 if (!$link)
 {
     $error = 'Unable to connect to the database server';
@@ -91,7 +106,7 @@ if (!mysqli_set_charset($link, 'utf8'))
     exit();
 }
 
-if (!mysqli_select_db($link, 'jrpl_dev'))
+if (!mysqli_select_db($link, $db))
 {
     $error = 'Unable to locate the database';
     include 'error/index.php';
