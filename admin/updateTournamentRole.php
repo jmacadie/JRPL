@@ -12,7 +12,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 // Check to see if user is logged in
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-if (!userIsLoggedIn() || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] == FALSE) {
+if (!userIsLoggedIn() ||
+    !isset($_SESSION['loggedIn']) ||
+    $_SESSION['loggedIn'] == FALSE) {
+
   // build results into output JSON file
   header('Content-type: application/json');
   $arr = array(
@@ -20,13 +23,16 @@ if (!userIsLoggedIn() || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] 
     ,'message' => 'You are not logged in. Please log in first');
   echo json_encode($arr);
   die();
+
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Check to see if user is an admin
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] == FALSE) {
+if (!isset($_SESSION['isAdmin']) ||
+    $_SESSION['isAdmin'] == FALSE) {
+
   // build results into output JSON file
   header('Content-type: application/json');
   $arr = array(
@@ -34,13 +40,17 @@ if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] == FALSE) {
     ,'message' => 'You are not an Admin. Only Admins can submit match results');
   echo json_encode($arr);
   die();
+
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Check correct data has been posted
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-if (!isset($_POST['action']) || !isset($_POST['tournamentRoleID']) || !isset($_POST['teamID'])) {
+if (!isset($_POST['action']) ||
+    !isset($_POST['tournamentRoleID']) ||
+    !isset($_POST['teamID'])) {
+
   // build results into output JSON file
   header('Content-type: application/json');
   $arr = array(
@@ -48,6 +58,7 @@ if (!isset($_POST['action']) || !isset($_POST['tournamentRoleID']) || !isset($_P
     ,'message' => 'Incorrect data posted');
   echo json_encode($arr);
   die();
+
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,37 +77,53 @@ if ($_POST['action'] == 'updateTournamentRole') {
   $tournamentRoleID = mysqli_real_escape_string($link, $tournamentRoleID);
   $teamID = mysqli_real_escape_string($link, $teamID);
 
-  if (!int($tournamentRoleID) || ($tournamentRoleID < 1)) {
+  if (!int($tournamentRoleID) ||
+      ($tournamentRoleID < 1)) {
+
     // build results into output JSON file
     header('Content-type: application/json');
     $arr = array(
       'result' => 'No'
-      ,'message' => 'Submitted tournament role number "' . $tournamentRoleID . '" is not correctly formatted. It should be an integer greater than 1');
+      ,'message' => 'Submitted tournament role number "' .
+                    $tournamentRoleID .
+                    '" is not correctly formatted. ' .
+                    'It should be an integer greater than 1');
     echo json_encode($arr);
     die();
+
   }
 
-  if (!int($teamID) || ($teamID < 0)) {
+  if (!int($teamID) ||
+      ($teamID < 0)) {
+
     // build results into output JSON file
     header('Content-type: application/json');
     $arr = array(
       'result' => 'No'
-      ,'message' => 'Submitted team number "' . $teamID . '" is not correctly formatted. It should be an integer greater than 1');
+      ,'message' => 'Submitted team number "' .
+                    $teamID .
+                    '" is not correctly formatted. ' .
+                    'It should be an integer greater than 1');
     echo json_encode($arr);
     die();
+
   }
 
   // UPDATE the match table with the posted data
-  $sql = "UPDATE `TournamentRole`
-      SET `TeamID` = ";
+  $sql =
+"UPDATE `TournamentRole`
+SET `TeamID` = ";
   if ($teamID == 0) { $sql .= 'NULL'; } else { $sql .= $teamID; }
   $sql .= "
-      WHERE `TournamentRoleID` = " . $tournamentRoleID . ";";
+WHERE `TournamentRoleID` = " . $tournamentRoleID . ";";
 
   // Run query and handle any failure
   $result = mysqli_query($link, $sql);
   if (!$result) {
-    $error = 'Error updating tournament role: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+    $error = 'Error updating tournament role: <br />' .
+             mysqli_error($link) .
+             '<br /><br />' .
+             $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
@@ -108,14 +135,18 @@ if ($_POST['action'] == 'updateTournamentRole') {
   if ($teamID != 0) {
 
     // Build the SQL
-    $sql = "SELECT `Name`, `ShortName`
-        FROM `Team`
-        WHERE `TeamID` = " . $teamID . ";";
+    $sql =
+"SELECT `Name`, `ShortName`
+FROM `Team`
+WHERE `TeamID` = " . $teamID . ";";
 
     // Run query and handle any failure
     $result = mysqli_query($link, $sql);
     if (!$result) {
-      $error = 'Error getting team details back: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+      $error = 'Error getting team details back: <br />' .
+               mysqli_error($link) .
+               '<br /><br />' .
+               $sql;
 
       header('Content-type: application/json');
       $arr = array('result' => 'No', 'message' => $error);
@@ -129,9 +160,11 @@ if ($_POST['action'] == 'updateTournamentRole') {
     $teamS = $row['ShortName'];
 
   } else {
+
     // Team was unset, return blanks
     $team = '';
     $teamS = '';
+
   }
 
   // build results into output JSON file
@@ -144,5 +177,4 @@ if ($_POST['action'] == 'updateTournamentRole') {
   echo json_encode($arr);
 
 }
-
 ?>
