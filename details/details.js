@@ -19,18 +19,21 @@ $(document).ready(function() {
 function doUpdate() {
 
   // Send request
-  $.post("../includes/login.php",
+  $.post(
 
-    {action: "update",
-     firstName: $("#firstName").val(),
-     lastName: $("#lastName").val(),
-     displayName: $("#displayName").val(),
-     email: $("#email").val(),
-     pwd: $("#tPassord").val(),
-     pwd2: $("#tPassord2").val()},
+    url: "../includes/login.php",
 
-    function(xml) {
+    data: {action: "update",
+           firstName: $("#firstName").val(),
+           lastName: $("#lastName").val(),
+           displayName: $("#displayName").val(),
+           email: $("#email").val(),
+           pwd: $("#tPassord").val(),
+           pwd2: $("#tPassord2").val()},
+
+    success: function(xml) {
       var result;
+
       if (xml.result == "No") {
 
         // Build HTML for error message
