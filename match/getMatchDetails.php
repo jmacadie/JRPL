@@ -13,7 +13,7 @@ if (!isset($_SESSION['scoringSystem']) || !int($_SESSION['scoringSystem']) || ($
 if (!isset($gMatchID) || !int($gMatchID) || ($gMatchID < 1)) {
   // TODO: This doesn't work as we're not running an AJAX request here
   $error = 'Match ID not properly formed';
-  
+
   header('Content-type: application/json');
   $arr = array('result' => 'No', 'message' => $error);
   echo json_encode($arr);
@@ -23,7 +23,7 @@ if (!isset($gMatchID) || !int($gMatchID) || ($gMatchID < 1)) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get data for match page
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
 // Assign values
 $userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
 $matchID = $gMatchID + 0;
@@ -78,7 +78,7 @@ $sql = "SELECT
       LEFT JOIN `Prediction` p ON
         p.`MatchID` = m.`MatchID`
         AND p.`UserID` =  " . $userID . "
-      
+
     WHERE m.`MatchID` = " . $matchID . ";";
 
 // Run query and handle any failure
@@ -86,12 +86,12 @@ $result = mysqli_query($link, $sql);
 // TODO: This doesn't work as we're not running an AJAX request here
 if (!$result) {
   $error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-  
+
   header('Content-type: application/json');
   $arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
   echo json_encode($arr);
   die();
-} 
+}
 
 // Store results
 $row = mysqli_fetch_assoc($result);
@@ -116,7 +116,7 @@ $lockedDown = $row['LockedDown'];
 
 // Only get if we're locked down
 if ($lockedDown == 1) {
-  
+
   // Query to pull match data from DB
   $sql = "SELECT
         mu.`DisplayName`,
@@ -126,11 +126,11 @@ if ($lockedDown == 1) {
         IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamPrediction`,
         ROUND(po.`TotalPoints`, 2) AS `TotalPoints`
 
-      FROM 
+      FROM
         (SELECT `MatchID`, `HomeTeamID`, `AwayTeamID`, `UserID`, `DisplayName`
         FROM `Match`, `User`
         WHERE `MatchID` = " . $matchID . ") mu
-        
+
         LEFT JOIN `Prediction` p ON
           p.`UserID` = mu.`UserID`
           AND p.`MatchID` = mu.`MatchID`
@@ -146,13 +146,13 @@ if ($lockedDown == 1) {
           po.`ScoringSystemID` = " . $_SESSION['scoringSystem'] . "
           AND po.`MatchID` = p.`MatchID`
           AND po.`UserID` = p.`UserID`
-      
+
       ORDER BY
         po.`TotalPoints` DESC,
         (p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
         p.`HomeTeamGoals` DESC,
         mu.`UserID` ASC;";
-  
+
   // Run query and handle any failure
   $result = mysqli_query($link, $sql);
   // TODO: This doesn't work as we're not running an AJAX request here
@@ -167,9 +167,9 @@ if ($lockedDown == 1) {
   // Store results
   $arrPredictions = array();
   while($row = mysqli_fetch_assoc($result)) {
-    $arrPredictions[] = $row; 
+    $arrPredictions[] = $row;
   }
-  
+
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -196,7 +196,7 @@ $sql = "SELECT
       ats.`Name` AS `AwayTeamStage`
 
     FROM `Match` m
-    
+
       INNER JOIN `TournamentRole` trht ON
         trht.`TournamentRoleID` = m.`HomeTeamID`
       LEFT JOIN `Match` htm ON
@@ -211,7 +211,7 @@ $sql = "SELECT
         httrat.`TournamentRoleID` = htm.`AwayTeamID`
       LEFT JOIN `Team` htat ON
         htat.`TeamID` = httrat.`TeamID`
-      
+
       INNER JOIN `TournamentRole` trat ON
         trat.`TournamentRoleID` = m.`AwayTeamID`
       LEFT JOIN `Match` atm ON
@@ -226,7 +226,7 @@ $sql = "SELECT
         attrat.`TournamentRoleID` = atm.`AwayTeamID`
       LEFT JOIN `Team` atat ON
         atat.`TeamID` = attrat.`TeamID`
-      
+
     WHERE m.`MatchID` = " . $matchID . ";";
 
 // Run query and handle any failure
@@ -234,12 +234,12 @@ $result = mysqli_query($link, $sql);
 // TODO: This doesn't work as we're not running an AJAX request here
 if (!$result) {
   $error = 'Error fetching origin data: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-  
+
   header('Content-type: application/json');
   $arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
   echo json_encode($arr);
   die();
-} 
+}
 
 // Store results
 $row = mysqli_fetch_assoc($result);

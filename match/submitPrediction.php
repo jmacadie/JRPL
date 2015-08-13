@@ -27,22 +27,22 @@ if (!userIsLoggedIn() || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
 {
-    
+
   // Assign values
   $userID = $_SESSION['userID'];
   $matchID = (isset($_POST['matchID'])) ? $_POST['matchID'] : 'null';
   $homeTeamScore = (isset($_POST['homeTeamScore'])) ? $_POST['homeTeamScore'] : 'null';
   $awayTeamScore = (isset($_POST['awayTeamScore'])) ? $_POST['awayTeamScore'] : 'null';
-  
+
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-  
+
   // Make sure submitted data is clean
   $userID = mysqli_real_escape_string($link, $userID);
   $matchID = mysqli_real_escape_string($link, $matchID);
   $homeTeamScore = mysqli_real_escape_string($link, $homeTeamScore);
   $awayTeamScore = mysqli_real_escape_string($link, $awayTeamScore);
-  
+
   if (!int($matchID) || ($matchID < 1)) {
     // build results into output JSON file
     header('Content-type: application/json');
@@ -52,7 +52,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
     echo json_encode($arr);
     die();
   }
-  
+
   if (!int($homeTeamScore) || !int($awayTeamScore)) {
     // build results into output JSON file
     header('Content-type: application/json');
@@ -62,7 +62,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
     echo json_encode($arr);
     die();
   }
-  
+
   if (($homeTeamScore < 0) || ($awayTeamScore < 0)) {
     // build results into output JSON file
     header('Content-type: application/json');
@@ -72,26 +72,26 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
     echo json_encode($arr);
     die();
   }
-  
+
   // Query to see if a prediction for this match already exists
   $sql = "SELECT COUNT(*) AS `Count`
       FROM `Prediction` p
       WHERE
         p.`MatchID` = " . $matchID . "
         AND p.`UserID` =  " . $userID . ";";
-  
+
   // Run query and handle any failure
   $result = mysqli_query($link, $sql);
   if (!$result)
   {
     $error = 'Error counting existing predictions: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-    
+
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-  } 
-  
+  }
+
   // Check result to see if we need to UPDATE or INSERT
   $row = mysqli_fetch_assoc($result);
     if ($row['Count'] == 1) {
@@ -103,13 +103,13 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
         WHERE
           `MatchID` = " . $matchID . "
           AND `UserID` =  " . $userID . ";";
-    
+
     // Run query and handle any failure
     $result = mysqli_query($link, $sql);
     if (!$result)
     {
       $error = 'Error updating prediction: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-      
+
       header('Content-type: application/json');
       $arr = array('result' => 'No', 'message' => $error);
       echo json_encode($arr);
@@ -129,20 +129,20 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
           " . $homeTeamScore . ",
           " . $awayTeamScore . ",
           NOW());";
-    
+
     // Run query and handle any failure
     $result = mysqli_query($link, $sql);
     if (!$result)
     {
       $error = 'Error inserting prediction: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-      
+
       header('Content-type: application/json');
       $arr = array('result' => 'No', 'message' => $error);
       echo json_encode($arr);
       die();
     }
   };
-  
+
   // Test Code
   /*header('Content-type: application/json');
   $arr = array('result' => 'No', 'message' => $sql);

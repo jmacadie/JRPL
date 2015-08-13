@@ -16,13 +16,13 @@ $(document).ready(function() {
     window.scrollTo(0, 0);
     getMatchesData();
   });
-  
+
   // Add click handler to select / unselect all group stages button
   $("#btnSelectGroup").click(function(e) {
     e.preventDefault();
     selectAllGroups($(this).attr('data-mode'));
   });
-  
+
   // Add click handler to all group stages checkbox
   $("#ckbGroupStage").click(function(e) {
     disableAllGroups($(this).is(':checked'));
@@ -42,7 +42,7 @@ function getMatchesData() {
 
     // Output warning message
     $("#matchesMessage").html(result.join(''));
-  
+
   // Sort out the group stage filters
   var groupOv = $("#ckbGroupStage").is(':checked');
   var groupA = groupOv && $("#ckbGroupA").is(':checked');
@@ -53,12 +53,12 @@ function getMatchesData() {
   var groupF = groupOv && $("#ckbGroupF").is(':checked');
   var groupG = groupOv && $("#ckbGroupG").is(':checked');
   var groupH = groupOv && $("#ckbGroupH").is(':checked');
-  
+
   // Make the AJAX call
   $.ajax({
     url: 'getMatches.php',
     type: 'POST',
-    data: 
+    data:
       {action: "updateMatches",
       excPlayed: $("#ckbPlayedMatches").is(':checked'),
       excPredicted: $("#ckbPredictedMatches").is(':checked'),
@@ -80,7 +80,7 @@ function getMatchesData() {
       processMatchesReturn (data);
     },
     error: function(jqXHR, textStatus, errorThrown) {
-      alert ('AJAX callback error: ' + textStatus + ', ' + errorThrown); 
+      alert ('AJAX callback error: ' + textStatus + ', ' + errorThrown);
     }
   });
 
@@ -130,10 +130,10 @@ function bin2hex(s) {
 function processMatchesReturn (data) {
 
     var result;
-  
+
   if (data.result === "No") {
   // If result returned no then something went wrong so build and display an error message
-    
+
     // Build HTML for error message
     result = [
       '<div class="alert alert-danger alert-dismissable">',
@@ -141,41 +141,41 @@ function processMatchesReturn (data) {
       '<h4>Match Data Error</h4>',
       data.message,
       '</div>'];
-        
+
     // Output error message
     $("#matchesMessage").html(result.join(''));
 
   } else { // Data came back OK so build HTML and then display it
-    
+
     var homeFlag = '';
     var awayFlag = '';
     var date = '';
     var time = '';
-    
+
     // Initialise the result variable to hold which matches have been selected
     var result = [];
     for (var i = 0; i < 64; i++) { result.push(0); }
-    
+
     // Record which matches have actually been selected
     $.each(data.data, function(entryIndex, entry){
       result[entry['MatchID']-1] = 1;
     });
-    
+
     // Concat resultand then convert to hex
     result = result.join('');
     var ring = bin2hex(result);
-    
-    // Initialise the result variable as an empty array, 
+
+    // Initialise the result variable as an empty array,
     // bits of HTML will be pushed onto it and finally the whole
     // thing will be joined to output
         result = [];
-    
+
     $.each(data.data, function(entryIndex, entry){
-      
+
       // Sort out flag links
       homeFlag = (entry['HomeTeamS'] == '') ? 'tmp' : entry['HomeTeamS'].toLowerCase();
       awayFlag = (entry['AwayTeamS'] == '') ? 'tmp' : entry['AwayTeamS'].toLowerCase();
-      
+
       // Display Date Header if the first Match or date has changed
       if ((entryIndex === 0) || (entry['Date'] != date)) {
         date = entry['Date'];
@@ -187,19 +187,19 @@ function processMatchesReturn (data) {
         time = entry['KickOff'];
         result.push('<h4>' + time.slice(0,5) + '</h4>');
       }
-      
+
       // Add mark-up for a single match
-      
+
       // Wrap whole row in a link to the relevant match page
       result.push('<div class="matchRow">');
             result.push('<a href="../match?id=' + entry['MatchID'] + '&ring=' + ring.result + '">');
-      
+
       // Have own row to show flags on phones, in-line on anything bigger
             result.push('<div class="row visible-xs">');
       result.push('<div class="col-xs-4 text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + homeFlag + '.png"></div>');
       result.push('<div class="col-xs-4 col-xs-offset-4 text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + awayFlag + '.png"></div>');
       result.push('</div>');
-      
+
       // Main row with team names, flags and result on
       result.push('<div class="row">');
       result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + homeFlag + '.png"></div>'); // in-line flag for devices bigger than a phone
@@ -212,7 +212,7 @@ function processMatchesReturn (data) {
       result.push('<div class="col-xs-4 visible-xs text-center matchText">' + entry['AwayTeam'] + '</div>');  // Centred name for phones
       result.push('<div class="col-sm-2 hidden-xs text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + awayFlag + '.png"></div>'); // in-line flag for devices bigger than a phone
       result.push('</div>');
-      
+
       // Row for prediction, if logged in
       if (data.loggedIn == 1) {
         if (entry['HomeTeamPrediction'] === null) {
@@ -255,25 +255,25 @@ function processMatchesReturn (data) {
         result.push('</div>'); // Close row
         result.push('</div>'); // Close alert
       }
-      
+
       // Close link and wrapping div
             result.push('</a>');
       result.push('</div>');
-      
+
     });
-    
+
     // Write the HTML
         $("#matches").html(result.join(''));
-    
+
         // Close "Getting data" alert
         $("#aGettingMatchData").alert('close');
 
   }
-  
+
 }
 
 function selectAllGroups (mode) {
-  
+
   // see if we're selecting or unselecting
   if (mode === 'unselect') {
     // Change all the checkbox states to unchecked
@@ -286,11 +286,11 @@ function selectAllGroups (mode) {
     // Change button text back to unselect all
     $("#btnSelectGroup").text('Unselect All').attr('data-mode','unselect');
   }
-  
+
 }
 
 function disableAllGroups (mode) {
-  
+
   // see if we're disabling or enabling
   if (mode === true) {
     // Enable all the checkboxes + the button
@@ -301,5 +301,5 @@ function disableAllGroups (mode) {
     $('#collapseGroup').find('[type=checkbox]').prop('disabled', true);
     $('#btnSelectGroup').prop('disabled', true);
   }
-  
+
 }

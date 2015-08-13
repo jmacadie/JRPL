@@ -53,7 +53,7 @@
             } ?></td>
         </tr>
         <?php endforeach; ?>
-      <tbody> 
+      <tbody>
       </tbody>
     </table>
   </div>

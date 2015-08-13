@@ -64,8 +64,8 @@ body {
  */
 
 html,
-body { 
-  background: url(assets/img/bobby-moore-mobile.jpg) no-repeat center center fixed; 
+body {
+  background: url(assets/img/bobby-moore-mobile.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -74,19 +74,19 @@ body {
 
 @media (min-width: 400px) {
   html,
-  body { 
-    background: url(assets/img/bobby-moore-small.jpg) no-repeat center center fixed; 
+  body {
+    background: url(assets/img/bobby-moore-small.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     }
 }
-  
+
 @media (min-width: 768px) {
   html,
-  body { 
-    background: url(assets/img/bobby-moore.jpg) no-repeat center center fixed; 
+  body {
+    background: url(assets/img/bobby-moore.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

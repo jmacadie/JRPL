@@ -41,7 +41,7 @@ if (!$result)
 
 while ($row = mysqli_fetch_array($result))
 {
-  
+
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Calculate Mr Men
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,7 +49,7 @@ while ($row = mysqli_fetch_array($result))
     calcMrMean($row['MatchID'],$link);
   calcMrMedian($row['MatchID'],$link);
   calcMrMode($row['MatchID'],$link);
-  
+
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Email To Addresses
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,7 +65,7 @@ while ($row = mysqli_fetch_array($result))
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     $css = 'standard';
-  
+
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - Get details
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,7 +79,7 @@ while ($row = mysqli_fetch_array($result))
         LEFT JOIN `Prediction` p ON
           p.`MatchID` = " . $row['MatchID'] . "
           AND p.`UserID` = u.`UserID`
-      
+
       ORDER BY
         (p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
         p.`HomeTeamGoals` DESC;";
@@ -126,7 +126,7 @@ while ($row = mysqli_fetch_array($result))
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of content -->' . chr(13);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - write predictions table
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -138,12 +138,12 @@ while ($row = mysqli_fetch_array($result))
   $predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Player</th>' . chr(13);
   $predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Prediction</th>' . chr(13);
   $predictions .= '</tr>' . chr(13);
-  
+
   // Counter for striped rows
   $i = 0;
-  
+
   while ($rowBody = mysqli_fetch_array($resultBody)) {
-  
+
     if($i == 1) {
       $predictions .= '<tr style="background-color: #f0f0ff;">' . chr(13);
       $i = 2;
@@ -156,9 +156,9 @@ while ($row = mysqli_fetch_array($result))
     } else {
       $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowBody['DisplayName'] . '</td>' . chr(13);
     }
-    
+
     $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap;">' . chr(13);
-    
+
     if ($rowBody['HomeTeamGoals'] == 'No prediction') {
       $predictions .= '<i>No prediction</i>' . chr(13);
     } else {
@@ -175,14 +175,14 @@ while ($row = mysqli_fetch_array($result))
     }
     $predictions .= '</td>' . chr(13);
     $predictions .= '</tr>' . chr(13);
-  
+
   }
-  
+
   $predictions .= '</table>' . chr(13);
   $predictions .= '</td>' . chr(13);
   $predictions .= '</tr>' . chr(13);
   $predictions .= '<!-- End of content -->' . chr(13);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - build body array for sendEmail routine
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

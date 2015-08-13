@@ -1,10 +1,10 @@
 <?php
 
 function calcMrMean($matchID,$link) {
-  
+
   // Delete existing prediction first
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Build SQL
     $sql = "DELETE FROM `Prediction`
          WHERE
@@ -15,7 +15,7 @@ function calcMrMean($matchID,$link) {
                 r.`RoleID` = ur.`RoleID`
             WHERE r.`Role` = 'Mr Mean')
           AND `MatchID` = " . $matchID . ";";
-  
+
   // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
     if (!$result)
@@ -24,10 +24,10 @@ function calcMrMean($matchID,$link) {
         sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
         exit();
     }
-  
+
   // Get the predicted scores
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
     // Build SQL - exclude special roles
   $sql = "SELECT
         p.`HomeTeamGoals`,
@@ -39,7 +39,7 @@ function calcMrMean($matchID,$link) {
           r.`RoleID` = ur.`RoleID`
       WHERE p.`MatchID` = " . $matchID . "
         AND (r.`Role` IS NULL OR r.`Role` NOT IN ('Mr Mean','Mr Median','Mr Mode'));";
-  
+
   // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
     if (!$result)
@@ -48,16 +48,16 @@ function calcMrMean($matchID,$link) {
         sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
         exit();
     }
-  
+
     // Calculate the Mean scores
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Set the counters to zero to start with
   $homeScoreT = 0;
   $homeScoreC = 0;
   $awayScoreT = 0;
   $awayScoreC = 0;
-  
+
   // Loop through all users and add scores if submitted
     while ($row = mysqli_fetch_array($result))
     {
@@ -69,18 +69,18 @@ function calcMrMean($matchID,$link) {
       $awayScoreC++;
     }
     }
-  
+
   // Insert the prediction
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Only do anything else if we have some predictions to work with
   if ($homeScoreC > 0)
   {
-    
+
     // Actually calculate the averages ;)
     $homeScoreM = round($homeScoreT / $homeScoreC);
     $awayScoreM = round($awayScoreT / $awayScoreC);
-    
+
     // Build SQL
     $sqlAdd = "INSERT INTO `Prediction` (
           `UserID`,
@@ -100,7 +100,7 @@ function calcMrMean($matchID,$link) {
           " . $awayScoreM . ",
           NOW()
         )";
-    
+
     // Run SQL and trap any errors
     $resultAdd = mysqli_query($link, $sqlAdd);
     if (!$resultAdd)
@@ -109,16 +109,16 @@ function calcMrMean($matchID,$link) {
       sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
       exit();
     }
-    
+
   }
 
 }
 
 function calcMrMode($matchID,$link) {
-  
+
   // Delete existing prediction first
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Build SQL
     $sql = "DELETE FROM `Prediction`
          WHERE
@@ -129,7 +129,7 @@ function calcMrMode($matchID,$link) {
                 r.`RoleID` = ur.`RoleID`
             WHERE r.`Role` = 'Mr Mode')
           AND `MatchID` = " . $matchID . ";";
-  
+
   // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
     if (!$result)
@@ -138,10 +138,10 @@ function calcMrMode($matchID,$link) {
         sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
         exit();
     }
-  
+
   // Get the predicted scores
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
     // Build SQL - exclude special roles
   $sql = "SELECT
         p.`HomeTeamGoals`,
@@ -153,7 +153,7 @@ function calcMrMode($matchID,$link) {
           r.`RoleID` = ur.`RoleID`
       WHERE p.`MatchID` = " . $matchID . "
         AND (r.`Role` IS NULL OR r.`Role` NOT IN ('Mr Mean','Mr Median','Mr Mode'));";
-  
+
   // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
     if (!$result)
@@ -162,13 +162,13 @@ function calcMrMode($matchID,$link) {
         sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
         exit();
     }
-  
+
     // Calculate the Mode scores
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Set the counters to zero to start with
     $numMatches = 0;
-  
+
   // Loop through all users and add scores if submitted
     while ($row = mysqli_fetch_array($result))
     {
@@ -179,21 +179,21 @@ function calcMrMode($matchID,$link) {
       $awayScores[] = $row['AwayTeamGoals'];
     }
     }
-  
+
   // Insert the prediction
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Only do anything else if we have some predictions to work with
   if ($numMatches > 0)
   {
-    
+
     // Actually calculate the averages ;)
-    $values = array_count_values($homeScores); 
+    $values = array_count_values($homeScores);
     $homeScoreM = array_search(max($values), $values);
-    
-    $values = array_count_values($awayScores); 
+
+    $values = array_count_values($awayScores);
     $awayScoreM = array_search(max($values), $values);
-    
+
     // Build SQL
     $sqlAdd = "INSERT INTO `Prediction` (
           `UserID`,
@@ -213,7 +213,7 @@ function calcMrMode($matchID,$link) {
           " . $awayScoreM . ",
           NOW()
         )";
-    
+
     // Run SQL and trap any errors
     $resultAdd = mysqli_query($link, $sqlAdd);
     if (!$resultAdd)
@@ -222,16 +222,16 @@ function calcMrMode($matchID,$link) {
       sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
       exit();
     }
-    
+
   }
 
 }
 
 function calcMrMedian($matchID,$link) {
-  
+
   // Delete existing prediction first
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Build SQL
     $sql = "DELETE FROM `Prediction`
          WHERE
@@ -242,7 +242,7 @@ function calcMrMedian($matchID,$link) {
                 r.`RoleID` = ur.`RoleID`
             WHERE r.`Role` = 'Mr Median')
           AND `MatchID` = " . $matchID . ";";
-  
+
   // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
     if (!$result)
@@ -251,10 +251,10 @@ function calcMrMedian($matchID,$link) {
         sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
         exit();
     }
-  
+
   // Get the predicted scores
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
     // Build SQL - exclude special roles
   $sql = "SELECT
         p.`HomeTeamGoals`,
@@ -266,7 +266,7 @@ function calcMrMedian($matchID,$link) {
           r.`RoleID` = ur.`RoleID`
       WHERE p.`MatchID` = " . $matchID . "
         AND (r.`Role` IS NULL OR r.`Role` NOT IN ('Mr Mean','Mr Median','Mr Mode'));";
-  
+
   // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
     if (!$result)
@@ -275,13 +275,13 @@ function calcMrMedian($matchID,$link) {
         sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
         exit();
     }
-  
+
     // Calculate the Median scores
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Set the counters to zero to start with
     $numMatches = 0;
-  
+
   // Loop through all users and add scores if submitted
     while ($row = mysqli_fetch_array($result))
     {
@@ -292,19 +292,19 @@ function calcMrMedian($matchID,$link) {
       $awayScores[] = $row['AwayTeamGoals'];
     }
     }
-  
+
   // Insert the prediction
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   // Only do anything else if we have some predictions to work with
   if ($numMatches > 0)
   {
-    
+
     // Actually calculate the averages ;)
     // Sort arrays
     $homeScores = quickSort($homeScores);
     $awayScores = quickSort($awayScores);
-    
+
     if ($numMatches % 2) // $numMatches is odd can just take middle array value
     {
       $homeScoreM = $homeScores[(($numMatches+1)/2)];
@@ -315,7 +315,7 @@ function calcMrMedian($matchID,$link) {
       $homeScoreM = round(($homeScores[($numMatches/2)]+$homeScores[(($numMatches/2)+1)])/2);
       $awayScoreM = round(($awayScores[($numMatches/2)]+$awayScores[(($numMatches/2)+1)])/2);
     }
-    
+
     // Build SQL
     $sqlAdd = "INSERT INTO `Prediction` (
           `UserID`,
@@ -335,7 +335,7 @@ function calcMrMedian($matchID,$link) {
           " . $awayScoreM . ",
           NOW()
         )";
-    
+
     // Run SQL and trap any errors
     $resultAdd = mysqli_query($link, $sqlAdd);
     if (!$resultAdd)
@@ -344,7 +344,7 @@ function calcMrMedian($matchID,$link) {
       sendEmail('james.macadie@telerealtrillium.com','Predictions Email Error','',$error);
       exit();
     }
-    
+
   }
 
 }

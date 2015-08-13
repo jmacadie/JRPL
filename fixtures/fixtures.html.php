@@ -100,7 +100,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="checkbox">
           <label>
           <input type="checkbox" id="ckbLast16" value="" checked>

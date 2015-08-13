@@ -11,5 +11,5 @@
     </select>
   </div>
   <button type="submit" class="btn btn-default">Change</button>
-  <input type="hidden" name="_submit_check" value="1"/> 
+  <input type="hidden" name="_submit_check" value="1"/>
 </form>

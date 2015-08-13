@@ -54,18 +54,18 @@ if (!isset($_POST['action']) || !isset($_POST['tournamentRoleID']) || !isset($_P
 // Check to see if we've got the right action posted
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if ($_POST['action'] == 'updateTournamentRole') {
-    
+
   // Assign values
   $tournamentRoleID = $_POST['tournamentRoleID'];
   $teamID = $_POST['teamID'];
-  
+
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-  
+
   // Make sure submitted data is clean
   $tournamentRoleID = mysqli_real_escape_string($link, $tournamentRoleID);
   $teamID = mysqli_real_escape_string($link, $teamID);
-  
+
   if (!int($tournamentRoleID) || ($tournamentRoleID < 1)) {
     // build results into output JSON file
     header('Content-type: application/json');
@@ -75,7 +75,7 @@ if ($_POST['action'] == 'updateTournamentRole') {
     echo json_encode($arr);
     die();
   }
-  
+
   if (!int($teamID) || ($teamID < 0)) {
     // build results into output JSON file
     header('Content-type: application/json');
@@ -85,38 +85,38 @@ if ($_POST['action'] == 'updateTournamentRole') {
     echo json_encode($arr);
     die();
   }
-  
+
   // UPDATE the match table with the posted data
   $sql = "UPDATE `TournamentRole`
       SET `TeamID` = ";
   if ($teamID == 0) { $sql .= 'NULL'; } else { $sql .= $teamID; }
   $sql .= "
       WHERE `TournamentRoleID` = " . $tournamentRoleID . ";";
-  
+
   // Run query and handle any failure
   $result = mysqli_query($link, $sql);
   if (!$result) {
     $error = 'Error updating tournament role: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-    
+
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
   }
-  
+
   // Get submitted team details back
   if ($teamID != 0) {
-    
+
     // Build the SQL
     $sql = "SELECT `Name`, `ShortName`
         FROM `Team`
         WHERE `TeamID` = " . $teamID . ";";
-    
+
     // Run query and handle any failure
     $result = mysqli_query($link, $sql);
     if (!$result) {
       $error = 'Error getting team details back: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-      
+
       header('Content-type: application/json');
       $arr = array('result' => 'No', 'message' => $error);
       echo json_encode($arr);
@@ -127,13 +127,13 @@ if ($_POST['action'] == 'updateTournamentRole') {
     $row = mysqli_fetch_assoc($result);
     $team = $row['Name'];
     $teamS = $row['ShortName'];
-    
+
   } else {
     // Team was unset, return blanks
     $team = '';
     $teamS = '';
   }
-  
+
   // build results into output JSON file
   header('Content-type: application/json');
   $arr = array(

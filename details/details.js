@@ -48,7 +48,7 @@ function doUpdate() {
                 $("#updateMessage").html(result.join(''));
 
             } else if (xml.result == "Yes") {
-        
+
         // Build HTML for return message
                 result = [
                     '<div class="alert alert-success alert-dismissable">',

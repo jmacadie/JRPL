@@ -16,14 +16,14 @@
   <meta name="author" content="Maccas">
 
   <!-- Styles -->
-  
+
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-  
+
   <!-- Responsive Tables CSS -->
   <link rel="stylesheet" href="../assets/css/rwd-table.min.css">
-  
+
   <!-- Custom styles for this template -->
   <link type="text/css" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/css/JRPL.css" rel="stylesheet">
 
@@ -47,7 +47,7 @@
   if (isset($_SESSION['firstName'])) $firstName = $_SESSION['firstName'];
   if (isset($_SESSION['lastName'])) $lastName = $_SESSION['lastName'];
   ?>
-  
+
   <!-- Navigation Bar -->
   <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container-fluid">
@@ -59,7 +59,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <?php 
+        <?php
         $ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true : false;
         $host = isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST'];
         $url = "http" . (($ssl) ? "s" : "") . "://" . $host;
@@ -114,14 +114,14 @@
   </nav>
 
   <div class="container">
-    
+
     <div class="page-content">
     <?php
       // Load the specific page's content
       include $content;
     ?>
     </div>
-    
+
     <footer class="footer">
       <hr>
       <p>&copy; Keep predicting! Julian & Will</p>

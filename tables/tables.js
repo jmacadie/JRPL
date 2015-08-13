@@ -7,20 +7,20 @@ $(document).ready(function() {
   $('#tGSCont').collapse('hide');
   $('#tL16Cont').collapse('hide');
   $('#tRCont').collapse('hide');
-  
+
   // Make buttons lose focus after being clicked
   $("#btnOverallCont").click(function(e) {
     $(this).blur();
   });
-  
+
   $("#btnGSCont").click(function(e) {
     $(this).blur();
   });
-  
+
   $("#btnL16Cont").click(function(e) {
     $(this).blur();
   });
-  
+
   $("#btnRCont").click(function(e) {
     $(this).blur();
   });

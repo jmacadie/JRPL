@@ -59,9 +59,9 @@ function emailCSS () {
   $css .= 'td[class=mobile-hide]{display:none!important;}' . chr(13);
   $css .= 'td[class="padding-bottom25"]{padding-bottom:25px!important;}' . chr(13);
   $css .= '}' . chr(13);
-  
+
   return $css;
-  
+
 }
 
 // Mark-up to include a table in the
@@ -109,12 +109,12 @@ function bodyTable($comment, $content) {
   $text .= '</tbody>' . chr(13);
   $text .= '</table>' . chr(13);
   $text .= '<!-- End of ' . $comment . ' -->' . chr(13);
-  
+
   return $text;
 
 }
 
-// Mark-up for an empty separator in the 
+// Mark-up for an empty separator in the
 // HTML of the body
 function bodySeparator($comment) {
 
@@ -135,12 +135,12 @@ function bodySeparator($comment) {
   $text .= '</tbody>' . chr(13);
   $text .= '</table>' . chr(13);
   $text .= '<!-- End of ' . $comment . ' -->' . chr(13);
-  
+
   return $text;
 
 }
 
-// Mark-up for a horizontal row separator in the 
+// Mark-up for a horizontal row separator in the
 // HTML of the body
 function bodySeparatorHR($comment) {
 
@@ -167,7 +167,7 @@ function bodySeparatorHR($comment) {
   $text .= '</tbody>' . chr(13);
   $text .= '</table>' . chr(13);
   $text .= '<!-- End of ' . $comment . ' --> ' . chr(13);
-  
+
   return $text;
 
 }
@@ -184,12 +184,12 @@ function tableBorder($content) {
 // Build HTML for body based on input array
 // Cuts down on repetitive tables mark-up
 function emailBody ($body) {
-  
+
   $out = '';
-  
+
   // Loop through each element
   foreach ($body as $ele) {
-    
+
     if ($ele[0] == 'separator') {
       $out .= bodySeparator($ele[1]);
     } elseif ($ele[0] == 'separatorHR') {
@@ -197,26 +197,26 @@ function emailBody ($body) {
     } elseif ($ele[0] == 'table') {
       $out .= bodyTable($ele[1],$ele[2]);
     }
-    
+
   }
-  
+
   return $out;
-  
+
 }
 
 function sendEmail($to,$subject,$css,$body) {
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Email header
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $mailHeader = "From: julian@julianrimet.com\r\n";
   $mailHeader .= "Reply-To: julian@julianrimet.com\r\n";
   $mailHeader .= "Content-type: text/html; charset=iso-8859-1\r\n";
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Body - HTML Head section (formatting)
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+
   $MESSAGE_BODY = '<html>' . chr(13);
   $MESSAGE_BODY .= '<head>' . chr(13);
     $MESSAGE_BODY .= '<style type="text/css">' . chr(13);
@@ -227,7 +227,7 @@ function sendEmail($to,$subject,$css,$body) {
   }
     $MESSAGE_BODY .= '</style>' . chr(13);
   $MESSAGE_BODY .= '</head>' . chr(13);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Body - Write details
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -242,7 +242,7 @@ function sendEmail($to,$subject,$css,$body) {
   $MESSAGE_BODY .= '<a href="http://www.julianrimet.com">JRPL website</a>' . chr(13);
   $MESSAGE_BODY .= '</body>' . chr(13);
   $MESSAGE_BODY .= '</html>' . chr(13);
-  
+
   // Send e-mail
   mail('james.macadie@telerealtrillium.com', $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
   //mail($to, $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
@@ -251,10 +251,10 @@ function sendEmail($to,$subject,$css,$body) {
 
 // Send e-mail of the results from the posted match
 function sendResultsEmail ($matchID) {
-  
+
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Get match details
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -275,28 +275,28 @@ function sendResultsEmail ($matchID) {
           trat.`TournamentRoleID` = m.`AwayTeamID`
         LEFT JOIN `Team` at ON
           at.`TeamID` = trat.`TeamID`
-      
+
       WHERE m.`MatchID` = " . $matchID . ";";
 
     $result = mysqli_query($link, $sql);
     if (!$result)
     {
         $error = 'Error getting match details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-        
+
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
     }
-  
+
   // Get the data
   $row = mysqli_fetch_assoc($result);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Get league table details
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     $resultLeague = getLeagueTable(1);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Get match result details
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -314,12 +314,12 @@ function sendResultsEmail ($matchID) {
         LEFT JOIN `Prediction` p ON
           p.`UserID` = mu.`UserID`
           AND p.`MatchID` = mu.`MatchID`
-        
+
         LEFT JOIN `Points` po ON
           po.`ScoringSystemID` = 1
           AND po.`MatchID` = p.`MatchID`
           AND po.`UserID` = p.`UserID`
-      
+
       ORDER BY
         po.`TotalPoints` DESC,
         (p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
@@ -328,13 +328,13 @@ function sendResultsEmail ($matchID) {
     $resultMatch = mysqli_query($link, $sql);
     if (!$resultMatch) {
         $error = 'Error getting match result details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-        
+
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
     }
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Email To Addresses
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -384,7 +384,7 @@ function sendResultsEmail ($matchID) {
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of content -->' . chr(13);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - write league table
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -411,12 +411,12 @@ function sendResultsEmail ($matchID) {
   $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Exact Scores</th>' . chr(13);
   $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Points</th>' . chr(13);
   $league .= '</tr>' . chr(13);
-  
+
   // Counter for striped rows
   $i = 0;
-  
+
   foreach ($resultLeague as $rowLeague) {
-  
+
     if($i == 1) {
       $league .= '<tr style="background-color: #f0f0ff;">' . chr(13);
       $i = 2;
@@ -424,7 +424,7 @@ function sendResultsEmail ($matchID) {
       $league .= '<tr>' . chr(13);
       $i = 1;
     }
-    
+
     $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
     $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowLeague['name'] . '</td>' . chr(13);
     if ($rowLeague['results'] == 0) {
@@ -443,14 +443,14 @@ function sendResultsEmail ($matchID) {
       $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowLeague['totalPoints'] . '</td>' . chr(13);
     }
     $league .= '</tr>' . chr(13);
-  
+
   }
-  
+
   $league .= '</table>' . chr(13);
   $league .= '</td>' . chr(13);
   $league .= '</tr>' . chr(13);
   $league .= '<!-- End of content -->' . chr(13);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - write match details table
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -475,12 +475,12 @@ function sendResultsEmail ($matchID) {
   $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Prediction</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Points</th>' . chr(13);
   $match .= '</tr>' . chr(13);
-  
+
   // Counter for striped rows
   $i = 0;
-  
+
   while ($rowMatch = mysqli_fetch_array($resultMatch)) {
-  
+
     if($i == 1) {
       $match .= '<tr style="background-color: #f0f0ff;">' . chr(13);
       $i = 2;
@@ -510,16 +510,16 @@ function sendResultsEmail ($matchID) {
     } else {
       $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top;" align="center">' . $rowMatch['TotalPoints'] . '</td>' . chr(13);
     }
-    
+
     $match .= '</tr>' . chr(13);
-  
+
   }
-  
+
   $match .= '</table>' . chr(13);
   $match .= '</td>' . chr(13);
   $match .= '</tr>' . chr(13);
   $match .= '<!-- End of content -->' . chr(13);
-  
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // Body - build body array for sendEmail routine
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -543,7 +543,7 @@ function sendResultsEmail ($matchID) {
     if (!$resultBody)
     {
         $error = 'Error updating email sent table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-        
+
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);

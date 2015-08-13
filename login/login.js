@@ -45,10 +45,10 @@ function doLogIn() {
                 $("#logInMessage").html(result.join(''));
 
             } else if (xml.result == "Yes") {
-        
+
         // Remove enter key over-ride
                 $(document).off('keydown');
-        
+
         // Load details page once done
                 var loc = window.location.origin + "/details/";
     location = loc;

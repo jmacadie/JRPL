@@ -27,18 +27,18 @@ $sql = "SELECT
       IFNULL(gt.`Name`, st.`Name`) AS `SelectTeam`
 
     FROM `TournamentRole` tr
-      
+
       INNER JOIN `Stage` s ON
         tr.`StageID` = s.`StageID`
-      
+
       LEFT JOIN `Team` t ON
         t.`TeamID` = tr.`TeamID`
-      
+
       LEFT JOIN `TournamentRole` trg ON
         trg.`FromGroupID` = tr.`FromGroupID` AND trg.`StageID` = 1
       LEFT JOIN `Team` gt ON
         gt.`TeamID` = trg.`TeamID`
-        
+
       LEFT JOIN
         (SELECT `MatchID`,`HomeTeamID` AS `TeamID` FROM `Match` UNION ALL
         SELECT `MatchID`,`AwayTeamID` AS `TeamID` FROM `Match`) m ON
@@ -47,7 +47,7 @@ $sql = "SELECT
         trt.`TournamentRoleID` = m.`TeamID`
       LEFT JOIN `Team` st ON
         st.`TeamID` = trt.`TeamID`
-    
+
     ORDER BY
       s.`StageID` ASC,
       tr.`TournamentRoleID` ASC,
@@ -58,19 +58,19 @@ $sql = "SELECT
 $result = mysqli_query($link, $sql);
 if (!$result) {
   $error = 'Error fetching tournament roles: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-  
+
   header('Content-type: application/json');
   $arr = array('result' => 'No', 'message' => $error);
   echo json_encode($arr);
   die();
-} 
+}
 
 // Store results
 $arrTournamentRoles = array();
 $tr == '';
 
 while($row = mysqli_fetch_assoc($result)) {
-  
+
   // Check if we're onto a new Tournament Role
   if ($row['TournamentRole'] != $tr) {
 
@@ -82,7 +82,7 @@ while($row = mysqli_fetch_assoc($result)) {
 
     // Reset tr variables
     $tr = $row['TournamentRole'];
-    
+
     // Reset temp output arrays
     $arrTROut = array();
     $arrTRTOut = array();
@@ -94,15 +94,15 @@ while($row = mysqli_fetch_assoc($result)) {
     $arrTROut['teamID'] = $row['TeamID'];
     $arrTROut['team'] = $row['Team'];
     $arrTROut['teamS'] = $row['TeamS'];
-     
+
   }
-  
+
   // Push the team onto the select team array
-  $arrTRTOut[] = array('id' => $row['SelectTeamID'], 'name' => $row['SelectTeam']); 
+  $arrTRTOut[] = array('id' => $row['SelectTeamID'], 'name' => $row['SelectTeam']);
 }
 
 // Push final TR array onto output array
 $arrTROut ['selectTeam'] = $arrTRTOut;
-$arrTournamentRoles[] = $arrTROut; 
+$arrTournamentRoles[] = $arrTROut;
 
 ?>
