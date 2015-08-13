@@ -6,7 +6,7 @@
 .footer {
   color: #eee;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  text-shadow: 0 1px 5px rgba(0,0,0,.75);
 }
 
 /*
@@ -65,31 +65,31 @@ body {
 
 html,
 body {
-  background: url(assets/img/bobby-moore-mobile.jpg) no-repeat center center fixed;
+  background: url(assets/img/jonny-mobile.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  }
+}
 
 @media (min-width: 400px) {
   html,
   body {
-    background: url(assets/img/bobby-moore-small.jpg) no-repeat center center fixed;
+    background: url(assets/img/jonny-small.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    }
+  }
 }
 
 @media (min-width: 768px) {
   html,
   body {
-    background: url(assets/img/bobby-moore.jpg) no-repeat center center fixed;
+    background: url(assets/img/jonny+tege.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    }
+  }
 }
