@@ -5,7 +5,10 @@ $(document).ready(function() {
   $("#accordionTournamentRoles").find('button').click(function(e) {
     e.preventDefault();
     var $sel = $(this).closest('form').find('select');
-    updateTournamentRole($sel.attr('id').substring(3), $sel.val(), $sel.closest('div.row').next('div.row').find('.messageTR'));
+    updateTournamentRole(
+      $sel.attr('id').substring(3),
+      $sel.val(),
+      $sel.closest('div.row').next('div.row').find('.messageTR'));
   });
 
 });
@@ -16,7 +19,10 @@ function updateTournamentRole(tournamentRoleID, teamID, $message) {
   // Build HTML for info message
   var result = [
     '<div class="alert alert-info alert-dismissable">',
-    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+    '<button type="button"',
+    ' class="close"',
+    ' data-dismiss="alert"',
+    ' aria-hidden="true">&times;</button>',
     'Submitting update to database...',
     '</div>'];
 
@@ -43,16 +49,21 @@ function updateTournamentRole(tournamentRoleID, teamID, $message) {
 
 }
 
-// Callback function to process the returned data when filters are updated (or page is first loaded)
+// Callback function to process the returned data when filters are updated (or
+// page is first loaded)
 function processUpdateTRReturn (data, $message) {
 
   if (data.result === "No") {
-  // If result returned no then something went wrong so build and display an error message
+  // If result returned no then something went wrong so build and display an
+  // error message
 
     // Build HTML for error message
     var result = [
       '<div class="alert alert-danger alert-dismissable">',
-      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+      '<button type="button"',
+      ' class="close"',
+      ' data-dismiss="alert"',
+      ' aria-hidden="true">&times;</button>',
       '<h4>Update Tournament Role Error</h4>',
       data.message,
       '</div>'];
@@ -73,7 +84,7 @@ function processUpdateTRReturn (data, $message) {
     $row.find('span.tr-team').html(data.team);
 
     // Close "submitting data" alert
-        $message.html('');
+    $message.html('');
 
   }
 
