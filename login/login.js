@@ -1,20 +1,20 @@
 $(document).ready(function() {
 
-	// Add click handler to log in button
-	$("#logInBtn").click(function(e) {
+  // Add click handler to log in button
+  $("#logInBtn").click(function(e) {
 
-		e.preventDefault();
+    e.preventDefault();
         doLogIn();
 
     });
 
-	// Set a handler to process return key press as form submit
-	$(document).keydown(function(event) {
-		if (event.which == 13) {
-			event.preventDefault();
-			doLogIn();
-		};
-	});
+  // Set a handler to process return key press as form submit
+  $(document).keydown(function(event) {
+    if (event.which == 13) {
+      event.preventDefault();
+      doLogIn();
+    };
+  });
 
 });
 
@@ -26,7 +26,7 @@ function doLogIn() {
         {action: "login",
             email: $("#logInEmail").val(),
             password: $("#logInPassword").val(),
-			rememberMe: $("#logInRemeberMe").is(':checked')},
+      rememberMe: $("#logInRemeberMe").is(':checked')},
 
         function(xml) {
             var result;
@@ -35,7 +35,7 @@ function doLogIn() {
                 // Build HTML for error message
                 result = [
                     '<div class="alert alert-danger alert-dismissable">',
-					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+          '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
                     '<h4>Log In Error</h4>',
                     xml.message,
                     '</div>',
@@ -45,13 +45,13 @@ function doLogIn() {
                 $("#logInMessage").html(result.join(''));
 
             } else if (xml.result == "Yes") {
-				
-				// Remove enter key over-ride
+        
+        // Remove enter key over-ride
                 $(document).off('keydown');
-				
-				// Load details page once done
+        
+        // Load details page once done
                 var loc = window.location.origin + "/details/";
-		location = loc;
+    location = loc;
 
             }
         });

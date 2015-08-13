@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	// Add click handler to log out menu
+  // Add click handler to log out menu
     $("#logOut").click(function(e) {
 
         e.preventDefault();

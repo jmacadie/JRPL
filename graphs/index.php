@@ -21,7 +21,7 @@ $data = getGraphData($_SESSION['scoringSystem']);
 $numUsers = 0;
 $firstMatchID = $data[$numUsers]['matchID'];
 while ($data[$numUsers]['matchID'] == $firstMatchID){
-	$numUsers++;
+  $numUsers++;
 }
 
 // Get the number of matches

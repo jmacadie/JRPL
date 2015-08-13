@@ -1,20 +1,20 @@
 $(document).ready(function() {
 
-	// Add click handler to log in button
-	$("#updateBtn").click(function(e) {
+  // Add click handler to log in button
+  $("#updateBtn").click(function(e) {
 
-		e.preventDefault();
+    e.preventDefault();
         doUpdate();
 
     });
 
-	// Set a handler to process return key press as form submit
-	$(document).keydown(function(event) {
-		if (event.which == 13) {
-			event.preventDefault();
-			doUpdate();
-		};
-	});
+  // Set a handler to process return key press as form submit
+  $(document).keydown(function(event) {
+    if (event.which == 13) {
+      event.preventDefault();
+      doUpdate();
+    };
+  });
 
 });
 
@@ -25,10 +25,10 @@ function doUpdate() {
 
         {action: "update",
             firstName: $("#firstName").val(),
-			lastName: $("#lastName").val(),
-			displayName: $("#displayName").val(),
-			email: $("#email").val(),
-			pwd: $("#tPassord").val(),
+      lastName: $("#lastName").val(),
+      displayName: $("#displayName").val(),
+      email: $("#email").val(),
+      pwd: $("#tPassord").val(),
             pwd2: $("#tPassord2").val()},
 
         function(xml) {
@@ -38,7 +38,7 @@ function doUpdate() {
                 // Build HTML for error message
                 result = [
                     '<div class="alert alert-danger alert-dismissable">',
-					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+          '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
                     '<h4>Update Error</h4>',
                     xml.message,
                     '</div>',
@@ -48,11 +48,11 @@ function doUpdate() {
                 $("#updateMessage").html(result.join(''));
 
             } else if (xml.result == "Yes") {
-				
-				// Build HTML for return message
+        
+        // Build HTML for return message
                 result = [
                     '<div class="alert alert-success alert-dismissable">',
-					'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+          '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
                     'Details updated',
                     '</div>',
                 ];

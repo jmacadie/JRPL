@@ -9,17 +9,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if (isset($_POST['action']) && $_POST['action'] === 'login') {
 
-	if (userIsLoggedIn()) {
-		// prepare success xml data
-		header('Content-type: application/json');
-		$arr = array('result' => 'Yes', 'message' => '');
-		echo json_encode($arr);
-	} else {
-		// prepare failure xml data
-		header('Content-type: application/json');
-		$arr = array('result' => 'No', 'message' => $GLOBALS['loginError']);
-		echo json_encode($arr);
-	}
+  if (userIsLoggedIn()) {
+    // prepare success xml data
+    header('Content-type: application/json');
+    $arr = array('result' => 'Yes', 'message' => '');
+    echo json_encode($arr);
+  } else {
+    // prepare failure xml data
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $GLOBALS['loginError']);
+    echo json_encode($arr);
+  }
 
 }
 
@@ -27,7 +27,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'login') {
 // Log Out
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if (isset($_POST['action']) and $_POST['action'] === 'logout') {
-	unsetUserSessionInfo();
+  unsetUserSessionInfo();
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,17 +35,17 @@ if (isset($_POST['action']) and $_POST['action'] === 'logout') {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if (isset($_POST['action']) && $_POST['action'] === 'update') {
 
-	if (updateDetails()) {
-		// prepare success xml data
-		header('Content-type: application/json');
-		$arr = array('result' => 'Yes', 'message' => '');
-		echo json_encode($arr);
-	} else {
-		// prepare failure xml data
-		header('Content-type: application/json');
-		$arr = array('result' => 'No', 'message' => $GLOBALS['loginError']);
-		echo json_encode($arr);
-	}
+  if (updateDetails()) {
+    // prepare success xml data
+    header('Content-type: application/json');
+    $arr = array('result' => 'Yes', 'message' => '');
+    echo json_encode($arr);
+  } else {
+    // prepare failure xml data
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $GLOBALS['loginError']);
+    echo json_encode($arr);
+  }
 
 }
 

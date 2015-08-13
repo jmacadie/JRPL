@@ -79,16 +79,16 @@ causes Apache to crash when it attempts to open the "deletejoke" file.
 
 if (getenv('ENVIR') == 'Production') {
     $user = 'jrpl_prod_user';
-	$pwd = getenv('DB_PWD');
-	$db = 'jrpl_prod';
+  $pwd = getenv('DB_PWD');
+  $db = 'jrpl_prod';
 } elseif (getenv('ENVIR') == 'Test') {
     $user = 'jrpl_test_user';
-	$pwd = getenv('DB_PWD');
-	$db = 'jrpl_test';
+  $pwd = getenv('DB_PWD');
+  $db = 'jrpl_test';
 } elseif (getenv('ENVIR') == 'Development') {
     $user = 'jrpl_dev_user';
-	$pwd = getenv('DB_PWD');
-	$db = 'jrpl_dev';
+  $pwd = getenv('DB_PWD');
+  $db = 'jrpl_dev';
 }
 
 $link = mysqli_connect('localhost', $user, $pwd);
