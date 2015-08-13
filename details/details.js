@@ -21,9 +21,9 @@ function doUpdate() {
   // Send request
   $.post(
 
-    url: "../includes/login.php",
+    url = "../includes/login.php",
 
-    data: {action: "update",
+    data = {action: "update",
            firstName: $("#firstName").val(),
            lastName: $("#lastName").val(),
            displayName: $("#displayName").val(),
@@ -31,7 +31,7 @@ function doUpdate() {
            pwd: $("#tPassord").val(),
            pwd2: $("#tPassord2").val()},
 
-    success: function(xml) {
+    success = function(xml) {
       var result;
 
       if (xml.result == "No") {
