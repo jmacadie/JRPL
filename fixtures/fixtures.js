@@ -222,12 +222,14 @@ function processMatchesReturn (data) {
         } else {
           result.push('<div class="alert alert-success">');
           result.push('<div class="row">');
+          htp = Math.round(entry['HomeTeamPrediction']);
+          atp = Math.round(entry['AwayTeamPrediction']);
           // Prediction for phones
           result.push('<div class="col-xs-3 visible-xs text-left"><i>Predicted:</i></div>');
           result.push('<div class="col-xs-6 visible-xs text-center">');
-          if (entry['HomeTeamPrediction'] > entry['AwayTeamPrediction']) {
+          if (htp > atp) {
             result.push('<b>' + entry['HomeTeam'] + ' Win</b>');
-          } else if (entry['HomeTeamPrediction'] < entry['AwayTeamPrediction']) {
+          } else if (htp < atp) {
             result.push('<b>' + entry['AwayTeam'] + ' Win</b>');
           } else {
             result.push('<b>Draw</b>');
@@ -236,9 +238,9 @@ function processMatchesReturn (data) {
           // Prediction for tabets and desktops
           result.push('<div class="col-sm-2 hidden-xs text-left"><i>Predicted:</i></div>'); // Head up prediction row
           result.push('<div class="col-sm-8 hidden-xs text-center">'); // prediction
-          if (entry['HomeTeamPrediction'] > entry['AwayTeamPrediction']) {
+          if (htp > atp) {
             result.push('<b>' + entry['HomeTeam'] + ' Win</b>');
-          } else if (entry['HomeTeamPrediction'] < entry['AwayTeamPrediction']) {
+          } else if (htp < atp) {
             result.push('<b>' + entry['AwayTeam'] + ' Win</b>');
           } else {
             result.push('<b>Draw</b>');
