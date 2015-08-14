@@ -179,6 +179,7 @@ function processMatchesReturn (data) {
       // Display Date Header if the first Match or date has changed
       if ((entryIndex === 0) || (entry['Date'] != date)) {
         date = entry['Date'];
+        result.push('<hr />');
         result.push('<h3>' + date + '</h3>');
         time = entry['KickOff'];
         result.push('<h4>' + time.slice(0,5) + '</h4>');
