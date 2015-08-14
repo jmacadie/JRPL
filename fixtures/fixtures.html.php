@@ -23,7 +23,7 @@
           </label>
         </div>
         <hr>
-        <h3>Select Stages / Groups</h3>
+        <h3>Select Stages / Pools</h3>
         <div class="panel-group" id="accordionGroup">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -43,69 +43,34 @@
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupA" value="" checked>
-                  <strong>Group A</strong><br />
-                  Brazil, Croatia, Mexico, Cameroon
+                  <strong>Pool A</strong><br />
+                  Australia, England, Wales, Fiji, Uruguay
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupB" value="" checked>
-                  <strong>Group B</strong><br />
-                  Spain, Netherlands, Chile, Australia
+                  <strong>Pool B</strong><br />
+                  South Africa,Samoa, Japan, Scotland, USA
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupC" value="" checked>
-                  <strong>Group C</strong><br />
-                  Columbia, Greece, Ivory Coast, Japan
+                  <strong>Pool C</strong><br />
+                  New Zealand, Argentina, Tonga, Georgia, Namibia
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupD" value="" checked>
-                  <strong>Group D</strong><br />
-                  Uruguay, Costa Rica, England, Italy
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                  <input type="checkbox" id="ckbGroupE" value="" checked>
-                  <strong>Group E</strong><br />
-                  Switzerland, Ecuador, France, Honduras
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                  <input type="checkbox" id="ckbGroupF" value="" checked>
-                  <strong>Group F</strong><br />
-                  Argentina, Bosnia and Herzegovina, Iran, Nigeria
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                  <input type="checkbox" id="ckbGroupG" value="" checked>
-                  <strong>Group G</strong><br />
-                  Germany, Portugal, Ghana, USA
-                  </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                  <input type="checkbox" id="ckbGroupH" value="" checked>
-                  <strong>Group H</strong><br />
-                  Belgium, Algeria, Russia, South Korea
+                  <strong>Pool D</strong><br />
+                  France, Ireland, Italy, Canada, Romania
                   </label>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="checkbox">
-          <label>
-          <input type="checkbox" id="ckbLast16" value="" checked>
-          Last 16
-          </label>
         </div>
         <div class="checkbox">
           <label>
@@ -117,6 +82,12 @@
           <label>
           <input type="checkbox" id="ckbSemiFinals" value="" checked>
           Semi-finals
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+          <input type="checkbox" id="ckb34PlayOff" value="" checked>
+          3<sup>rd</sup> 4<sup>th</sup> Place Play-off
           </label>
         </div>
         <div class="checkbox">
