@@ -17,9 +17,9 @@
       <br />
       <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
     </div>
-    <div class="col-sm-1 text-center lead"><b><span id="homeTeamGoals"><?php htmlout($homeTeamGoals); ?></span></b></div>
+    <div class="col-sm-1 text-center lead"><b><span id="homeTeamPoints"><?php htmlout($homeTeamPoints); ?></span></b></div>
     <div class="col-sm-2 text-center">vs.</div>
-    <div class="col-sm-1 text-center lead"><b><span id="awayTeamGoals"><?php htmlout($awayTeamGoals); ?></span></b></div>
+    <div class="col-sm-1 text-center lead"><b><span id="awayTeamPoints"><?php htmlout($awayTeamPoints); ?></span></b></div>
     <div class="col-sm-2 text-left lead">
       <span class="lead"><?php htmlout($awayTeam); ?></span>
       <br />
@@ -40,12 +40,12 @@
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
-            <div class="col-xs-3 text-left"><?php htmlout($homeTeamHomeTeamGoals); ?></div>
+            <div class="col-xs-3 text-left"><?php htmlout($homeTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamGoals); ?></div>
+            <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamPoints); ?></div>
           </p></div>
         </small>
         </a>
@@ -63,12 +63,12 @@
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamGoals); ?></div>
+            <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamGoals); ?></div>
+            <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamPoints); ?></div>
           </p></div>
         </small>
         </a>
@@ -84,8 +84,8 @@
     <div class="col-xs-6">
       <?php htmlout($homeTeam); ?>
     </div>
-    <div class="col-xs-4" id="homeTeamGoalsXS">
-      <?php htmlout($homeTeamGoals); ?>
+    <div class="col-xs-4" id="homeTeamPointsXS">
+      <?php htmlout($homeTeamPoints); ?>
     </div>
   </div>
   <div class="row visible-xs text-left">
@@ -105,12 +105,12 @@
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($homeTeamHomeTeamGoals); ?></div>
+            <div class="col-xs-3"><?php htmlout($homeTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamGoals); ?></div>
+            <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamPoints); ?></div>
           </p></div>
         </small>
         </a>
@@ -128,8 +128,8 @@
     <div class="col-xs-6">
       <?php htmlout($awayTeam); ?>
     </div>
-    <div class="col-xs-4" id="awayTeamGoalsXS">
-      <?php htmlout($awayTeamGoals); ?>
+    <div class="col-xs-4" id="awayTeamPointsXS">
+      <?php htmlout($awayTeamPoints); ?>
     </div>
   </div>
   <div class="row visible-xs text-left">
@@ -149,12 +149,12 @@
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamGoals); ?></div>
+            <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
             <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamGoals); ?></div>
+            <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamPoints); ?></div>
           </div>
         </small>
         </a>
@@ -175,10 +175,10 @@
       <label for="homeScore"><?php htmlout($homeTeam); ?></label>
     </div>
     <div class="col-sm-2">
-      <input type="number" class="form-control" id="homeScoreRes" name="homeScore" value="<?php htmlout($homeTeamGoals); ?>">
+      <input type="number" class="form-control" id="homeScoreRes" name="homeScore" value="<?php htmlout($homeTeamPoints); ?>">
     </div>
     <div class="col-sm-2">
-      <input type="number" class="form-control" id="awayScoreRes" name="awayScore" value="<?php htmlout($awayTeamGoals); ?>">
+      <input type="number" class="form-control" id="awayScoreRes" name="awayScore" value="<?php htmlout($awayTeamPoints); ?>">
     </div>
     <div class="col-sm-4 text-left">
       <label for="awayScore"><?php htmlout($awayTeam); ?></label>
@@ -197,13 +197,13 @@
   <div class="form-group">
     <label for="homeScore" class="col-xs-8 control-label"><?php htmlout($homeTeam); ?></label>
     <div class="col-xs-4">
-      <input type="number" class="form-control" id="homeScoreResXS" name="homeScoreXS" value="<?php htmlout($homeTeamGoals); ?>">
+      <input type="number" class="form-control" id="homeScoreResXS" name="homeScoreXS" value="<?php htmlout($homeTeamPoints); ?>">
     </div>
   </div>
   <div class="form-group">
     <label for="awayScore" class="col-xs-8 control-label"><?php htmlout($awayTeam); ?></label>
     <div class="col-xs-4">
-      <input type="number" class="form-control" id="awayScoreResXS" name="awayScoreXS" value="<?php htmlout($awayTeamGoals); ?>">
+      <input type="number" class="form-control" id="awayScoreResXS" name="awayScoreXS" value="<?php htmlout($awayTeamPoints); ?>">
     </div>
   </div>
   <button class="btn btn-sm btn-primary" type="submit" id="btnSubmitResXS">Submit</button>
@@ -223,10 +223,10 @@
       <label for="homeScore"><?php htmlout($homeTeam); ?></label>
     </div>
     <div class="col-sm-2">
-      <input type="number" class="form-control" id="homeScore" name="homeScore" value="<?php htmlout($homeTeamPredGoals); ?>">
+      <input type="number" class="form-control" id="homeScore" name="homeScore" value="<?php htmlout($homeTeamPredPoints); ?>">
     </div>
     <div class="col-sm-2">
-      <input type="number" class="form-control" id="awayScore" name="awayScore" value="<?php htmlout($awayTeamPredGoals); ?>">
+      <input type="number" class="form-control" id="awayScore" name="awayScore" value="<?php htmlout($awayTeamPredPoints); ?>">
     </div>
     <div class="col-sm-4 text-left">
       <label for="awayScore"><?php htmlout($awayTeam); ?></label>
@@ -246,13 +246,13 @@
   <div class="form-group">
     <label for="homeScore" class="col-xs-8 control-label"><?php htmlout($homeTeam); ?></label>
     <div class="col-xs-4">
-      <input type="number" class="form-control" id="homeScoreXS" name="homeScoreXS" value="<?php htmlout($homeTeamPredGoals); ?>">
+      <input type="number" class="form-control" id="homeScoreXS" name="homeScoreXS" value="<?php htmlout($homeTeamPredPoints); ?>">
     </div>
   </div>
   <div class="form-group">
     <label for="awayScore" class="col-xs-8 control-label"><?php htmlout($awayTeam); ?></label>
     <div class="col-xs-4">
-      <input type="number" class="form-control" id="awayScoreXS" name="awayScoreXS" value="<?php htmlout($awayTeamPredGoals); ?>">
+      <input type="number" class="form-control" id="awayScoreXS" name="awayScoreXS" value="<?php htmlout($awayTeamPredPoints); ?>">
     </div>
   </div>
   <button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPredictionXS">Submit</button>

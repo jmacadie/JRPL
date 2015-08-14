@@ -71,8 +71,8 @@ while ($row = mysqli_fetch_array($result))
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     $sql = "SELECT
                 u.`DisplayName`,
-                IFNULL(p.`HomeTeamGoals`,'No prediction') AS `HomeTeamGoals`,
-        IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamGoals`
+                IFNULL(p.`HomeTeamPoints`,'No prediction') AS `HomeTeamPoints`,
+        IFNULL(p.`AwayTeamPoints`,'No prediction') AS `AwayTeamPoints`
 
             FROM `User` u
 
@@ -81,8 +81,8 @@ while ($row = mysqli_fetch_array($result))
           AND p.`UserID` = u.`UserID`
 
       ORDER BY
-        (p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
-        p.`HomeTeamGoals` DESC;";
+        (p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC,
+        p.`HomeTeamPoints` DESC;";
 
     $resultBody = mysqli_query($link, $sql);
     if (!$resultBody)
@@ -151,7 +151,7 @@ while ($row = mysqli_fetch_array($result))
       $predictions .= '<tr>' . chr(13);
       $i = 1;
     }
-    if ($rowBody['HomeTeamGoals'] == 'No prediction') {
+    if ($rowBody['HomeTeamPoints'] == 'No prediction') {
       $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left"><i>' . $rowBody['DisplayName'] . '</i></td>' . chr(13);
     } else {
       $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowBody['DisplayName'] . '</td>' . chr(13);
@@ -159,18 +159,18 @@ while ($row = mysqli_fetch_array($result))
 
     $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap;">' . chr(13);
 
-    if ($rowBody['HomeTeamGoals'] == 'No prediction') {
+    if ($rowBody['HomeTeamPoints'] == 'No prediction') {
       $predictions .= '<i>No prediction</i>' . chr(13);
     } else {
-      if ($rowBody['HomeTeamGoals'] > $rowBody['AwayTeamGoals']) {
+      if ($rowBody['HomeTeamPoints'] > $rowBody['AwayTeamPoints']) {
         $predictions .= $row['HomeTeam'] . ' to win<br/>' . chr(13);
-        $predictions .= $rowBody['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $rowBody['AwayTeamGoals'] . chr(13);
-      } elseif ($rowBody['AwayTeamGoals'] > $rowBody['HomeTeamGoals']) {
+        $predictions .= $rowBody['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowBody['AwayTeamPoints'] . chr(13);
+      } elseif ($rowBody['AwayTeamPoints'] > $rowBody['HomeTeamPoints']) {
         $predictions .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
-        $predictions .= $rowBody['AwayTeamGoals'] . '&nbsp;-&nbsp;' . $rowBody['HomeTeamGoals'] . chr(13);
+        $predictions .= $rowBody['AwayTeamPoints'] . '&nbsp;-&nbsp;' . $rowBody['HomeTeamPoints'] . chr(13);
       } else {
         $predictions .= 'Draw<br/>' . chr(13);
-        $predictions .= $rowBody['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $rowBody['AwayTeamGoals'] . chr(13);
+        $predictions .= $rowBody['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowBody['AwayTeamPoints'] . chr(13);
       }
     }
     $predictions .= '</td>' . chr(13);

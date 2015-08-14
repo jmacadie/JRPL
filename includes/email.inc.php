@@ -263,8 +263,8 @@ function sendResultsEmail ($matchID) {
         IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
         IFNULL(ht.`ShortName`,'') AS `HomeTeamS`,
         IFNULL(at.`ShortName`,'') AS `AwayTeamS`,
-        m.`HomeTeamGoals`,
-        m.`AwayTeamGoals`
+        m.`HomeTeamPoints`,
+        m.`AwayTeamPoints`
 
             FROM `Match` m
         INNER JOIN `TournamentRole` trht ON
@@ -302,8 +302,8 @@ function sendResultsEmail ($matchID) {
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     $sql = "SELECT
                 mu.`DisplayName`,
-                IFNULL(p.`HomeTeamGoals`,'No prediction') AS `HomeTeamGoals`,
-        IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamGoals`,
+                IFNULL(p.`HomeTeamPoints`,'No prediction') AS `HomeTeamPoints`,
+        IFNULL(p.`AwayTeamPoints`,'No prediction') AS `AwayTeamPoints`,
         IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
             FROM
@@ -322,8 +322,8 @@ function sendResultsEmail ($matchID) {
 
       ORDER BY
         po.`TotalPoints` DESC,
-        (p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
-        p.`HomeTeamGoals` DESC;";
+        (p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC,
+        p.`HomeTeamPoints` DESC;";
 
     $resultMatch = mysqli_query($link, $sql);
     if (!$resultMatch) {
@@ -374,7 +374,7 @@ function sendResultsEmail ($matchID) {
   $heading .= $row['HomeTeam'] . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:center; line-height: 30px;" st-content="fulltext-content">' . chr(13);
-  $heading .= $row['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $row['AwayTeamGoals'] . chr(13);
+  $heading .= $row['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $row['AwayTeamPoints'] . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:left; line-height: 30px;" st-content="fulltext-content">' . chr(13);
   $heading .= $row['AwayTeam'] . chr(13);
@@ -490,18 +490,18 @@ function sendResultsEmail ($matchID) {
     }
     $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowMatch['DisplayName'] . '</td>' . chr(13);
     $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">';
-    if ($rowMatch['HomeTeamGoals'] == 'No prediction') {
+    if ($rowMatch['HomeTeamPoints'] == 'No prediction') {
       $match .= '<i>No prediction</i>' . chr(13);
     } else {
-      if ($rowMatch['HomeTeamGoals'] > $rowMatch['AwayTeamGoals']) {
+      if ($rowMatch['HomeTeamPoints'] > $rowMatch['AwayTeamPoints']) {
         $match .= $row['HomeTeam'] . ' to win<br/>' . chr(13);
-        $match .= $rowMatch['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamGoals'];
-      } elseif ($rowMatch['AwayTeamGoals'] > $rowMatch['HomeTeamGoals']) {
+        $match .= $rowMatch['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamPoints'];
+      } elseif ($rowMatch['AwayTeamPoints'] > $rowMatch['HomeTeamPoints']) {
         $match .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
-        $match .= $rowMatch['AwayTeamGoals'] . '&nbsp;-&nbsp;' . $rowMatch['HomeTeamGoals'];
+        $match .= $rowMatch['AwayTeamPoints'] . '&nbsp;-&nbsp;' . $rowMatch['HomeTeamPoints'];
       } else {
         $match .= 'Draw<br/>' . chr(13);
-        $match .= $rowMatch['HomeTeamGoals'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamGoals'];
+        $match .= $rowMatch['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamPoints'];
       }
     }
     $match .= '</td>' . chr(13);
