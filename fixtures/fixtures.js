@@ -1,12 +1,12 @@
 // Do stuff when page is ready
 $(document).ready(function() {
 
-    // Initial call to pull in match data
-    // do it asynchronously so page loads quicker
-    // check table exists first
-    if ($("#matches").length) {
-        getMatchesData();
-    }
+  // Initial call to pull in match data
+  // do it asynchronously so page loads quicker
+  // check table exists first
+  if ($("#matches").length) {
+    getMatchesData();
+  }
 
   // Add click handler to update filter button
   $("#btnUpdateMatches").click(function(e) {
@@ -33,15 +33,20 @@ $(document).ready(function() {
 // Function to handle getting session data
 function getMatchesData() {
 
-    // Build HTML for warning message
-    var result = [
-        '<div class="alert alert-info alert-dismissable" id="aGettingMatchData">',
-        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
-        'Getting data fom database...',
-        '</div>'];
+  // Build HTML for warning message
+  var result = [
+    '<div class="alert alert-info alert-dismissable" id="aGettingMatchData">',
+    '<button type="button"',
+    ' class="close"',
+    ' data-dismiss="alert"',
+    ' aria-hidden="true">',
+    '&times;',
+    '</button>',
+    'Getting data fom database...',
+    '</div>'];
 
-    // Output warning message
-    $("#matchesMessage").html(result.join(''));
+  // Output warning message
+  $("#matchesMessage").html(result.join(''));
 
   // Sort out the group stage filters
   var groupOv = $("#ckbGroupStage").is(':checked');
@@ -81,47 +86,47 @@ function getMatchesData() {
 // Function to covert binary number to hex
 // used to encode the ring variables as hex is more efficient pass around than a 64 length binary string
 function bin2hex(s) {
-    var i, k, part, accum, ret = '';
-    for (i = s.length-1; i >= 3; i -= 4) {
-        // extract out in substrings of 4 and convert to hex
-        part = s.substr(i+1-4, 4);
-        accum = 0;
-        for (k = 0; k < 4; k += 1) {
-            if (part[k] !== '0' && part[k] !== '1') {
-                // invalid character
-                return { valid: false };
-            }
-            // compute the length 4 substring
-            accum = accum * 2 + parseInt(part[k], 10);
-        }
-        if (accum >= 10) {
-            // 'A' to 'F'
-            ret = String.fromCharCode(accum - 10 + 'A'.charCodeAt(0)) + ret;
-        } else {
-            // '0' to '9'
-            ret = String(accum) + ret;
-        }
+  var i, k, part, accum, ret = '';
+  for (i = s.length-1; i >= 3; i -= 4) {
+    // extract out in substrings of 4 and convert to hex
+    part = s.substr(i+1-4, 4);
+    accum = 0;
+    for (k = 0; k < 4; k += 1) {
+      if (part[k] !== '0' && part[k] !== '1') {
+        // invalid character
+        return { valid: false };
+      }
+      // compute the length 4 substring
+      accum = accum * 2 + parseInt(part[k], 10);
     }
-    // remaining characters, i = 0, 1, or 2
-    if (i >= 0) {
-        accum = 0;
-        // convert from front
-        for (k = 0; k <= i; k += 1) {
-            if (s[k] !== '0' && s[k] !== '1') {
-                return { valid: false };
-            }
-            accum = accum * 2 + parseInt(s[k], 10);
-        }
-        // 3 bits, value cannot exceed 2^3 - 1 = 7, just convert
-        ret = String(accum) + ret;
+    if (accum >= 10) {
+      // 'A' to 'F'
+      ret = String.fromCharCode(accum - 10 + 'A'.charCodeAt(0)) + ret;
+    } else {
+      // '0' to '9'
+      ret = String(accum) + ret;
     }
-    return { valid: true, result: ret };
+  }
+  // remaining characters, i = 0, 1, or 2
+  if (i >= 0) {
+    accum = 0;
+    // convert from front
+    for (k = 0; k <= i; k += 1) {
+      if (s[k] !== '0' && s[k] !== '1') {
+        return { valid: false };
+      }
+      accum = accum * 2 + parseInt(s[k], 10);
+    }
+    // 3 bits, value cannot exceed 2^3 - 1 = 7, just convert
+    ret = String(accum) + ret;
+  }
+  return { valid: true, result: ret };
 }
 
 // Callback function to process the returned data when filters are updated (or page is first loaded)
 function processMatchesReturn (data) {
 
-    var result;
+  var result;
 
   if (data.result === "No") {
   // If result returned no then something went wrong so build and display an error message
@@ -160,7 +165,7 @@ function processMatchesReturn (data) {
     // Initialise the result variable as an empty array,
     // bits of HTML will be pushed onto it and finally the whole
     // thing will be joined to output
-        result = [];
+    result = [];
 
     $.each(data.data, function(entryIndex, entry){
 
@@ -185,10 +190,10 @@ function processMatchesReturn (data) {
 
       // Wrap whole row in a link to the relevant match page
       result.push('<div class="matchRow">');
-            result.push('<a href="../match?id=' + entry['MatchID'] + '&ring=' + ring.result + '">');
+      result.push('<a href="../match?id=' + entry['MatchID'] + '&ring=' + ring.result + '">');
 
       // Have own row to show flags on phones, in-line on anything bigger
-            result.push('<div class="row visible-xs">');
+      result.push('<div class="row visible-xs">');
       result.push('<div class="col-xs-4 text-center"><img alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + homeFlag + '.png"></div>');
       result.push('<div class="col-xs-4 col-xs-offset-4 text-center"><img alt="' + entry['AwayTeam'] + '" class="flag" src="../assets/img/flags/' + awayFlag + '.png"></div>');
       result.push('</div>');
@@ -250,16 +255,16 @@ function processMatchesReturn (data) {
       }
 
       // Close link and wrapping div
-            result.push('</a>');
+      result.push('</a>');
       result.push('</div>');
 
     });
 
     // Write the HTML
-        $("#matches").html(result.join(''));
+    $("#matches").html(result.join(''));
 
-        // Close "Getting data" alert
-        $("#aGettingMatchData").alert('close');
+    // Close "Getting data" alert
+    $("#aGettingMatchData").alert('close');
 
   }
 
