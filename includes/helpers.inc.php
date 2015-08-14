@@ -130,8 +130,8 @@ function calculateStandardPoints($matchID) {
 
   // Build SQL
     $sql = "SELECT
-        `HomeTeamGoals`,
-        `AwayTeamGoals`
+        `HomeTeamPoints`,
+        `AwayTeamPoints`
       FROM `Match`
       WHERE `MatchID` = " . $matchID . ";";
 
@@ -148,8 +148,8 @@ function calculateStandardPoints($matchID) {
 
   // Grab results
   $rowM = mysqli_fetch_array($resultM);
-  $ht = $rowM['HomeTeamGoals'];
-  $at = $rowM['AwayTeamGoals'];
+  $ht = $rowM['HomeTeamPoints'];
+  $at = $rowM['AwayTeamPoints'];
 
   // Grab predictions
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,8 +157,8 @@ function calculateStandardPoints($matchID) {
   // Build SQL
     $sql = "SELECT
         `UserID`,
-        `HomeTeamGoals`,
-        `AwayTeamGoals`
+        `HomeTeamPoints`,
+        `AwayTeamPoints`
       FROM `Prediction`
       WHERE `MatchID` = " . $matchID . ";";
 
@@ -178,15 +178,15 @@ function calculateStandardPoints($matchID) {
   while ($rowP = mysqli_fetch_array($resultP)) {
 
     // First check right result
-    if ((($ht > $at) && ($rowP['HomeTeamGoals'] > $rowP['AwayTeamGoals'])) ||
-      (($ht < $at) && ($rowP['HomeTeamGoals'] < $rowP['AwayTeamGoals'])) ||
-      (($ht == $at) && ($rowP['HomeTeamGoals'] == $rowP['AwayTeamGoals']))) {
+    if ((($ht > $at) && ($rowP['HomeTeamPoints'] > $rowP['AwayTeamPoints'])) ||
+      (($ht < $at) && ($rowP['HomeTeamPoints'] < $rowP['AwayTeamPoints'])) ||
+      (($ht == $at) && ($rowP['HomeTeamPoints'] == $rowP['AwayTeamPoints']))) {
 
         // Right result so award a result point
         $resultPoints = 1;
 
         // Then check exact score
-        if (($ht == $rowP['HomeTeamGoals']) && ($at == $rowP['AwayTeamGoals'])) {
+        if (($ht == $rowP['HomeTeamPoints']) && ($at == $rowP['AwayTeamPoints'])) {
             $scorePoints = 2;
         } else {
           $scorePoints = 0;
@@ -262,8 +262,8 @@ function calculateAutoQuizPoints($matchID) {
 
   // Build SQL
     $sql = "SELECT
-        `HomeTeamGoals`,
-        `AwayTeamGoals`
+        `HomeTeamPoints`,
+        `AwayTeamPoints`
       FROM `Match`
       WHERE `MatchID` = " . $matchID . ";";
 
@@ -280,8 +280,8 @@ function calculateAutoQuizPoints($matchID) {
 
   // Grab results
   $rowM = mysqli_fetch_array($resultM);
-  $ht = $rowM['HomeTeamGoals'];
-  $at = $rowM['AwayTeamGoals'];
+  $ht = $rowM['HomeTeamPoints'];
+  $at = $rowM['AwayTeamPoints'];
 
   // Grab predictions
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -289,8 +289,8 @@ function calculateAutoQuizPoints($matchID) {
   // Build SQL
     $sql = "SELECT
         `UserID`,
-        `HomeTeamGoals`,
-        `AwayTeamGoals`
+        `HomeTeamPoints`,
+        `AwayTeamPoints`
       FROM `Prediction`
       WHERE `MatchID` = " . $matchID . ";";
 
@@ -325,9 +325,9 @@ function calculateAutoQuizPoints($matchID) {
     $out['userID'] = $rowP['UserID'];
 
     // First check right result
-    if ((($ht > $at) && ($rowP['HomeTeamGoals'] > $rowP['AwayTeamGoals'])) ||
-      (($ht < $at) && ($rowP['HomeTeamGoals'] < $rowP['AwayTeamGoals'])) ||
-      (($ht == $at) && ($rowP['HomeTeamGoals'] == $rowP['AwayTeamGoals']))) {
+    if ((($ht > $at) && ($rowP['HomeTeamPoints'] > $rowP['AwayTeamPoints'])) ||
+      (($ht < $at) && ($rowP['HomeTeamPoints'] < $rowP['AwayTeamPoints'])) ||
+      (($ht == $at) && ($rowP['HomeTeamPoints'] == $rowP['AwayTeamPoints']))) {
 
         // Increment the number of correct users counter
         $numResultUsers++;
@@ -336,7 +336,7 @@ function calculateAutoQuizPoints($matchID) {
         $out['result'] = 1;
 
         // Then check exact score
-        if (($ht == $rowP['HomeTeamGoals']) && ($at == $rowP['AwayTeamGoals'])) {
+        if (($ht == $rowP['HomeTeamPoints']) && ($at == $rowP['AwayTeamPoints'])) {
           // Increment the number of correct users counter
           $numScoreUsers++;
           // Right exact score so award a score point
@@ -454,7 +454,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
               LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
             WHERE p.`UserID` = u.`UserID`
               AND m.`StageID` IN (" . $stageStr . ")
-              AND (p.`HomeTeamGoals` IS NOT NULL AND p.`AwayTeamGoals` IS NOT NULL)
+              AND (p.`HomeTeamPoints` IS NOT NULL AND p.`AwayTeamPoints` IS NOT NULL)
               AND (m.`ResultPostedBy` IS NOT NULL)) AS `Submitted`,
 
             (SELECT COUNT(*)

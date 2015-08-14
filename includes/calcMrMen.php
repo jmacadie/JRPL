@@ -30,8 +30,8 @@ function calcMrMean($matchID,$link) {
 
     // Build SQL - exclude special roles
   $sql = "SELECT
-        p.`HomeTeamGoals`,
-        p.`AwayTeamGoals`
+        p.`HomeTeamPoints`,
+        p.`AwayTeamPoints`
       FROM `Prediction` p
         LEFT JOIN `UserRole` ur ON
           ur.`UserID` = p.`UserID`
@@ -61,11 +61,11 @@ function calcMrMean($matchID,$link) {
   // Loop through all users and add scores if submitted
     while ($row = mysqli_fetch_array($result))
     {
-        if ($row['HomeTeamGoals'] <> 'NULL' && $row['AwayTeamGoals'] <> 'NULL')
+        if ($row['HomeTeamPoints'] <> 'NULL' && $row['AwayTeamPoints'] <> 'NULL')
     {
-      $homeScoreT += $row['HomeTeamGoals'];
+      $homeScoreT += $row['HomeTeamPoints'];
       $homeScoreC++;
-      $awayScoreT += $row['AwayTeamGoals'];
+      $awayScoreT += $row['AwayTeamPoints'];
       $awayScoreC++;
     }
     }
@@ -85,8 +85,8 @@ function calcMrMean($matchID,$link) {
     $sqlAdd = "INSERT INTO `Prediction` (
           `UserID`,
           `MatchID`,
-          `HomeTeamGoals`,
-          `AwayTeamGoals`,
+          `HomeTeamPoints`,
+          `AwayTeamPoints`,
           `DateAdded`)
          VALUES (
           (SELECT ur.`UserID`
@@ -144,8 +144,8 @@ function calcMrMode($matchID,$link) {
 
     // Build SQL - exclude special roles
   $sql = "SELECT
-        p.`HomeTeamGoals`,
-        p.`AwayTeamGoals`
+        p.`HomeTeamPoints`,
+        p.`AwayTeamPoints`
       FROM `Prediction` p
         LEFT JOIN `UserRole` ur ON
           ur.`UserID` = p.`UserID`
@@ -172,11 +172,11 @@ function calcMrMode($matchID,$link) {
   // Loop through all users and add scores if submitted
     while ($row = mysqli_fetch_array($result))
     {
-        if ($row['HomeTeamGoals'] <> 'NULL' && $row['AwayTeamGoals'] <> 'NULL')
+        if ($row['HomeTeamPoints'] <> 'NULL' && $row['AwayTeamPoints'] <> 'NULL')
     {
       $numMatches++;
-      $homeScores[] = $row['HomeTeamGoals'];
-      $awayScores[] = $row['AwayTeamGoals'];
+      $homeScores[] = $row['HomeTeamPoints'];
+      $awayScores[] = $row['AwayTeamPoints'];
     }
     }
 
@@ -198,8 +198,8 @@ function calcMrMode($matchID,$link) {
     $sqlAdd = "INSERT INTO `Prediction` (
           `UserID`,
           `MatchID`,
-          `HomeTeamGoals`,
-          `AwayTeamGoals`,
+          `HomeTeamPoints`,
+          `AwayTeamPoints`,
           `DateAdded`)
          VALUES (
           (SELECT ur.`UserID`
@@ -257,8 +257,8 @@ function calcMrMedian($matchID,$link) {
 
     // Build SQL - exclude special roles
   $sql = "SELECT
-        p.`HomeTeamGoals`,
-        p.`AwayTeamGoals`
+        p.`HomeTeamPoints`,
+        p.`AwayTeamPoints`
       FROM `Prediction` p
         LEFT JOIN `UserRole` ur ON
           ur.`UserID` = p.`UserID`
@@ -285,11 +285,11 @@ function calcMrMedian($matchID,$link) {
   // Loop through all users and add scores if submitted
     while ($row = mysqli_fetch_array($result))
     {
-        if ($row['HomeTeamGoals'] <> 'NULL' && $row['AwayTeamGoals'] <> 'NULL')
+        if ($row['HomeTeamPoints'] <> 'NULL' && $row['AwayTeamPoints'] <> 'NULL')
     {
       $numMatches++;
-      $homeScores[] = $row['HomeTeamGoals'];
-      $awayScores[] = $row['AwayTeamGoals'];
+      $homeScores[] = $row['HomeTeamPoints'];
+      $awayScores[] = $row['AwayTeamPoints'];
     }
     }
 
@@ -320,8 +320,8 @@ function calcMrMedian($matchID,$link) {
     $sqlAdd = "INSERT INTO `Prediction` (
           `UserID`,
           `MatchID`,
-          `HomeTeamGoals`,
-          `AwayTeamGoals`,
+          `HomeTeamPoints`,
+          `AwayTeamPoints`,
           `DateAdded`)
          VALUES (
           (SELECT ur.`UserID`

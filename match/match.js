@@ -214,10 +214,10 @@ function processSubmitResReturn (data) {
     $("#updateRes").html(result.join(''));
 
     // Update scaore at top of page
-    $("#homeTeamGoals").html($("#homeScoreRes").val());
-    $("#awayTeamGoals").html($("#awayScoreRes").val());
-    $("#homeTeamGoalsXS").html($("#homeScoreResXS").val());
-    $("#awayTeamGoalsXS").html($("#awayScoreResXS").val());
+    $("#homeTeamPoints").html($("#homeScoreRes").val());
+    $("#awayTeamPoints").html($("#awayScoreRes").val());
+    $("#homeTeamPointsXS").html($("#homeScoreResXS").val());
+    $("#awayTeamPointsXS").html($("#awayScoreResXS").val());
 
   }
 

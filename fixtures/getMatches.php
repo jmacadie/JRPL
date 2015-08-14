@@ -66,10 +66,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
         IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
         IFNULL(ht.`ShortName`,'') AS `HomeTeamS`,
         IFNULL(at.`ShortName`,'') AS `AwayTeamS`,
-        m.`HomeTeamGoals`,
-        m.`AwayTeamGoals`,
-        p.`HomeTeamGoals` AS `HomeTeamPrediction`,
-        p.`AwayTeamGoals` AS `AwayTeamPrediction`,
+        m.`HomeTeamPoints`,
+        m.`AwayTeamPoints`,
+        p.`HomeTeamPoints` AS `HomeTeamPrediction`,
+        p.`AwayTeamPoints` AS `AwayTeamPrediction`,
         CASE
           WHEN DATE_ADD(NOW(), INTERVAL 30 MINUTE) > TIMESTAMP(m.`Date`, m.`KickOff`) THEN 1
           ELSE 0

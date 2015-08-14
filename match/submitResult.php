@@ -90,8 +90,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
       FROM `Match` m
       WHERE
         m.`MatchID` = " . $matchID . "
-        AND m.`HomeTeamGoals` IS NOT NULL
-        AND m.`AwayTeamGoals` IS NOT NULL;";
+        AND m.`HomeTeamPoints` IS NOT NULL
+        AND m.`AwayTeamPoints` IS NOT NULL;";
 
   // Run query and handle any failure
   $result = mysqli_query($link, $sql);
@@ -112,8 +112,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 
   // UPDATE the match table with the posted data
   $sql = "UPDATE `Match`
-      SET `HomeTeamGoals` = " . $homeTeamScore . ",
-        `AwayTeamGoals` = " . $awayTeamScore . ",
+      SET `HomeTeamPoints` = " . $homeTeamScore . ",
+        `AwayTeamPoints` = " . $awayTeamScore . ",
         `ResultPostedBy` = " . $userID . ",
         `ResultPostedOn` = NOW()
       WHERE

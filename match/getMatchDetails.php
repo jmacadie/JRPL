@@ -48,13 +48,13 @@ $sql = "SELECT
       IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
       IFNULL(ht.`ShortName`,'') AS `HomeTeamS`,
       IFNULL(at.`ShortName`,'') AS `AwayTeamS`,
-      m.`HomeTeamGoals`,
-      m.`AwayTeamGoals`,
+      m.`HomeTeamPoints`,
+      m.`AwayTeamPoints`,
       s.`Name` AS `Stage`,
       CONCAT(v.`Name`, ', ', v.`City`) AS `Venue`,
       b.`Name` AS `Broadcaster`,
-      p.`HomeTeamGoals` AS `HomeTeamPrediction`,
-      p.`AwayTeamGoals` AS `AwayTeamPrediction`,
+      p.`HomeTeamPoints` AS `HomeTeamPrediction`,
+      p.`AwayTeamPoints` AS `AwayTeamPrediction`,
       CASE
         WHEN DATE_ADD(NOW(), INTERVAL 30 MINUTE) > TIMESTAMP(m.`Date`, m.`KickOff`) THEN 1
         ELSE 0
@@ -102,12 +102,12 @@ $venue = $row['Venue'];
 $broadcaster = $row['Broadcaster'];
 $homeTeam = $row['HomeTeam'];
 $homeTeamS = $row['HomeTeamS'];
-$homeTeamGoals = $row['HomeTeamGoals'];
-$homeTeamPredGoals = $row['HomeTeamPrediction'];
+$homeTeamPoints = $row['HomeTeamPoints'];
+$homeTeamPredPoints = $row['HomeTeamPrediction'];
 $awayTeam = $row['AwayTeam'];
 $awayTeamS = $row['AwayTeamS'];
-$awayTeamGoals = $row['AwayTeamGoals'];
-$awayTeamPredGoals = $row['AwayTeamPrediction'];
+$awayTeamPoints = $row['AwayTeamPoints'];
+$awayTeamPredPoints = $row['AwayTeamPrediction'];
 $lockedDown = $row['LockedDown'];
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,8 +122,8 @@ if ($lockedDown == 1) {
         mu.`DisplayName`,
         IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`,
         IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
-        IFNULL(p.`HomeTeamGoals`,'No prediction') AS `HomeTeamPrediction`,
-        IFNULL(p.`AwayTeamGoals`,'No prediction') AS `AwayTeamPrediction`,
+        IFNULL(p.`HomeTeamPoints`,'No prediction') AS `HomeTeamPrediction`,
+        IFNULL(p.`AwayTeamPoints`,'No prediction') AS `AwayTeamPrediction`,
         ROUND(po.`TotalPoints`, 2) AS `TotalPoints`
 
       FROM
@@ -149,8 +149,8 @@ if ($lockedDown == 1) {
 
       ORDER BY
         po.`TotalPoints` DESC,
-        (p.`HomeTeamGoals` - p.`AwayTeamGoals`) DESC,
-        p.`HomeTeamGoals` DESC,
+        (p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC,
+        p.`HomeTeamPoints` DESC,
         mu.`UserID` ASC;";
 
   // Run query and handle any failure
@@ -182,16 +182,16 @@ $sql = "SELECT
       IFNULL(htat.`Name`,httrat.`Name`) AS `HomeTeamAwayTeam`,
       IFNULL(htht.`ShortName`,'') AS `HomeTeamHomeTeamS`,
       IFNULL(htat.`ShortName`,'') AS `HomeTeamAwayTeamS`,
-      htm.`HomeTeamGoals` AS `HomeTeamHomeTeamGoals`,
-      htm.`AwayTeamGoals` AS `HomeTeamAwayTeamGoals`,
+      htm.`HomeTeamPoints` AS `HomeTeamHomeTeamPoints`,
+      htm.`AwayTeamPoints` AS `HomeTeamAwayTeamPoints`,
       htm.`MatchID` AS `HomeTeamMatchID`,
       hts.`Name` AS `HomeTeamStage`,
       IFNULL(atht.`Name`,attrht.`Name`) AS `AwayTeamHomeTeam`,
       IFNULL(atat.`Name`,attrat.`Name`) AS `AwayTeamAwayTeam`,
       IFNULL(atht.`ShortName`,'') AS `AwayTeamHomeTeamS`,
       IFNULL(atat.`ShortName`,'') AS `AwayTeamAwayTeamS`,
-      atm.`HomeTeamGoals` AS `AwayTeamHomeTeamGoals`,
-      atm.`AwayTeamGoals` AS `AwayTeamAwayTeamGoals`,
+      atm.`HomeTeamPoints` AS `AwayTeamHomeTeamPoints`,
+      atm.`AwayTeamPoints` AS `AwayTeamAwayTeamPoints`,
       atm.`MatchID` AS `AwayTeamMatchID`,
       ats.`Name` AS `AwayTeamStage`
 
@@ -247,16 +247,16 @@ $homeTeamHomeTeam = $row['HomeTeamHomeTeam'];
 $homeTeamAwayTeam = $row['HomeTeamAwayTeam'];
 $homeTeamHomeTeamS = $row['HomeTeamHomeTeamS'];
 $homeTeamAwayTeamS = $row['HomeTeamAwayTeamS'];
-$homeTeamHomeTeamGoals = $row['HomeTeamHomeTeamGoals'];
-$homeTeamAwayTeamGoals = $row['HomeTeamAwayTeamGoals'];
+$homeTeamHomeTeamPoints = $row['HomeTeamHomeTeamPoints'];
+$homeTeamAwayTeamPoints = $row['HomeTeamAwayTeamPoints'];
 $homeTeamMatchID = $row['HomeTeamMatchID'];
 $homeTeamStage = $row['HomeTeamStage'];
 $awayTeamHomeTeam = $row['AwayTeamHomeTeam'];
 $awayTeamAwayTeam = $row['AwayTeamAwayTeam'];
 $awayTeamHomeTeamS = $row['AwayTeamHomeTeamS'];
 $awayTeamAwayTeamS = $row['AwayTeamAwayTeamS'];
-$awayTeamHomeTeamGoals = $row['AwayTeamHomeTeamGoals'];
-$awayTeamAwayTeamGoals = $row['AwayTeamAwayTeamGoals'];
+$awayTeamHomeTeamPoints = $row['AwayTeamHomeTeamPoints'];
+$awayTeamAwayTeamPoints = $row['AwayTeamAwayTeamPoints'];
 $awayTeamMatchID = $row['AwayTeamMatchID'];
 $awayTeamStage = $row['AwayTeamStage'];
 

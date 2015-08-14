@@ -267,8 +267,8 @@ CREATE TABLE IF NOT EXISTS `Prediction` (
 `PredictionID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
   `MatchID` int(11) NOT NULL,
-  `HomeTeamGoals` int(11) DEFAULT NULL,
-  `AwayTeamGoals` int(11) DEFAULT NULL,
+  `HomeTeamPoints` int(11) DEFAULT NULL,
+  `AwayTeamPoints` int(11) DEFAULT NULL,
   `DateAdded` datetime NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 

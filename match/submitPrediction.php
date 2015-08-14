@@ -97,8 +97,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
     if ($row['Count'] == 1) {
     // Entry already exists so UPDATE
     $sql = "UPDATE `Prediction`
-        SET `HomeTeamGoals` = " . $homeTeamScore . ",
-          `AwayTeamGoals` = " . $awayTeamScore . ",
+        SET `HomeTeamPoints` = " . $homeTeamScore . ",
+          `AwayTeamPoints` = " . $awayTeamScore . ",
           `DateAdded` = NOW()
         WHERE
           `MatchID` = " . $matchID . "
@@ -120,8 +120,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
     $sql = "INSERT INTO `Prediction`
           (`UserID`,
           `MatchID`,
-          `HomeTeamGoals`,
-          `AwayTeamGoals`,
+          `HomeTeamPoints`,
+          `AwayTeamPoints`,
           `DateAdded`)
         VALUES
           (" . $userID . ",
