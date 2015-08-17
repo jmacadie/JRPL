@@ -155,6 +155,16 @@ function calculateStandardPoints($matchID) {
   $ht = $rowM['HomeTeamPoints'];
   $at = $rowM['AwayTeamPoints'];
 
+  // Set multiplier
+  switch($rowM['Stage']) {
+    case 'Group Stage' : $multiplier = 1; break;
+    case 'Quarter Finals' : $multiplier = 2; break;
+    case 'Semi Finals' : $multiplier = 3; break;
+    case '3rd 4th Place Play-off' : $multiplier = 1; break;
+    case 'Final' : $multiplier = 4; break;
+    default : $multiplier = 1;
+  }
+
   // Grab predictions
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -180,47 +190,76 @@ function calculateStandardPoints($matchID) {
 
   // Calculate points and INSERT them back into the DB
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // Function to convert a prediction vs. target into JRPL points by giving:
+  //    an exact result 3 JRPL points
+  //    within 5 rugby score points 2 JRPL score points
+  //    between 6 & 10 rugby score points 1 JRPL score point
+  //    between 11 & 15 rugby score points 0 JRPL score points
+  //    between 16 & 20 rugby score points -1 JRPL score points
+  //    ... and so on (with no negative limit!)
+  function scorePoints($predict, $target, $multiplier) {
+    // Exact score
+    if ($predict == $target) {
+      return 3 * $multiplier;
+    }
+    // Not exact score so remove 1 JRPL point for every 5 points difference
+    $diff = abs($predict - $target);
+    $diffDamped = (int)(($diff -1) / 5);
+    return (2 - $diffDamped) * $multiplier;
+  }
+
+  // Now loop through all the submitted predictions, scoring each
   while ($rowP = mysqli_fetch_array($resultP)) {
 
-    // First check right result
+    // Check for right result
     if ((($ht > $at) && ($rowP['HomeTeamPoints'] > $rowP['AwayTeamPoints'])) ||
-      (($ht < $at) && ($rowP['HomeTeamPoints'] < $rowP['AwayTeamPoints'])) ||
-      (($ht == $at) && ($rowP['HomeTeamPoints'] == $rowP['AwayTeamPoints']))) {
-
-        // Right result so award a result point
-        $resultPoints = 1;
-
-        // Then check exact score
-        if (($ht == $rowP['HomeTeamPoints']) && ($at == $rowP['AwayTeamPoints'])) {
-            $scorePoints = 2;
-        } else {
-          $scorePoints = 0;
-        }
-
+        (($ht < $at) && ($rowP['HomeTeamPoints'] < $rowP['AwayTeamPoints'])) ||
+        (($ht == $at) && ($rowP['HomeTeamPoints'] == $rowP['AwayTeamPoints']))) {
+      $resultPoints = 3 * $multiplier;
     } else {
-      // Not the right result so no points all round
       $resultPoints = 0;
-      $scorePoints = 0;
     }
 
+
+    // Calculate the other points using our generic distance function
+    $homeTeamScorePoints = scorePoints(
+                             $rowP['HomeTeamPoints'],
+                             $ht,
+                             $multiplier);
+    $awayTeamScorePoints = scorePoints(
+                             $rowP['AwayTeamPoints'],
+                             $at,
+                             $multiplier);
+    $marginPoints = scorePoints(
+                      ($rowP['HomeTeamPoints'] - $rowP['AwayTeamPoints']),
+                      ($ht - $at),
+                      $multiplier);
+
     // Calculate the total points
-    $totalPoints = $resultPoints + $scorePoints;
+    $totalPoints = $resultPoints +
+                   $homeTeamScorePoints +
+                   $awayTeamScorePoints +
+                   $marginPoints;
 
     // Build SQL
-    $sql = "INSERT INTO `Points`
-          (`ScoringSystemID`,
-          `UserID`,
-          `MatchID`,
-          `ResultPoints`,
-          `ScorePoints`,
-          `TotalPoints`)
-        VALUES
-          (1,
-          " . $rowP['UserID'] . ",
-          " . $matchID . ",
-          " . $resultPoints . ",
-          " . $scorePoints . ",
-          " . $totalPoints . ");";
+    $sql = "
+      INSERT INTO `Points`
+        (`ScoringSystemID`,
+        `UserID`,
+        `MatchID`,
+        `ResultPoints`,
+        `ScorePoints`,
+        `MarginPoints`,
+        `TotalPoints`)
+      VALUES
+        (1,
+        " . $rowP['UserID'] . ",
+        " . $matchID . ",
+        " . $resultPoints . ",
+        " . ($homeTeamScorePoints + $awayTeamScorePoints) . ",
+        " . $marginPoints . ",
+        " . $totalPoints . ");";
 
     // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
