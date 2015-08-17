@@ -51,7 +51,7 @@
         actual margin, <i>or</i></li>
       <li><strong>-1 points</strong> for predicting a score within 20 of the
         actual margin, <i>or</i></li>
-      <li>... and so on losing 1 (score) point for every further 5 you are out
+      <li>... and so on losing 1 (margin) point for every further 5 you are out
         on the margin</li>
     </ul>
     <br />
@@ -59,7 +59,7 @@
     (or lost!) even when the initial result has been predicted wrong. For
     example in a tight match where you predict one side to win by 1 point but in
     fact the other side wins by 1 point you would still get two margin points as
-    your prediction of -1 is within 5 points of the actual +1 result
+    your prediction of -1 is within 5 points of the actual +1 margin
   </li>
   <li>In addition to the base scores per match set out above multipliers will
     be applied so that matches later in the tournament will earn more points.
