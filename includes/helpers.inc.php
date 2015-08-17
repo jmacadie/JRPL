@@ -443,6 +443,7 @@ function calculateAutoQuizPoints($matchID) {
 
 // Generate data for tables
 function getLeagueTable($scoringSystem = 1, $stage = '') {
+
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
@@ -463,8 +464,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   $sql = "DROP TABLE IF EXISTS `SubmittedMatches` ; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error dropping submitted matches temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -474,14 +474,14 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   }
 
   // Create temporary table to hold submitted matches count
-  $sql = "CREATE TEMPORARY TABLE `SubmittedMatches` (
-          `UserID` INT NOT NULL,
-          `Submitted` INT NOT NULL,
-          `NotSubmitted` INT NOT NULL) ; ";
+  $sql = "
+    CREATE TEMPORARY TABLE `SubmittedMatches` (
+      `UserID` INT NOT NULL
+      ,`Submitted` INT NOT NULL
+      ,`NotSubmitted` INT NOT NULL) ; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error creating submitted matches temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -491,34 +491,35 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   }
 
   // Add submitted matches count data to temporary table
-  $sql = "INSERT INTO `SubmittedMatches`
-          SELECT
-            u.`UserID`,
+  $sql = "
+    INSERT INTO `SubmittedMatches`
 
-            (SELECT COUNT(*)
-            FROM `Match` m
-              LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
-            WHERE p.`UserID` = u.`UserID`
-              AND m.`StageID` IN (" . $stageStr . ")
-              AND (p.`HomeTeamPoints` IS NOT NULL AND p.`AwayTeamPoints` IS NOT NULL)
-              AND (m.`ResultPostedBy` IS NOT NULL)) AS `Submitted`,
+      SELECT
+        u.`UserID`
 
-            (SELECT COUNT(*)
-            FROM
-              (SELECT `MatchID`, `UserID`
-              FROM `Match`, `User`
-              WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
-              LEFT JOIN `Prediction` p ON
-                p.`MatchID` = mu.`MatchID`
-                AND p.`UserID` = mu.`UserID`
-            WHERE mu.`UserID` = u.`UserID`
-              AND p.`PredictionID` IS NULL) AS `NotSubmitted`
+        ,(SELECT COUNT(*)
+        FROM `Match` m
+          LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
+        WHERE p.`UserID` = u.`UserID`
+          AND m.`StageID` IN (" . $stageStr . ")
+          AND (p.`HomeTeamPoints` IS NOT NULL AND p.`AwayTeamPoints` IS NOT NULL)
+          AND (m.`ResultPostedBy` IS NOT NULL)) AS `Submitted`
 
-          FROM `User` u ; ";
+        ,(SELECT COUNT(*)
+        FROM
+          (SELECT `MatchID`, `UserID`
+          FROM `Match`, `User`
+          WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
+          LEFT JOIN `Prediction` p ON
+            p.`MatchID` = mu.`MatchID`
+            AND p.`UserID` = mu.`UserID`
+        WHERE mu.`UserID` = u.`UserID`
+          AND p.`PredictionID` IS NULL) AS `NotSubmitted`
+
+      FROM `User` u ; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error adding submitted matches data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -531,8 +532,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   $sql = "DROP TABLE IF EXISTS `PointsByUser` ; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error dropping points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -550,8 +550,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
           `TotalPoints` DECIMAL(6,2) NOT NULL) ; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error creating points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -593,8 +592,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
           GROUP BY tmp.`DisplayName`; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error adding points by user data to temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -607,8 +605,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   $sql = "DROP TABLE IF EXISTS `PointsByUser2` ; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error dropping 2nd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -621,8 +618,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   $sql = "CREATE TEMPORARY TABLE `PointsByUser2` SELECT * FROM `PointsByUser`; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error creating 2nd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -635,8 +631,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   $sql = "DROP TABLE IF EXISTS `PointsByUser3` ; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error dropping 3rd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -649,8 +644,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   $sql = "CREATE TEMPORARY TABLE `PointsByUser3` SELECT * FROM `PointsByUser`; ";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error creating 3rd points by user temporary table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
@@ -681,8 +675,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
           pbu.`DisplayName` ASC;";
 
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error fetching league table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
