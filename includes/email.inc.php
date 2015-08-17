@@ -4,7 +4,7 @@
 function emailCSS () {
 
   $css = '/* Client-specific Styles */' . chr(13);
-    $css .= '#outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */' . chr(13);
+  $css .= '#outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */' . chr(13);
   $css .= 'body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}' . chr(13);
   $css .= '/* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */' . chr(13);
   $css .= '.ExternalClass {width:100%;} /* Force Hotmail to display emails at full width */' . chr(13);
@@ -179,7 +179,7 @@ function tableBorder($content) {
   $text .= $content . chr(13);
   $text .= '</td></tr></table>';
   return $text;
- }
+}
 
 // Build HTML for body based on input array
 // Cuts down on repetitive tables mark-up
@@ -219,7 +219,7 @@ function sendEmail($to,$subject,$css,$body) {
 
   $MESSAGE_BODY = '<html>' . chr(13);
   $MESSAGE_BODY .= '<head>' . chr(13);
-    $MESSAGE_BODY .= '<style type="text/css">' . chr(13);
+  $MESSAGE_BODY .= '<style type="text/css">' . chr(13);
   if ($css == 'standard') {
     $MESSAGE_BODY .= emailCSS();
   } else {
@@ -256,103 +256,104 @@ function sendResultsEmail ($matchID) {
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Get match details
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $sql = "SELECT
-                IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`,
-        IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`,
-        IFNULL(ht.`ShortName`,'') AS `HomeTeamS`,
-        IFNULL(at.`ShortName`,'') AS `AwayTeamS`,
-        m.`HomeTeamPoints`,
-        m.`AwayTeamPoints`
+  // Get match details
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $sql = "
+    SELECT
+      IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`
+      ,IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`
+      ,IFNULL(ht.`ShortName`,'') AS `HomeTeamS`
+      ,IFNULL(at.`ShortName`,'') AS `AwayTeamS`
+      ,m.`HomeTeamPoints`
+      ,m.`AwayTeamPoints`
 
-            FROM `Match` m
-        INNER JOIN `TournamentRole` trht ON
-          trht.`TournamentRoleID` = m.`HomeTeamID`
-        LEFT JOIN `Team` ht ON
-          ht.`TeamID` = trht.`TeamID`
-        INNER JOIN `TournamentRole` trat ON
-          trat.`TournamentRoleID` = m.`AwayTeamID`
-        LEFT JOIN `Team` at ON
-          at.`TeamID` = trat.`TeamID`
+    FROM `Match` m
+      INNER JOIN `TournamentRole` trht ON
+        trht.`TournamentRoleID` = m.`HomeTeamID`
+      LEFT JOIN `Team` ht ON
+        ht.`TeamID` = trht.`TeamID`
+      INNER JOIN `TournamentRole` trat ON
+        trat.`TournamentRoleID` = m.`AwayTeamID`
+      LEFT JOIN `Team` at ON
+        at.`TeamID` = trat.`TeamID`
 
-      WHERE m.`MatchID` = " . $matchID . ";";
+    WHERE m.`MatchID` = " . $matchID . ";";
 
-    $result = mysqli_query($link, $sql);
-    if (!$result)
-    {
-        $error = 'Error getting match details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+  $result = mysqli_query($link, $sql);
+  if (!$result) {
+    $error = 'Error getting match details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // Get the data
   $row = mysqli_fetch_assoc($result);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Get league table details
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $resultLeague = getLeagueTable(1);
+  // Get league table details
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $resultLeague = getLeagueTable(1);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Get match result details
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $sql = "SELECT
-                mu.`DisplayName`,
-                IFNULL(p.`HomeTeamPoints`,'No prediction') AS `HomeTeamPoints`,
-        IFNULL(p.`AwayTeamPoints`,'No prediction') AS `AwayTeamPoints`,
-        IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
+  // Get match result details
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $sql = "
+    SELECT
+      mu.`DisplayName`
+      ,IFNULL(p.`HomeTeamPoints`,'No prediction') AS `HomeTeamPoints`
+      ,IFNULL(p.`AwayTeamPoints`,'No prediction') AS `AwayTeamPoints`
+      ,IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
-            FROM
-        (SELECT `MatchID`, `UserID`, `DisplayName`
-        FROM `Match`, `User`
-        WHERE `MatchID` = " . $matchID . ") mu
+    FROM
+      (SELECT `MatchID`, `UserID`, `DisplayName`
+      FROM `Match`, `User`
+      WHERE `MatchID` = " . $matchID . ") mu
 
-        LEFT JOIN `Prediction` p ON
-          p.`UserID` = mu.`UserID`
-          AND p.`MatchID` = mu.`MatchID`
+      LEFT JOIN `Prediction` p ON
+        p.`UserID` = mu.`UserID`
+        AND p.`MatchID` = mu.`MatchID`
 
-        LEFT JOIN `Points` po ON
-          po.`ScoringSystemID` = 1
-          AND po.`MatchID` = p.`MatchID`
-          AND po.`UserID` = p.`UserID`
+      LEFT JOIN `Points` po ON
+        po.`ScoringSystemID` = 1
+        AND po.`MatchID` = p.`MatchID`
+        AND po.`UserID` = p.`UserID`
 
-      ORDER BY
-        po.`TotalPoints` DESC,
-        (p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC,
-        p.`HomeTeamPoints` DESC;";
+    ORDER BY
+      po.`TotalPoints` DESC
+      ,(p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC
+      ,p.`HomeTeamPoints` DESC;";
 
-    $resultMatch = mysqli_query($link, $sql);
-    if (!$resultMatch) {
-        $error = 'Error getting match result details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+  $resultMatch = mysqli_query($link, $sql);
+  if (!$resultMatch) {
+    $error = 'Error getting match result details: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Email To Addresses
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $toEmail='jrpl@googlegroups.com';
+  // Email To Addresses
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $toEmail='jrpl@googlegroups.com';
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Email Subject
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $emailSubject = 'Match results for ' . $row['HomeTeam'] . ' vs. '. $row['AwayTeam'];
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Email Subject
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $emailSubject = 'Match results for ' . $row['HomeTeam'] . ' vs. '. $row['AwayTeam'];
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // CSS formatting
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    $css = 'standard';
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // CSS formatting
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $css = 'standard';
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Body - write heading table
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Body - write heading table
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $heading = '<!-- Title -->' . chr(13);
   $heading .= '<tr>' . chr(13);
   $heading .= '<td colspan="5" style="font-family: Helvetica, arial, sans-serif; font-size: 30px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
@@ -386,8 +387,8 @@ function sendResultsEmail ($matchID) {
   $heading .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Body - write league table
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Body - write league table
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $league = '<!-- Title -->' . chr(13);
   $league .= '<tr>' . chr(13);
   $league .= '<td colspan="5" style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
@@ -452,8 +453,8 @@ function sendResultsEmail ($matchID) {
   $league .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Body - write match details table
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Body - write match details table
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $match = '<!-- Title -->' . chr(13);
   $match .= '<tr>' . chr(13);
   $match .= '<td colspan="3" style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
@@ -521,34 +522,34 @@ function sendResultsEmail ($matchID) {
   $match .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // Body - build body array for sendEmail routine
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Body - build body array for sendEmail routine
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $body = array(array('separator','Separator'),
-          array('table','Heading',$heading),
-          array('separatorHR','Separator'),
-          array('table','Current League table',$league),
-          array('separatorHR','Separator'),
-          array('table','Match details table',$match),
-          array('separatorHR','Separator'));
+                array('table','Heading',$heading),
+                array('separatorHR','Separator'),
+                array('table','Current League table',$league),
+                array('separatorHR','Separator'),
+                array('table','Match details table',$match),
+                array('separatorHR','Separator'));
 
-    // Send e-mail
-    sendEmail($toEmail,$emailSubject,$css,$body);
+  // Send e-mail
+  sendEmail($toEmail,$emailSubject,$css,$body);
 
-    // Update DB to log e-mail being sent
-    $sql = "UPDATE `Emails`
-            SET `ResultsSent` = 1
-            WHERE `MatchID` = " . $matchID;
+  // Update DB to log e-mail being sent
+  $sql = "
+    UPDATE `Emails`
+    SET `ResultsSent` = 1
+    WHERE `MatchID` = " . $matchID;
 
-    $resultBody = mysqli_query($link, $sql);
-    if (!$resultBody)
-    {
-        $error = 'Error updating email sent table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+  $resultBody = mysqli_query($link, $sql);
+  if (!$resultBody) {
+    $error = 'Error updating email sent table: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
 }
 
