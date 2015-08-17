@@ -209,8 +209,8 @@ function sendEmail($to,$subject,$css,$body) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Email header
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  $mailHeader = "From: julian@julianrimet.com\r\n";
-  $mailHeader .= "Reply-To: julian@julianrimet.com\r\n";
+  $mailHeader = "From: will@julianrimet.com\r\n";
+  $mailHeader .= "Reply-To: will@julianrimet.com\r\n";
   $mailHeader .= "Content-type: text/html; charset=iso-8859-1\r\n";
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -238,7 +238,7 @@ function sendEmail($to,$subject,$css,$body) {
   } else {
     $MESSAGE_BODY .= $body;
   }
-  $MESSAGE_BODY .= '<br /><br />Yours,<br />Jules, 3rd President of FIFA<br />' . chr(13);
+  $MESSAGE_BODY .= '<br /><br />Yours,<br />Will Webb Ellis<br />' . chr(13);
   $MESSAGE_BODY .= '<a href="http://www.julianrimet.com">JRPL website</a>' . chr(13);
   $MESSAGE_BODY .= '</body>' . chr(13);
   $MESSAGE_BODY .= '</html>' . chr(13);
