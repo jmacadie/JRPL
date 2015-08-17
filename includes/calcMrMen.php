@@ -163,8 +163,8 @@ function calcMrMode($matchID,$link) {
     exit();
   }
 
-    // Calculate the Mode scores
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Fetch the results into arrays, for calculating
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Set the counters to zero to start with
   $numMatches = 0;
@@ -178,8 +178,8 @@ function calcMrMode($matchID,$link) {
     }
   }
 
-  // Insert the prediction
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Calculate & insert the prediction
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Only do anything else if we have some predictions to work with
   if ($numMatches > 0) {
