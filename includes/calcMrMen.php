@@ -186,10 +186,12 @@ function calcMrMode($matchID,$link) {
 
     // Actually calculate the averages ;)
     $values = array_count_values($homeScores);
-    $homeScoreM = array_search(max($values), $values);
+    $maxVals = array_keys($values, max($values));
+    $homeScoreM = array_sum($maxVals) / count($maxVals);
 
     $values = array_count_values($awayScores);
-    $awayScoreM = array_search(max($values), $values);
+    $maxVals = array_keys($values, max($values));
+    $awayScoreM = array_sum($maxVals) / count($maxVals);
 
     // Build SQL
     $sqlAdd = "
