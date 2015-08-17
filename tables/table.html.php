@@ -18,27 +18,35 @@
       </thead>
         <?php foreach ($rLeague as $row): ?>
         <tr>
-          <td><?php if($row['rankCount'] > 1) {
+          <td><?php
+            if($row['rankCount'] > 1) {
               htmlout($row['rank'] . '=');
             } else {
               htmlout($row['rank']);
             } ?></td>
           <td><?php htmlout($row['name']); ?></td>
-          <td class="text-center"><?php if($row['submitted'] == 0) {
+          <td class="text-center"><?php
+            if($row['submitted'] == 0) {
               htmlout('-');
             } else {
               htmlout($row['submitted']);
             } ?></td>
-          <td class="text-center"><?php if($row['results'] == 0) {
+          <td class="text-center"><?php
+            if($row['results'] == 0) {
               htmlout('-');
             } else {
-              $out = (int($row['results'])) ? round($row['results']) : $row['results'];
+              $out = (int($row['results']))
+                        ? round($row['results'])
+                        : $row['results'];
               htmlout($out);
             } ?></td>
-          <td class="text-center"><?php if($row['scores'] == 0) {
+          <td class="text-center"><?php
+            if($row['scores'] == 0) {
               htmlout('-');
             } else {
-              $out = (int($row['scores'])) ? round($row['scores']) : $row['scores'];
+              $out = (int($row['scores']))
+                        ? round($row['scores'])
+                        : $row['scores'];
               htmlout($out);
             } ?></td>
           <td class="text-center"><?php
@@ -59,7 +67,8 @@
                         : $row['totalPoints'];
               htmlout($out);
             } ?></strong></td>
-          <td class="text-center"><?php if(($row['submitted'] == 0) || ($row['totalPoints'] == 0)) {
+          <td class="text-center"><?php
+            if(($row['submitted'] == 0) || ($row['totalPoints'] == 0)) {
               htmlout('-');
             } else {
               htmlout(round($row['totalPoints'] / $row['submitted'], 2));
