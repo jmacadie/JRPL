@@ -11,6 +11,7 @@
           <th data-priority="2" class="text-center">Predicted</th>
           <th data-priority="2" class="text-center">Correct Results</th>
           <th data-priority="2" class="text-center">Exact Scores</th>
+          <th data-priority="2" class="text-center">Margin Points</th>
           <th data-priority="1" class="text-center">Points</th>
           <th data-priority="2" class="text-center">Points per Prediction</th>
         </tr>
@@ -40,10 +41,22 @@
               $out = (int($row['scores'])) ? round($row['scores']) : $row['scores'];
               htmlout($out);
             } ?></td>
-          <td class="text-center"><strong><?php if($row['totalPoints'] == 0) {
+          <td class="text-center"><?php
+            if($row['margins'] == 0) {
               htmlout('-');
             } else {
-              $out = (int($row['totalPoints'])) ? round($row['totalPoints']) : $row['totalPoints'];
+              $out = (int($row['margins']))
+                        ? round($row['margins'])
+                        : $row['margins'];
+              htmlout($out);
+            } ?></td>
+          <td class="text-center"><strong><?php
+            if($row['totalPoints'] == 0) {
+              htmlout('-');
+            } else {
+              $out = (int($row['totalPoints']))
+                        ? round($row['totalPoints'])
+                        : $row['totalPoints'];
               htmlout($out);
             } ?></strong></td>
           <td class="text-center"><?php if(($row['submitted'] == 0) || ($row['totalPoints'] == 0)) {

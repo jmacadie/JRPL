@@ -542,12 +542,14 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   }
 
   // Create temporary table to hold points by user
-  $sql = "CREATE TEMPORARY TABLE `PointsByUser` (
-          `UserID` INT NOT NULL,
-          `DisplayName` VARCHAR(100) NOT NULL,
-          `ResultPoints` DECIMAL(6,2) NOT NULL,
-          `ScorePoints` DECIMAL(6,2) NOT NULL,
-          `TotalPoints` DECIMAL(6,2) NOT NULL) ; ";
+  $sql = "
+    CREATE TEMPORARY TABLE `PointsByUser` (
+      `UserID` INT NOT NULL
+      ,`DisplayName` VARCHAR(100) NOT NULL
+      ,`ResultPoints` DECIMAL(6,2) NOT NULL
+      ,`ScorePoints` DECIMAL(6,2) NOT NULL
+      ,`MarginPoints` DECIMAL(6,2) NOT NULL
+      ,`TotalPoints` DECIMAL(6,2) NOT NULL) ; ";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -560,36 +562,40 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   }
 
   // Add points by user data to temporary table
-  $sql = "INSERT INTO `PointsByUser`
-          SELECT
-            tmp.`UserID`,
-            tmp.`DisplayName`,
-            SUM(tmp.`ResultPoints`) AS `ResultPoints`,
-            SUM(tmp.`ScorePoints`) AS `ScorePoints`,
-            SUM(tmp.`TotalPoints`) AS `TotalPoints`
+  $sql = "
+    INSERT INTO `PointsByUser`
 
-          FROM
-            (SELECT
-              u.`UserID`,
-              IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
-              IFNULL(po.`ResultPoints`,0) AS `ResultPoints`,
-              IFNULL(po.`ScorePoints`,0) AS `ScorePoints`,
-              IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
+      SELECT
+        tmp.`UserID`
+        ,tmp.`DisplayName`
+        ,SUM(tmp.`ResultPoints`) AS `ResultPoints`
+        ,SUM(tmp.`ScorePoints`) AS `ScorePoints`
+        ,SUM(tmp.`MarginPoints`) AS `MarginPoints`
+        ,SUM(tmp.`TotalPoints`) AS `TotalPoints`
 
-            FROM `User` u
+      FROM
+        (SELECT
+          u.`UserID`
+          ,IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`
+          ,IFNULL(po.`ResultPoints`,0) AS `ResultPoints`
+          ,IFNULL(po.`ScorePoints`,0) AS `ScorePoints`
+          ,IFNULL(po.`MarginPoints`,0) AS `MarginPoints`
+          ,IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
-              LEFT JOIN
-                (SELECT `MatchID`, `UserID`
-                FROM `Match`, `User`
-                WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
-                  ON mu.`UserID` = u.`UserID`
+        FROM `User` u
 
-              LEFT JOIN `Points` po ON
-                po.`ScoringSystemID` = " . $scoringSystem . "
-                AND po.`UserID` = mu.`UserID`
-                AND po.`MatchID` = mu.`MatchID`) tmp
+          LEFT JOIN
+            (SELECT `MatchID`, `UserID`
+            FROM `Match`, `User`
+            WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
+              ON mu.`UserID` = u.`UserID`
 
-          GROUP BY tmp.`DisplayName`; ";
+          LEFT JOIN `Points` po ON
+            po.`ScoringSystemID` = " . $scoringSystem . "
+            AND po.`UserID` = mu.`UserID`
+            AND po.`MatchID` = mu.`MatchID`) tmp
+
+      GROUP BY tmp.`DisplayName`; ";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -654,25 +660,27 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   }
 
   // Final query
-  $sql = "SELECT
-          (SELECT COUNT(*) + 1
-          FROM `PointsByUser2` pbu2
-          WHERE pbu2.`TotalPoints` > pbu.`TotalPoints`) AS `Rank`,
-          (SELECT COUNT(*)
-          FROM `PointsByUser3` pbu3
-          WHERE pbu3.`TotalPoints` = pbu.`TotalPoints`) AS `RankCount`,
-          pbu.*,
-          sm.`Submitted`,
-          sm.`NotSubmitted`
+  $sql = "
+    SELECT
+      (SELECT COUNT(*) + 1
+      FROM `PointsByUser2` pbu2
+      WHERE pbu2.`TotalPoints` > pbu.`TotalPoints`) AS `Rank`
+      ,(SELECT COUNT(*)
+      FROM `PointsByUser3` pbu3
+      WHERE pbu3.`TotalPoints` = pbu.`TotalPoints`) AS `RankCount`
+      ,pbu.*
+      ,sm.`Submitted`
+      ,sm.`NotSubmitted`
 
-        FROM `PointsByUser` pbu
-          INNER JOIN `SubmittedMatches` sm ON sm.`UserID` = pbu.`UserID`
+    FROM `PointsByUser` pbu
+      INNER JOIN `SubmittedMatches` sm ON sm.`UserID` = pbu.`UserID`
 
-        ORDER BY
-          pbu.`TotalPoints` DESC,
-          pbu.`ScorePoints` DESC,
-          pbu.`ResultPoints` DESC,
-          pbu.`DisplayName` ASC;";
+    ORDER BY
+      pbu.`TotalPoints` DESC
+      ,pbu.`ScorePoints` DESC
+      ,pbu.`MarginPoints` DESC
+      ,pbu.`ResultPoints` DESC
+      ,pbu.`DisplayName` ASC;";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -685,17 +693,17 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   }
 
   // Build array of outputs
-  while ($row = mysqli_fetch_array($result))
-  {
+  while ($row = mysqli_fetch_array($result)) {
     $out[] = array(
-      'rank' => $row['Rank'],
-      'rankCount' => $row['RankCount'],
-      'name' => $row['DisplayName'],
-      'submitted' => $row['Submitted'],
-      'notSubmitted' => $row['NotSubmitted'],
-      'results' => $row['ResultPoints'],
-      'scores' => ($row['ScorePoints'] / 2),
-      'totalPoints' => $row['TotalPoints']);
+      'rank' => $row['Rank']
+      ,'rankCount' => $row['RankCount']
+      ,'name' => $row['DisplayName']
+      ,'submitted' => $row['Submitted']
+      ,'notSubmitted' => $row['NotSubmitted']
+      ,'results' => $row['ResultPoints']
+      ,'scores' => $row['ScorePoints']
+      ,'margins' => $row['MarginPoints']
+      ,'totalPoints' => $row['TotalPoints']);
   }
 
   return $out;
