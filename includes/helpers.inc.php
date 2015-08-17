@@ -2,12 +2,12 @@
 
 // Helper function to escape any HTML special characters in a string
 function html($text) {
-    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+  return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
 
 // Wrapper to echo text whilst escaping any HTML special characters
 function htmlout($text) {
-    echo html($text);
+  echo html($text);
 }
 
 // Function to test if variable passed === integer
@@ -93,7 +93,6 @@ function ring_base_convert ($ring) {
 
 // Calculate the all the points systems for a given match
 function calculatePoints($matchID) {
-
   calculateStandardPoints($matchID);
   calculateAutoQuizPoints($matchID);
 
@@ -109,42 +108,47 @@ function calculateStandardPoints($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Build SQL
-    $sql = "DELETE FROM `Points`
-      WHERE
-        `MatchID` = " . $matchID . "
-        AND `ScoringSystemID` = 1;";
+  $sql = "
+    DELETE FROM `Points`
+    WHERE
+      `MatchID` = " . $matchID . "
+      AND `ScoringSystemID` = 1;";
 
   // Run SQL and trap any errors
-    $result = mysqli_query($link, $sql);
-    if (!$result) {
-        $error = "Error deleting previous standard points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+  $result = mysqli_query($link, $sql);
+  if (!$result) {
+    $error = "Error deleting previous standard points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // Grab match result
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Build SQL
-    $sql = "SELECT
-        `HomeTeamPoints`,
-        `AwayTeamPoints`
-      FROM `Match`
-      WHERE `MatchID` = " . $matchID . ";";
+  $sql = "
+    SELECT
+      m.`HomeTeamPoints`
+      ,m.`AwayTeamPoints`
+      ,s.`Name` AS `Stage`
+    FROM `Match` m
+      INNER JOIN `Stage` s ON
+        s.`StageID` = m.`StageID`
+    WHERE m.`MatchID` = " . $matchID . ";";
 
   // Run SQL and trap any errors
-    $resultM = mysqli_query($link, $sql);
-    if (!$resultM) {
-        $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+  $resultM = mysqli_query($link, $sql);
+  if (!$resultM) {
+    $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // Grab results
   $rowM = mysqli_fetch_array($resultM);
@@ -155,23 +159,24 @@ function calculateStandardPoints($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Build SQL
-    $sql = "SELECT
-        `UserID`,
-        `HomeTeamPoints`,
-        `AwayTeamPoints`
-      FROM `Prediction`
-      WHERE `MatchID` = " . $matchID . ";";
+  $sql = "
+    SELECT
+      `UserID`
+      ,`HomeTeamPoints`
+      ,`AwayTeamPoints`
+    FROM `Prediction`
+    WHERE `MatchID` = " . $matchID . ";";
 
   // Run SQL and trap any errors
-    $resultP = mysqli_query($link, $sql);
-    if (!$resultP) {
-        $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+  $resultP = mysqli_query($link, $sql);
+  if (!$resultP) {
+    $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // Calculate points and INSERT them back into the DB
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -241,42 +246,44 @@ function calculateAutoQuizPoints($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Build SQL
-    $sql = "DELETE FROM `Points`
-      WHERE
-        `MatchID` = " . $matchID . "
-        AND `ScoringSystemID` = 2;";
+  $sql = "
+    DELETE FROM `Points`
+    WHERE
+      `MatchID` = " . $matchID . "
+      AND `ScoringSystemID` = 2;";
 
   // Run SQL and trap any errors
-    $result = mysqli_query($link, $sql);
-    if (!$result) {
-        $error = "Error deleting previous AutoQuiz points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+  $result = mysqli_query($link, $sql);
+  if (!$result) {
+    $error = "Error deleting previous AutoQuiz points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // Grab match result
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Build SQL
-    $sql = "SELECT
-        `HomeTeamPoints`,
-        `AwayTeamPoints`
-      FROM `Match`
-      WHERE `MatchID` = " . $matchID . ";";
+  $sql = "
+    SELECT
+      `HomeTeamPoints`
+      ,`AwayTeamPoints`
+    FROM `Match`
+    WHERE `MatchID` = " . $matchID . ";";
 
   // Run SQL and trap any errors
-    $resultM = mysqli_query($link, $sql);
-    if (!$resultM) {
-        $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+  $resultM = mysqli_query($link, $sql);
+  if (!$resultM) {
+    $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // Grab results
   $rowM = mysqli_fetch_array($resultM);
@@ -287,23 +294,24 @@ function calculateAutoQuizPoints($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Build SQL
-    $sql = "SELECT
-        `UserID`,
-        `HomeTeamPoints`,
-        `AwayTeamPoints`
-      FROM `Prediction`
-      WHERE `MatchID` = " . $matchID . ";";
+  $sql = "
+    SELECT
+      `UserID`
+      ,`HomeTeamPoints`
+      ,`AwayTeamPoints`
+    FROM `Prediction`
+    WHERE `MatchID` = " . $matchID . ";";
 
   // Run SQL and trap any errors
-    $resultP = mysqli_query($link, $sql);
-    if (!$resultP) {
-        $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+  $resultP = mysqli_query($link, $sql);
+  if (!$resultP) {
+    $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-    }
+  }
 
   // Loop through predictions and do initial result processing
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -396,7 +404,6 @@ function calculateAutoQuizPoints($matchID) {
 
 // Generate data for tables
 function getLeagueTable($scoringSystem = 1, $stage = '') {
-
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
@@ -664,7 +671,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
 
 // Generate data for graphs
 function getGraphData ($scoringSystem = 1) {
-
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
