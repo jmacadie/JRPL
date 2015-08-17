@@ -5,7 +5,6 @@ $(document).ready(function() {
   // They need to be open on page load so the
   // responsive tables can set up the sticky headers properly
   $('#tGSCont').collapse('hide');
-  $('#tL16Cont').collapse('hide');
   $('#tRCont').collapse('hide');
 
   // Make buttons lose focus after being clicked
@@ -14,10 +13,6 @@ $(document).ready(function() {
   });
 
   $("#btnGSCont").click(function(e) {
-    $(this).blur();
-  });
-
-  $("#btnL16Cont").click(function(e) {
     $(this).blur();
   });
 

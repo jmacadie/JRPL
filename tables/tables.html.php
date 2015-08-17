@@ -13,11 +13,6 @@ include 'table.html.php'; ?>
 $rLeague = $resultGSLeague;
 include 'table.html.php'; ?>
 <hr>
-<h3>Last 16</h3>
-<?php $sID = 'L16Cont';
-$rLeague = $resultL16League;
-include 'table.html.php'; ?>
-<hr>
 <h3>Semi-Finals, Quarter-Finals, 3<sup>rd</sup> 4<sup>th</sup> Place Play-off & Final</h3>
 <?php $sID = 'RCont';
 $rLeague = $resultRLeague;

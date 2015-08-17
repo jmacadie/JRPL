@@ -16,9 +16,10 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/processScoringSystem.inc.php';
 
 // Load the various league tables
 $resultLeague = getLeagueTable($_SESSION['scoringSystem']);
-$resultGSLeague = getLeagueTable($_SESSION['scoringSystem'], array(true,false,false,false,false));
-$resultL16League = getLeagueTable($_SESSION['scoringSystem'], array(false,true,false,false,false));
-$resultRLeague = getLeagueTable($_SESSION['scoringSystem'], array(false,false,true,true,true));
+$resultGSLeague = getLeagueTable($_SESSION['scoringSystem'],
+                                 array(true,false,false,false,false));
+$resultRLeague = getLeagueTable($_SESSION['scoringSystem'],
+                                array(false,true,true,true,true));
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Core page load
