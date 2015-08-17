@@ -10,10 +10,10 @@
           <th>Player</th>
           <th data-priority="2" class="text-center">Predicted</th>
           <th data-priority="2" class="text-center">Correct Results</th>
-          <th data-priority="2" class="text-center">Exact Scores</th>
+          <th data-priority="2" class="text-center">Score Points</th>
           <th data-priority="2" class="text-center">Margin Points</th>
           <th data-priority="1" class="text-center">Points</th>
-          <th data-priority="2" class="text-center">Points per Prediction</th>
+          <th data-priority="2" class="text-center">Points /pred</th>
         </tr>
       </thead>
         <?php foreach ($rLeague as $row): ?>
