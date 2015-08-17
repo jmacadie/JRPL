@@ -300,15 +300,19 @@ function calcMrMedian($matchID,$link) {
     $homeScores = quickSort($homeScores);
     $awayScores = quickSort($awayScores);
 
-    if ($numMatches % 2) // $numMatches is odd can just take middle array value
-    {
-      $homeScoreM = $homeScores[(($numMatches+1)/2)];
-      $awayScoreM = $awayScores[(($numMatches+1)/2)];
+    if ($numMatches % 2) {
+      // $numMatches is odd can just take middle array value
+      $homeScoreM = $homeScores[(($numMatches-1)/2)];
+      $awayScoreM = $awayScores[(($numMatches-1)/2)];
     }
-    else // $numMatches is even must take average of middle two values
-    {
-      $homeScoreM = round(($homeScores[($numMatches/2)]+$homeScores[(($numMatches/2)+1)])/2);
-      $awayScoreM = round(($awayScores[($numMatches/2)]+$awayScores[(($numMatches/2)+1)])/2);
+    else {
+      // $numMatches is even must take average of middle two values
+      $homeScoreM =
+        round(($homeScores[($numMatches/2)]+
+               $homeScores[(($numMatches/2)-1)])/2);
+      $awayScoreM =
+        round(($awayScores[($numMatches/2)]+
+               $awayScores[(($numMatches/2)-1)])/2);
     }
 
     // Build SQL
