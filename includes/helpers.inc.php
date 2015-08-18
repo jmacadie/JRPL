@@ -711,6 +711,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
 
 // Generate data for graphs
 function getGraphData ($scoringSystem = 1) {
+
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
 
@@ -719,10 +720,11 @@ function getGraphData ($scoringSystem = 1) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Create temporary table to hold cumulative points by match & user
-  $sql = "CREATE TEMPORARY TABLE `CumulativePointsByMatchUser` (
-          `MatchID` INT NOT NULL,
-          `UserID` INT NOT NULL,
-          `Points` DECIMAL(6,2) NOT NULL) ; ";
+  $sql = "
+    CREATE TEMPORARY TABLE `CumulativePointsByMatchUser` (
+      `MatchID` INT NOT NULL
+      ,`UserID` INT NOT NULL
+      ,`Points` DECIMAL(6,2) NOT NULL) ; ";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -735,35 +737,37 @@ function getGraphData ($scoringSystem = 1) {
   }
 
   // Add cumulative points by match & user data to temporary table
-  $sql = "INSERT INTO `CumulativePointsByMatchUser`
-          SELECT
-            m.`MatchID`,
-            tmp.`UserID`,
-            SUM(tmp.`Points`) AS `Points`
+  $sql = "
+    INSERT INTO `CumulativePointsByMatchUser`
 
-          FROM
-            (SELECT
-                mu.`MatchID`,
-                mu.`UserID`,
-                IFNULL(po.`TotalPoints`,0) AS `Points`
+      SELECT
+        m.`MatchID`
+        ,tmp.`UserID`
+        ,SUM(tmp.`Points`) AS `Points`
 
-            FROM
-              (SELECT m.`MatchID`, u.`UserID`
-              FROM `Match` m, `User` u
-              WHERE m.`ResultPostedBy` IS NOT NULL) mu
+      FROM
+        (SELECT
+            mu.`MatchID`
+            ,mu.`UserID`
+            ,IFNULL(po.`TotalPoints`,0) AS `Points`
 
-              LEFT JOIN `Points` po ON
-                po.`ScoringSystemID` = " . $scoringSystem . "
-                AND po.`UserID` = mu.`UserID`
-                AND po.`MatchID` = mu.`MatchID`) tmp
+        FROM
+          (SELECT m.`MatchID`, u.`UserID`
+          FROM `Match` m, `User` u
+          WHERE m.`ResultPostedBy` IS NOT NULL) mu
 
-          INNER JOIN `Match` m ON
-            m.`MatchID` >= tmp.`MatchID`
-            AND m.`ResultPostedBy` IS NOT NULL
+          LEFT JOIN `Points` po ON
+            po.`ScoringSystemID` = " . $scoringSystem . "
+            AND po.`UserID` = mu.`UserID`
+            AND po.`MatchID` = mu.`MatchID`) tmp
 
-          GROUP BY
-            m.`MatchID`,
-            tmp.`UserID`;";
+      INNER JOIN `Match` m ON
+        m.`MatchID` >= tmp.`MatchID`
+        AND m.`ResultPostedBy` IS NOT NULL
+
+      GROUP BY
+        m.`MatchID`
+        ,tmp.`UserID`;";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -776,7 +780,9 @@ function getGraphData ($scoringSystem = 1) {
   }
 
   // Create 2nd temporary table to hold points by user
-  $sql = "CREATE TEMPORARY TABLE `CumulativePointsByMatchUser2` SELECT * FROM `CumulativePointsByMatchUser`; ";
+  $sql = "
+    CREATE TEMPORARY TABLE `CumulativePointsByMatchUser2`
+    SELECT * FROM `CumulativePointsByMatchUser`; ";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -789,24 +795,25 @@ function getGraphData ($scoringSystem = 1) {
   }
 
   // Final query
-  $sql = "SELECT
-        (SELECT COUNT(*) + 1
-        FROM `CumulativePointsByMatchUser2` cpmu2
-        WHERE cpmu2.`Points` > cpmu.`Points`
-          AND cpmu2.`MatchID` = cpmu.`MatchID`) AS `Rank`,
-        IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`,
-        CONCAT(IFNULL(ht.`Name`,trht.`Name`),' vs. ',IFNULL(at.`Name`,trat.`Name`)) AS `Match`,
-        cpmu.*
+  $sql = "
+    SELECT
+      (SELECT COUNT(*) + 1
+      FROM `CumulativePointsByMatchUser2` cpmu2
+      WHERE cpmu2.`Points` > cpmu.`Points`
+        AND cpmu2.`MatchID` = cpmu.`MatchID`) AS `Rank`
+      ,IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`
+      ,CONCAT(IFNULL(ht.`Name`,trht.`Name`),' vs. ',IFNULL(at.`Name`,trat.`Name`)) AS `Match`
+      ,cpmu.*
 
-      FROM `CumulativePointsByMatchUser` cpmu
-        INNER JOIN `Match` m ON m.`MatchID` = cpmu.`MatchID`
-        INNER JOIN `User` u ON u.`UserID` = cpmu.`UserID`
-        INNER JOIN `TournamentRole` trht ON trht.`TournamentRoleID` = m.`HomeTeamID`
+    FROM `CumulativePointsByMatchUser` cpmu
+      INNER JOIN `Match` m ON m.`MatchID` = cpmu.`MatchID`
+      INNER JOIN `User` u ON u.`UserID` = cpmu.`UserID`
+      INNER JOIN `TournamentRole` trht ON trht.`TournamentRoleID` = m.`HomeTeamID`
         LEFT JOIN `Team` ht ON ht.`TeamID` = trht.`TeamID`
-        INNER JOIN `TournamentRole` trat ON trat.`TournamentRoleID` = m.`AwayTeamID`
+      INNER JOIN `TournamentRole` trat ON trat.`TournamentRoleID` = m.`AwayTeamID`
         LEFT JOIN `Team` at ON at.`TeamID` = trat.`TeamID`
 
-      ORDER BY cpmu.`MatchID` ASC, cpmu.`UserID` ASC";
+    ORDER BY cpmu.`MatchID` ASC, cpmu.`UserID` ASC";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
