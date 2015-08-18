@@ -25,6 +25,10 @@
   <link rel="stylesheet" href="../assets/css/rwd-table.min.css">
 
   <!-- Custom styles for this template -->
+  <?php
+    if (!isset($tab))
+      $tab = 'home';
+  ?>
   <link type="text/css" href="<?php echo($tab == 'home' ? '' : '../'); ?>assets/css/JRPL.css" rel="stylesheet">
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -42,10 +46,10 @@
 <body>
 
   <?php
-  // set logged in variables
-  if (isset($_SESSION['displayName'])) $displayName = $_SESSION['displayName'];
-  if (isset($_SESSION['firstName'])) $firstName = $_SESSION['firstName'];
-  if (isset($_SESSION['lastName'])) $lastName = $_SESSION['lastName'];
+    // set logged in variables
+    if (isset($_SESSION['displayName'])) $displayName = $_SESSION['displayName'];
+    if (isset($_SESSION['firstName'])) $firstName = $_SESSION['firstName'];
+    if (isset($_SESSION['lastName'])) $lastName = $_SESSION['lastName'];
   ?>
 
   <!-- Navigation Bar -->
@@ -118,7 +122,8 @@
     <div class="page-content">
     <?php
       // Load the specific page's content
-      include $content;
+      if (isset($content))
+        include $content;
     ?>
     </div>
 
@@ -138,7 +143,8 @@
 
   <?php
     // Load the specific page's additional javascript content
-    include $contentjs;
+    if (isset($contentjs))
+      include $contentjs;
   ?>
 
 </body>

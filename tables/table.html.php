@@ -1,3 +1,7 @@
+<?php
+  if (!isset($sID))
+    $sID = 1;
+?>
 <button type="button" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#t<?php echo($sID); ?>" id="btn<?php echo($sID); ?>">
   Hide / unhide table
 </button>
@@ -16,6 +20,7 @@
           <th data-priority="2" class="text-center">Points /pred</th>
         </tr>
       </thead>
+        <?php if (isset($rLeague)) : ?>
         <?php foreach ($rLeague as $row): ?>
         <tr>
           <td><?php
@@ -75,6 +80,7 @@
             } ?></td>
         </tr>
         <?php endforeach; ?>
+        <?php endif; ?>
       <tbody>
       </tbody>
     </table>

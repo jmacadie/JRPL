@@ -36,6 +36,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
 
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+  if (!isset($link)) {
+    $error = 'Error getting DB connection';
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
 
   // Make sure submitted data is clean
   $userID = mysqli_real_escape_string($link, $userID);
@@ -156,5 +164,3 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
   echo json_encode($arr);
 
 }
-
-?>

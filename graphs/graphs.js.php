@@ -49,20 +49,26 @@
 
     // Add columns
     tmp.addColumn('string', 'Match');
-    <?php for($i=0; $i<=$numUsers-1; $i++): ?>
+    <?php if (isset($numUsers) && isset($data)) : ?>
+      <?php for($i=0; $i<=$numUsers-1; $i++): ?>
     tmp.addColumn('number', '<?php htmlout($data[$i]['name']); ?>');
-    <?php endfor; ?>
+      <?php endfor; ?>
+    <?php endif; ?>
 
     // Add empty rows
+    <?php if (isset($numMatches)) : ?>
     tmp.addRows(<?php htmlout($numMatches); ?>);
+    <?php endif; ?>
 
     // Add the data
-    <?php for($i=0; $i<=$numMatches-1; $i++): ?>
+    <?php if (isset($numUsers) && isset($data)) : ?>
+      <?php for($i=0; $i<=$numMatches-1; $i++): ?>
     tmp.setCell(<?php htmlout($i); ?>, 0, '<?php htmlout($data[($i*$numUsers)]['match']); ?>');
-    <?php for($j=0; $j<=$numUsers-1; $j++): ?>
+        <?php for($j=0; $j<=$numUsers-1; $j++): ?>
     tmp.setCell(<?php htmlout($i); ?>, <?php htmlout($j + 1); ?>, '<?php htmlout($data[(($i*$numUsers) + $j)]['points']); ?>');
-    <?php endfor; ?>
-    <?php endfor; ?>
+        <?php endfor; ?>
+      <?php endfor; ?>
+    <?php endif; ?>
 
     return tmp;
   }
@@ -74,24 +80,30 @@
 
     // Add columns
     tmp.addColumn('string', 'Match');
-    <?php for($i=0; $i<=$numUsers-1; $i++): ?>
+    <?php if (isset($numUsers) && isset($data)) : ?>
+      <?php for($i=0; $i<=$numUsers-1; $i++): ?>
     tmp.addColumn('number', '<?php htmlout($data[$i]['name']); ?>');
-    <?php endfor; ?>
+      <?php endfor; ?>
+    <?php endif; ?>
 
     // Add empty rows
+    <?php if (isset($numMatches)) : ?>
     tmp.addRows(<?php htmlout($numMatches); ?>);
+    <?php endif; ?>
 
     // Add the data
-    <?php for($i=0; $i<=$numMatches-1; $i++): ?>
+    <?php if (isset($numUsers) && isset($data)) : ?>
+      <?php for($i=0; $i<=$numMatches-1; $i++): ?>
     tmp.setCell(<?php htmlout($i); ?>, 0, '<?php htmlout($data[($i*$numUsers)]['match']); ?>');
-    <?php $max = 0;
-    for($k=0; $k<=$numUsers-1; $k++) {
-      $max = max($max, $data[(($i*$numUsers) + $k)]['points']);
-    } ?>
-    <?php for($j=0; $j<=$numUsers-1; $j++): ?>
+        <?php $max = 0;
+        for($k=0; $k<=$numUsers-1; $k++) {
+          $max = max($max, $data[(($i*$numUsers) + $k)]['points']);
+        } ?>
+        <?php for($j=0; $j<=$numUsers-1; $j++): ?>
     tmp.setCell(<?php htmlout($i); ?>, <?php htmlout($j + 1); ?>, '<?php htmlout($max - $data[(($i*$numUsers) + $j)]['points']); ?>');
-    <?php endfor; ?>
-    <?php endfor; ?>
+        <?php endfor; ?>
+      <?php endfor; ?>
+    <?php endif; ?>
 
     return tmp;
   }
@@ -103,20 +115,26 @@
 
     // Add columns
     tmp.addColumn('string', 'Match');
-    <?php for($i=0; $i<=$numUsers-1; $i++): ?>
+    <?php if (isset($numUsers) && isset($data)) : ?>
+      <?php for($i=0; $i<=$numUsers-1; $i++): ?>
     tmp.addColumn('number', '<?php htmlout($data[$i]['name']); ?>');
-    <?php endfor; ?>
+      <?php endfor; ?>
+    <?php endif; ?>
 
     // Add empty rows
+    <?php if (isset($numMatches)) : ?>
     tmp.addRows(<?php htmlout($numMatches); ?>);
+    <?php endif; ?>
 
     // Add the data
-    <?php for($i=0; $i<=$numMatches-1; $i++): ?>
+    <?php if (isset($numUsers) && isset($data)) : ?>
+      <?php for($i=0; $i<=$numMatches-1; $i++): ?>
     tmp.setCell(<?php htmlout($i); ?>, 0, '<?php htmlout($data[($i*$numUsers)]['match']); ?>');
-    <?php for($j=0; $j<=$numUsers-1; $j++): ?>
+        <?php for($j=0; $j<=$numUsers-1; $j++): ?>
     tmp.setCell(<?php htmlout($i); ?>, <?php htmlout($j + 1); ?>, '<?php htmlout($data[(($i*$numUsers) + $j)]['rank']); ?>');
-    <?php endfor; ?>
-    <?php endfor; ?>
+        <?php endfor; ?>
+      <?php endfor; ?>
+    <?php endif; ?>
 
     return tmp;
   }
@@ -178,19 +196,19 @@
       series: getSeries()};
 
     // Draw the chart
-        var chart = new google.visualization.LineChart(document.getElementById('cPoints'));
-        chart.draw(dataPoints, options);
+    var chart = new google.visualization.LineChart(document.getElementById('cPoints'));
+    chart.draw(dataPoints, options);
 
     // Draw the chart
-        var chart = new google.visualization.LineChart(document.getElementById('cRelPoints'));
-        chart.draw(dataRel, options);
+    var chart = new google.visualization.LineChart(document.getElementById('cRelPoints'));
+    chart.draw(dataRel, options);
 
     // Set the options
     options.vAxis.direction= -1;
 
     // Draw the chart
-        chart = new google.visualization.LineChart(document.getElementById('cPosition'));
-        chart.draw(dataPos, options);
+    chart = new google.visualization.LineChart(document.getElementById('cPosition'));
+    chart.draw(dataPos, options);
 
   }
 

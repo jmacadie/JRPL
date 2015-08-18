@@ -38,6 +38,20 @@ if (isset($gMatchID) && int($gMatchID) && ($gMatchID > 0)) {
   // Call the getMatchDetails script to load all the variables for the match page
   include 'getMatchDetails.php';
 
+  // Make sure we've got the variables we need
+  if (!isset($homeTeamS))
+    $homeTeamS = "";
+  if (!isset($awayTeamS))
+    $awayTeamS = "";
+  if (!isset($homeTeamHomeTeamS))
+    $homeTeamHomeTeamS = "";
+  if (!isset($homeTeamAwayTeamS))
+    $homeTeamAwayTeamS = "";
+  if (!isset($awayTeamHomeTeamS))
+    $awayTeamHomeTeamS = "";
+  if (!isset($awayTeamAwayTeamS))
+    $awayTeamAwayTeamS = "";
+
   // Sort out flag links
   $homeFlag = ($homeTeamS == '') ? 'tmp' : strtolower($homeTeamS);
   $awayFlag = ($awayTeamS == '') ? 'tmp' : strtolower($awayTeamS);
@@ -111,5 +125,3 @@ if (isset($gMatchID) && int($gMatchID) && ($gMatchID > 0)) {
 // Call main HTML page
 $contentjs = $_SERVER['DOCUMENT_ROOT'] . '/match/match.js.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/template.html.php';
-
-?>

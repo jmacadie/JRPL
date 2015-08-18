@@ -2,12 +2,14 @@
   <div class="form-group">
     <label for="scoringSystem">Scoring System:</label>
     <select class="form-control" name="scoringSystem">
+      <?php if(isset($arrSS)) : ?>
       <?php foreach ($arrSS as $row): ?>
         <option value = "<?php htmlout($row['ScoringSystemID']); ?>"
         <?php if($row['ScoringSystemID'] === $_SESSION['scoringSystem']) echo('selected'); ?>>
           <?php htmlout($row['Name']); ?>
         </option>
       <?php endforeach; ?>
+      <?php endif; ?>
     </select>
   </div>
   <button type="submit" class="btn btn-default">Change</button>

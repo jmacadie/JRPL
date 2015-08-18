@@ -6,7 +6,10 @@ if (!isset($_SESSION)) session_start();
 
 // Set scoring system
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-if (!isset($_SESSION['scoringSystem']) || !int($_SESSION['scoringSystem']) || ($_SESSION['scoringSystem'] < 1)) $_SESSION['scoringSystem'] = 1;
+if (!isset($_SESSION['scoringSystem']) ||
+    !int($_SESSION['scoringSystem']) ||
+    ($_SESSION['scoringSystem'] < 1))
+  $_SESSION['scoringSystem'] = 1;
 
 // Check that ID parameter has been properly formed
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,6 +33,14 @@ $matchID = $gMatchID + 0;
 
 // Get DB connection
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+if (!isset($link)) {
+  $error = 'Error getting DB connection';
+
+  header('Content-type: application/json');
+  $arr = array('result' => 'No', 'message' => $error);
+  echo json_encode($arr);
+  die();
+}
 
 // Make sure submitted data is clean
 $userID = mysqli_real_escape_string($link, $userID);
@@ -88,7 +99,10 @@ if (!$result) {
   $error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
   header('Content-type: application/json');
-  $arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
+  $arr = array(
+    'result' => 'No'
+    ,'message' => $error
+    ,'loggedIn' => max($userID, 1));
   echo json_encode($arr);
   die();
 }
@@ -159,7 +173,10 @@ if ($lockedDown == 1) {
   if (!$result) {
     $error = 'Error fetching predictions: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
     header('Content-type: application/json');
-    $arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
+    $arr = array(
+      'result' => 'No'
+      ,'message' => $error
+      ,'loggedIn' => max($userID, 1));
     echo json_encode($arr);
     die();
   }
@@ -236,7 +253,10 @@ if (!$result) {
   $error = 'Error fetching origin data: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
   header('Content-type: application/json');
-  $arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
+  $arr = array(
+    'result' => 'No'
+    ,'message' => $error
+    ,'loggedIn' => max($userID, 1));
   echo json_encode($arr);
   die();
 }
@@ -259,5 +279,3 @@ $awayTeamHomeTeamPoints = $row['AwayTeamHomeTeamPoints'];
 $awayTeamAwayTeamPoints = $row['AwayTeamAwayTeamPoints'];
 $awayTeamMatchID = $row['AwayTeamMatchID'];
 $awayTeamStage = $row['AwayTeamStage'];
-
-?>

@@ -14,6 +14,7 @@
     <div id="collapseUsers" class="panel-collapse collapse">
       <div class="panel-body">
         <?php $j=0; ?>
+        <?php if (isset($numUsers) && isset ($data)) : ?>
         <?php for($i=0; $i<=$numUsers-1; $i++): ?>
         <?php if($j==0): ?>
         <div class="row">
@@ -25,9 +26,12 @@
                 <input
                 type="checkbox"
                 value="<?php htmlout($data[$i]['userID']); ?>"
-                <?php if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == TRUE
-                  && isset($_SESSION['userID']) && $_SESSION['userID'] == $data[$i]['userID'])
-                  { echo('checked'); }?>>
+                <?php
+                  if (isset($_SESSION['loggedIn']) &&
+                      $_SESSION['loggedIn'] == TRUE &&
+                      isset($_SESSION['userID']) &&
+                      $_SESSION['userID'] == $data[$i]['userID'])
+                    { echo('checked'); }?>>
                 <?php htmlout($data[$i]['name']); ?>
               </label>
             </div>
@@ -37,6 +41,7 @@
         </div>
         <?php endif; ?>
         <?php endfor; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>

@@ -48,6 +48,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
 
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+  if (!isset($link)) {
+    $error = 'Error getting DB connection';
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
 
   // Make sure submitted data is clean
   $userID = mysqli_real_escape_string($link, $userID);
@@ -132,9 +140,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
   }
 
   // Calculate everyone's points
+  include 'calcPoints.inc.php';
   calculatePoints($matchID);
 
   // Send e-mail
+  include 'sendResultsEmail.inc.php'
   sendResultsEmail($matchID);
 
   // Test Code
@@ -150,5 +160,3 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
   echo json_encode($arr);
 
 }
-
-?>

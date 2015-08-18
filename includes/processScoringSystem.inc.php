@@ -15,6 +15,14 @@ if (array_key_exists('_submit_check',$_POST)) {
 
 // Get DB connection
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+if (!isset($link)) {
+  $error = 'Error getting DB connection';
+
+  header('Content-type: application/json');
+  $arr = array('result' => 'No', 'message' => $error);
+  echo json_encode($arr);
+  die();
+}
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Grab scoring systems
@@ -41,6 +49,3 @@ $arrSS = array();
 while($row = mysqli_fetch_assoc($result)) {
   $arrSS[] = $row;
 }
-
-
-?>

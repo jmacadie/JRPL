@@ -11,4 +11,3 @@ $contentjs = $_SERVER['DOCUMENT_ROOT'] . '/fixtures/fixtures.js.php';
 
 // Call main HTML page
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/template.html.php';
-?>

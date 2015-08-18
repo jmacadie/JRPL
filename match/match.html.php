@@ -1,3 +1,154 @@
+<?php
+
+  // Check for existence of prev variable
+  if (!isset($prev)) {
+    if (isset($_GET['id'])) {
+      $prev = $_GET['id'] - 1;
+    } elseif (isset($_SESSION['matchID'])) {
+      $prev = $_SESSION['matchID'] - 1;
+    } else {
+      $prev = 1;
+    }
+    $prev = max($prev, 1);
+  }
+
+  // Check for existence of next variable
+  if (!isset($next)) {
+    if (isset($_GET['id'])) {
+      $next = $_GET['id'] + 1;
+    } elseif (isset($_SESSION['matchID'])) {
+      $next = $_SESSION['matchID'] + 1;
+    } else {
+      $next = 1;
+    }
+    $next = min($prev, 64);
+  }
+
+  // Check for existence of stage variable
+  if (!isset($stage))
+    $stage = "";
+
+  // Check for existence of date variable
+  if (!isset($date))
+    $date  = "";
+
+  // Check for existence of kickOff variable
+  if (!isset($kickOff))
+    $kickOff= "";
+
+  // Check for existence of venue variable
+  if (!isset($venue))
+    $venue= "";
+
+  // Check for existence of broadcaster variable
+  if (!isset($broadcaster))
+    $broadcaster = "";
+
+  // Check for existence of homeTeam variable
+  if (!isset($homeTeam))
+    $homeTeam = "";
+
+  // Check for existence of homeFlag variable
+  if (!isset($homeFlag))
+    $homeFlag = "";
+
+  // Check for existence of homeTeamMatchID variable
+  if (!isset($homeTeamMatchID))
+    $homeTeamMatchID = "";
+
+  // Check for existence of homeTeamStage variable
+  if (!isset($homeTeamStage))
+    $homeTeamStage = "";
+
+  // Check for existence of homeTeamPoints variable
+  if (!isset($homeTeamPoints))
+    $homeTeamPoints = "";
+
+  // Check for existence of homeTeamHomeTeam variable
+  if (!isset($homeTeamHomeTeam))
+    $homeTeamHomeTeam = "";
+
+  // Check for existence of homeTeamHomeTeamPoints variable
+  if (!isset($homeTeamHomeTeamPoints))
+    $homeTeamHomeTeamPoints = "";
+
+  // Check for existence of homeHomeFlag variable
+  if (!isset($homeHomeFlag))
+    $homeHomeFlag = "";
+
+  // Check for existence of homeTeamAwayTeam variable
+  if (!isset($homeTeamAwayTeam))
+    $homeTeamAwayTeam = "";
+
+  // Check for existence of homeTeamAwayTeamPoints variable
+  if (!isset($homeTeamAwayTeamPoints))
+    $homeTeamAwayTeamPoints = "";
+
+  // Check for existence of homeAwayFlag variable
+  if (!isset($homeAwayFlag))
+    $homeAwayFlag = "";
+
+  // Check for existence of homeTeamPredPoints variable
+  if (!isset($homeTeamPredPoints))
+    $homeTeamPredPoints = "";
+
+  // Check for existence of awayTeam variable
+  if (!isset($awayTeam))
+    $awayTeam = "";
+
+  // Check for existence of awayFlag variable
+  if (!isset($awayFlag))
+    $awayFlag = "";
+
+  // Check for existence of awayTeamMatchID variable
+  if (!isset($awayTeamMatchID))
+    $awayTeamMatchID = "";
+
+  // Check for existence of awayTeamStage variable
+  if (!isset($awayTeamStage))
+    $awayTeamStage = "";
+
+  // Check for existence of awayTeamPoints variable
+  if (!isset($awayTeamPoints))
+    $awayTeamPoints = "";
+
+  // Check for existence of awayTeamHomeTeam variable
+  if (!isset($awayTeamHomeTeam))
+    $awayTeamHomeTeam = "";
+
+  // Check for existence of awayTeamHomeTeamPoints variable
+  if (!isset($awayTeamHomeTeamPoints))
+    $awayTeamHomeTeamPoints = "";
+
+  // Check for existence of awayHomeFlag variable
+  if (!isset($awayHomeFlag))
+    $awayHomeFlag = "";
+
+  // Check for existence of awayTeamAwayTeam variable
+  if (!isset($awayTeamAwayTeam))
+    $awayTeamAwayTeam = "";
+
+  // Check for existence of awayTeamAwayTeamPoints variable
+  if (!isset($awayTeamAwayTeamPoints))
+    $awayTeamAwayTeamPoints = "";
+
+  // Check for existence of awayAwayFlag variable
+  if (!isset($awayAwayFlag))
+    $awayAwayFlag = "";
+
+  // Check for existence of awayTeamPredPoints variable
+  if (!isset($awayTeamPredPoints))
+    $awayTeamPredPoints = "";
+
+  // Check for existence of lockedDown variable
+  if (!isset($lockedDown))
+    $lockedDown = false;
+
+  // Check for existence of matchID variable
+  if (!isset($matchID))
+    $matchID = 1;
+
+?>
 <div class="row">
   <div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
   <div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
@@ -275,6 +426,7 @@
     </tr>
   </thead>
   <tbody>
+    <?php if (isset($arrPredictions)) :?>
     <?php foreach ($arrPredictions as $result): ?>
     <tr>
       <?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('<i>'); }; ?>
@@ -310,6 +462,7 @@
       <?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('</i>'); }; ?>
     </tr>
     <?php endforeach; ?>
+    <?php endif; ?>
   </tbody>
 </table>
 <?php else: ?>

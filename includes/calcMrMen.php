@@ -170,6 +170,8 @@ function calcMrMode($matchID,$link) {
   $numMatches = 0;
 
   // Loop through all users and add scores if submitted
+  $homeScores = array();
+  $awayScores = array();
   while ($row = mysqli_fetch_array($result)) {
     if ($row['HomeTeamPoints'] <> 'NULL' && $row['AwayTeamPoints'] <> 'NULL') {
       $numMatches++;
@@ -281,6 +283,8 @@ function calcMrMedian($matchID,$link) {
   $numMatches = 0;
 
   // Loop through all users and add scores if submitted
+  $homeScores = array();
+  $awayScores = array();
   while ($row = mysqli_fetch_array($result)) {
     if ($row['HomeTeamPoints'] <> 'NULL' && $row['AwayTeamPoints'] <> 'NULL') {
       $numMatches++;
@@ -346,5 +350,3 @@ function calcMrMedian($matchID,$link) {
   }
 
 }
-
-?>

@@ -30,6 +30,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+  if (!isset($link)) {
+    $error = 'Error getting DB connection';
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
 
   // Make sure submitted data is clean
   $userID = mysqli_real_escape_string($link, $userID);
@@ -164,20 +172,21 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 
   // Run query and handle any failure
   $result = mysqli_query($link, $sql);
-  if (!$result)
-  {
+  if (!$result) {
     $error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
 
     header('Content-type: application/json');
-    $arr = array('result' => 'No', 'message' => $error, 'loggedIn' => max($UserID, 1));
+    $arr = array(
+      'result' => 'No'
+      ,'message' => $error
+      ,'loggedIn' => max($userID, 1));
     echo json_encode($arr);
     die();
   }
 
   // Store results
   $arrMatches = array();
-  while($row = mysqli_fetch_assoc($result))
-  {
+  while($row = mysqli_fetch_assoc($result)) {
     $arrMatches[] = $row;
   }
 
@@ -196,5 +205,3 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   echo json_encode($arr);
 
 }
-
-?>
