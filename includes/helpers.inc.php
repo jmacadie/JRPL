@@ -835,6 +835,18 @@ function getGraphData ($scoringSystem = 1) {
       'points' => $row['Points']);
   }
 
+  // If there's not data yet (i.e. before Tournament start) then need to set up
+  // an epmty return
+  if (!isset($out)) {
+    $out[] = array(
+      'matchID' => "1",
+      'match' => "None",
+      'rank' => "1",
+      'userID' => "1",
+      'name' => "None",
+      'points' => "0");
+  }
+
   return $out;
 }
 
