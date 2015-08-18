@@ -14,6 +14,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
 // Get DB connection
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+if (!isset($link)) {
+  $error = 'Error getting DB connection';
+
+  header('Content-type: application/json');
+  $arr = array('result' => 'No', 'message' => $error);
+  echo json_encode($arr);
+  die();
+}
 
 // Query to pull tournament role data from DB
 $sql =
@@ -75,7 +83,7 @@ if (!$result) {
 
 // Store results
 $arrTournamentRoles = array();
-$tr == '';
+$tr = '';
 
 while($row = mysqli_fetch_assoc($result)) {
 
@@ -114,5 +122,3 @@ while($row = mysqli_fetch_assoc($result)) {
 // Push final TR array onto output array
 $arrTROut ['selectTeam'] = $arrTRTOut;
 $arrTournamentRoles[] = $arrTROut;
-
-?>
