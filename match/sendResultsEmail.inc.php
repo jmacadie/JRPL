@@ -133,7 +133,7 @@ function sendResultsEmail ($matchID) {
   $heading .= '<!-- content -->' . chr(13);
   $heading .= '<tr>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= tableBorder('<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['HomeTeamS']) . '.png" />') . chr(13);
+  $heading .= '<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:right; line-height: 30px;" st-content="fulltext-content">' . chr(13);
   $heading .= $row['HomeTeam'] . chr(13);
@@ -145,7 +145,7 @@ function sendResultsEmail ($matchID) {
   $heading .= $row['AwayTeam'] . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= tableBorder('<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['AwayTeamS']) . '.png" />') . chr(13);
+  $heading .= '<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of content -->' . chr(13);
