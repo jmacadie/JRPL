@@ -144,7 +144,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitResult')
   calculatePoints($matchID);
 
   // Send e-mail
-  include 'sendResultsEmail.inc.php'
+  include 'sendResultsEmail.inc.php';
   sendResultsEmail($matchID);
 
   // Test Code
