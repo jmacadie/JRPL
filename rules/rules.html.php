@@ -72,9 +72,9 @@
       <li><i>Final</i> - x4</li>
     </ul>
   </li>
-  <li>In the kncok-out stages it is <strong>the score after extra time</strong>
-    that counts. Penalties are ignored from the prediction and draws can
-    therefore still be predicted</li>
+  <li>In the kncok-out stages it is <strong>the score after extra time and
+  suddend death (as played)</strong> that counts. The kicking competition is
+  ignored from the result and draws can therefore still be predicted</li>
 </ul>
 <h2>Prizes</h2>
 There will be an overall league for most points across the entire tournament
