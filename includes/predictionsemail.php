@@ -154,19 +154,19 @@ while ($row = mysqli_fetch_array($result)) {
   while ($rowBody = mysqli_fetch_array($resultBody)) {
 
     if($i == 1) {
-      $predictions .= '<tr style="background-color: #f0f0ff;">' . chr(13);
+      $predictions .= '<tr style="background-color: #f4ecdc;">' . chr(13);
       $i = 2;
     } else{
       $predictions .= '<tr>' . chr(13);
       $i = 1;
     }
     if ($rowBody['HomeTeamPoints'] == 'No prediction') {
-      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left"><i>' . $rowBody['DisplayName'] . '</i></td>' . chr(13);
+      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left"><i>' . $rowBody['DisplayName'] . '</i></td>' . chr(13);
     } else {
-      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top;" align="left">' . $rowBody['DisplayName'] . '</td>' . chr(13);
+      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left">' . $rowBody['DisplayName'] . '</td>' . chr(13);
     }
 
-    $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap;">' . chr(13);
+    $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; border-collapse: collapse; border-bottom: 1px solid #b7a075;">' . chr(13);
 
     if ($rowBody['HomeTeamPoints'] == 'No prediction') {
       $predictions .= '<i>No prediction</i>' . chr(13);
