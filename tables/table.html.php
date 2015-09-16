@@ -6,18 +6,19 @@
   Hide / unhide table
 </button>
 <div id="t<?php echo($sID); ?>" class="collapse in">
-  <div class="table-responsive" data-pattern="priority-columns">
+  <div class="table-responsive" data-pattern="priority-columns"
+       data-add-focus-btn="">
     <table class="table table-small-font table-striped">
       <thead>
         <tr>
-          <th data-priority="1">Position</th>
+          <th>Position</th>
           <th>Player</th>
           <th data-priority="2" class="text-center">Predicted</th>
-          <th data-priority="2" class="text-center">Correct Results</th>
-          <th data-priority="2" class="text-center">Score Points</th>
-          <th data-priority="2" class="text-center">Margin Points</th>
-          <th data-priority="1" class="text-center">Points</th>
-          <th data-priority="2" class="text-center">Points /pred</th>
+          <th data-priority="3" class="text-center">Correct Results</th>
+          <th data-priority="3" class="text-center">Score Points</th>
+          <th data-priority="3" class="text-center">Margin Points</th>
+          <th class="text-center">Points</th>
+          <th data-priority="6" class="text-center">Points /pred</th>
         </tr>
       </thead>
         <?php if (isset($rLeague)) : ?>
