@@ -69,10 +69,10 @@ function sendResultsEmail ($matchID) {
       mu.`DisplayName`
       ,IFNULL(p.`HomeTeamPoints`,'No prediction') AS `HomeTeamPoints`
       ,IFNULL(p.`AwayTeamPoints`,'No prediction') AS `AwayTeamPoints`
-      ,IFNULL(po.`ResultPoints`,0) AS `ResultPoints`
-      ,IFNULL(po.`ScorePoints`,0) AS `ScorePoints`
-      ,IFNULL(po.`MarginPoints`,0) AS `MarginPoints`
-      ,IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
+      ,po.`ResultPoints`
+      ,po.`ScorePoints`
+      ,po.`MarginPoints`
+      ,po.`TotalPoints`
 
     FROM
       (SELECT `MatchID`, `UserID`, `DisplayName`
@@ -85,8 +85,8 @@ function sendResultsEmail ($matchID) {
 
       LEFT JOIN `Points` po ON
         po.`ScoringSystemID` = 1
-        AND po.`MatchID` = p.`MatchID`
-        AND po.`UserID` = p.`UserID`
+        AND po.`MatchID` = mu.`MatchID`
+        AND po.`UserID` = mu.`UserID`
 
     ORDER BY
       po.`TotalPoints` DESC

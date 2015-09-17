@@ -88,11 +88,20 @@ function calculateStandardPoints($matchID) {
   // Build SQL
   $sql = "
     SELECT
-      `UserID`
-      ,`HomeTeamPoints`
-      ,`AwayTeamPoints`
-    FROM `Prediction`
-    WHERE `MatchID` = " . $matchID . ";";
+       u.`UserID`
+      ,p.`HomeTeamPoints`
+      ,p.`AwayTeamPoints`
+
+    FROM `User` AS u
+
+      LEFT JOIN
+        (SELECT
+          `UserID`
+          ,`HomeTeamPoints`
+          ,`AwayTeamPoints`
+        FROM `Prediction`
+        WHERE `MatchID` = " . $matchID . ") AS p ON
+        p.`UserID` = u.`UserID`;";
 
   // Run SQL and trap any errors
   $resultP = mysqli_query($link, $sql);
@@ -115,24 +124,35 @@ function calculateStandardPoints($matchID) {
   //    between 11 & 15 rugby score points 0 JRPL score points
   //    between 16 & 20 rugby score points -1 JRPL score points
   //    ... and so on (with no negative limit!)
-  function scorePoints($predict, $target, $multiplier) {
+  function scorePoints($predict, $target, $multiplier, $missed) {
     // Exact score
-    if ($predict == $target) {
+    if (!$missed && $predict == $target) {
       return 3 * $multiplier;
     }
     // Not exact score so remove 1 JRPL point for every 5 points difference
     $diff = abs($predict - $target);
     $diffDamped = (int)(($diff -1) / 5);
-    return (2 - $diffDamped) * $multiplier;
+    $points = (2 - $diffDamped) * $multiplier;
+    if ($missed) {
+      return min(0, $points);
+    } else {
+      return $points;
+    }
   }
 
   // Now loop through all the submitted predictions, scoring each
   while ($rowP = mysqli_fetch_array($resultP)) {
 
+    // Grab the prediction and impute missed predictions as 0-0
+    $htp = ($rowP['HomeTeamPoints'] === NULL) ? 0 : $rowP['HomeTeamPoints'];
+    $atp = ($rowP['AwayTeamPoints'] === NULL) ? 0 : $rowP['AwayTeamPoints'];
+    $missed = ($rowP['AwayTeamPoints'] === NULL);
+
     // Check for right result
-    if ((($ht > $at) && ($rowP['HomeTeamPoints'] > $rowP['AwayTeamPoints'])) ||
-        (($ht < $at) && ($rowP['HomeTeamPoints'] < $rowP['AwayTeamPoints'])) ||
-        (($ht == $at) && ($rowP['HomeTeamPoints'] == $rowP['AwayTeamPoints']))) {
+    if (!$missed &&
+        (($ht > $at) && ($htp > $atp)) ||
+        (($ht < $at) && ($htp < $atp)) ||
+        (($ht == $at) && ($htp == $atp))) {
       $resultPoints = 3 * $multiplier;
     } else {
       $resultPoints = 0;
@@ -141,17 +161,20 @@ function calculateStandardPoints($matchID) {
 
     // Calculate the other points using our generic distance function
     $homeTeamScorePoints = scorePoints(
-                             $rowP['HomeTeamPoints'],
+                             $htp,
                              $ht,
-                             $multiplier);
+                             $multiplier,
+                             $missed);
     $awayTeamScorePoints = scorePoints(
-                             $rowP['AwayTeamPoints'],
+                             $atp,
                              $at,
-                             $multiplier);
+                             $multiplier,
+                             $missed);
     $marginPoints = scorePoints(
-                      ($rowP['HomeTeamPoints'] - $rowP['AwayTeamPoints']),
+                      ($htp - $atp),
                       ($ht - $at),
-                      $multiplier);
+                      $multiplier,
+                      $missed);
 
     // Calculate the total points
     $totalPoints = $resultPoints +
