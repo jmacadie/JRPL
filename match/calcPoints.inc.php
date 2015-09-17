@@ -277,14 +277,13 @@ function calculateAutoQuizPoints($matchID) {
     die();
   }
 
-  // Loop through predictions and do initial result processing
+  // Loop through predictions and calculate Ecludian Distance
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Set variables
   $numUsers = 0;
-  $numResultUsers = 0;
-  $numScoreUsers = 0;
-  $arrPoints = array();
+  $maxED = 0;
+  $arrCalc = array();
 
   // Loop through all predictions made
   while ($rowP = mysqli_fetch_array($resultP)) {
@@ -296,46 +295,49 @@ function calculateAutoQuizPoints($matchID) {
     $out = array();
     $out['userID'] = $rowP['UserID'];
 
-    // First check right result
-    if ((($ht > $at) && ($rowP['HomeTeamPoints'] > $rowP['AwayTeamPoints'])) ||
-      (($ht < $at) && ($rowP['HomeTeamPoints'] < $rowP['AwayTeamPoints'])) ||
-      (($ht == $at) && ($rowP['HomeTeamPoints'] == $rowP['AwayTeamPoints']))) {
+    // Calculate this user's Ecludian Distance
+    $ed = sqrt(pow(($rowP['HomeTeamPoints'] - $ht), 2) +
+               pow(($rowP['AwayTeamPoints'] - $at), 2));
+    $out['ed'] = $ed;
 
-        // Increment the number of correct users counter
-        $numResultUsers++;
-
-        // Right result so award a result point
-        $out['result'] = 1;
-
-        // Then check exact score
-        if (($ht == $rowP['HomeTeamPoints']) && ($at == $rowP['AwayTeamPoints'])) {
-          // Increment the number of correct users counter
-          $numScoreUsers++;
-          // Right exact score so award a score point
-          $out['score'] = 2;
-        } else {
-          // Wrong exact score so no score points
-          $out['score'] = 0;
-        }
-
-    } else {
-      // Not the right result so no points all round
-      $out['result'] = 0;
-      $out['score'] = 0;
-    }
+    // Track the maximum Ecludian Distance
+    $maxED = max($ed, $maxED);
 
     // Add single user output array
-    $arrPoints[] = $out;
+    $arrCalc[] = $out;
+  }
+
+  // Loop through predictions and calculate Inverted Ecludian Distance
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // Set variables
+  $cumIED = 0;
+
+  // Loop through all predictions made
+  for ($i = 0, $max = count($arrCalc); $i < $max; $i++) {
+
+    // Calculate this user's Inverted Ecludian Distance
+    $ied = $maxED - $arrCalc[$i]['ed'];
+    $arrCalc[$i]['ied'] = $ied;
+
+    // Track the cumulative Inverted Ecludian Distance
+    $cumIED += $ied;
   }
 
   // Calculate points and INSERT them back into the DB
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  foreach ($arrPoints as $user) {
+
+  // Set variables
+  $targetPoints = 10;
+  $pointsPool = $targetPoints * $numUsers;
+
+  // Loop through all predictions made
+  foreach ($arrCalc as $userPoints) {
 
     // Calculate the actual points
-    $resultPoints = ($numResultUsers == 0) ? 0 : ($user['result'] * $numUsers / $numResultUsers);
-    $scorePoints = ($numScoreUsers == 0) ? 0 : ($user['score'] * $numUsers / $numScoreUsers);
-    $totalPoints = $resultPoints + $scorePoints;
+    $aqPoints = ($cumIED == 0)
+                  ? $targetPoints
+                  : ($pointsPool * $userPoints['ied'] / $cumIED);
 
     // Build SQL
     $sql = "INSERT INTO `Points`
@@ -344,14 +346,16 @@ function calculateAutoQuizPoints($matchID) {
           `MatchID`,
           `ResultPoints`,
           `ScorePoints`,
+          `MarginPoints`,
           `TotalPoints`)
         VALUES
           (2,
-          " . $user['userID'] . ",
+          " . $userPoints['userID'] . ",
           " . $matchID . ",
-          " . $resultPoints . ",
-          " . $scorePoints . ",
-          " . $totalPoints . ");";
+          0,
+          0,
+          0,
+          " . $aqPoints . ");";
 
     // Run SQL and trap any errors
     $result = mysqli_query($link, $sql);
