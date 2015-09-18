@@ -196,6 +196,23 @@ function sendResultsEmail ($matchID) {
   $heading .= strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
+  $margin = abs($row['HomeTeamPoints'] - $row['AwayTeamPoints']);
+  if ($margin != 0) {
+    $heading .= '<tr>' . chr(13);
+    $heading .= '<td colspan="5"
+                     width="100%"
+                     style="white-space: nowrap;
+                            font-family: Helvetica, arial, sans-serif;
+                            font-size: 16px;
+                            color: #333333;
+                            text-align: center;
+                            line-height: 21px;"
+                     st-content="fulltext-content">' . chr(13);
+    $heading .= ($margin == 1) ? '1 point margin' : $margin .' points margin';
+    $heading .= chr(13);
+    $heading .= '</td>' . chr(13);
+    $heading .= '</tr>' . chr(13);
+  }
   $heading .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -351,11 +368,25 @@ function sendResultsEmail ($matchID) {
         $match .= $rowMatch['HomeTeamPoints'];
         $match .= '&nbsp;-&nbsp;';
         $match .= $rowMatch['AwayTeamPoints'];
+        $match .= '<br/>';
+        $margin = abs($rowBody['HomeTeamPoints'] - $rowBody['AwayTeamPoints']);
+        if ($margin == 1) {
+          $match .= '(1 point margin)';
+        } else {
+          $match .= '(' . $margin . ' points margin)';
+        }
       } elseif ($rowMatch['AwayTeamPoints'] > $rowMatch['HomeTeamPoints']) {
         $match .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
         $match .= $rowMatch['AwayTeamPoints'];
         $match .= '&nbsp;-&nbsp;';
         $match .= $rowMatch['HomeTeamPoints'];
+        $match .= '<br/>';
+        $margin = abs($rowBody['HomeTeamPoints'] - $rowBody['AwayTeamPoints']);
+        if ($margin == 1) {
+          $match .= '(1 point margin)';
+        } else {
+          $match .= '(' . $margin . ' points margin)';
+        }
       } else {
         $match .= 'Draw<br/>' . chr(13);
         $match .= $rowMatch['HomeTeamPoints'];
