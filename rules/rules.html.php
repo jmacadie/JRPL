@@ -70,10 +70,9 @@
   example in a tight match where you predict one side to win by 1 point but in
   fact the other side wins by 1 point you would still get two margin points as
   your prediction of -1 is within 5 points of the actual +1 margin</p>
-  <strong><u>Multipliers</u></strong>
-  <p>In addition to the base scores per match, set out above, multipliers will
-  be applied so that matches later in the tournament will earn more points.
-  The following multipliers will be applied:</p>
+  <strong><u>Multipliers</u></strong> In addition to the base scores per match,
+  set out above, multipliers will be applied so that matches later in the
+  tournament will earn more points.  The following multipliers will be applied:
   <ul>
     <li>Group Stages - <i>x</i>1 (i.e. no multiplier)</li>
     <li>Quarter Finals - <i>x</i>2</li>
