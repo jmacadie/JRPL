@@ -80,6 +80,12 @@
     <li>3<sup>rd</sup> 4<sup>th</sup> Place Play-off - <i>x</i>1</li>
     <li>Final - <i>x</i>4</li>
   </ul>
+  <p>If you fail to input a prediction for any given match, the system will
+  assume you've entered a 0 - 0 prediction. However, should that prediction lead
+  to any positive points (on any scoring strand), then your score (on that
+  strand) will be capped at zero. In practice this means you will get either no
+  points (best case) or, more likely, lose points should any one of the scoring
+  strands give rise to a negative points score</p>
 </li>
 <h2>Auto-Quiz Scoring System</h2>
 <p>After much debate (and bemusement) we settled on the following system:</p>
