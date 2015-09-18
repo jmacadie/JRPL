@@ -648,7 +648,12 @@ function sendResultsEmail ($matchID) {
                            vertical-align: top;
                            border-collapse: collapse;
                            border-bottom: 1px solid #b7a075;"
-                    align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
+                    align="left">';
+    if ($rowLeague['rankCount'] > 1) {
+      $league .= $rowLeague['rank'] . '=</td>' . chr(13);
+    } else {
+      $league .= $rowLeague['rank'] . '</td>' . chr(13);
+    }
     $league .= '<td style="font-family: Helvetica, arial, sans-serif;
                            font-size: 14px;
                            color: #666666;
@@ -841,7 +846,12 @@ function sendResultsEmail ($matchID) {
                            vertical-align: top;
                            border-collapse: collapse;
                            border-bottom: 1px solid #b7a075;"
-                    align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
+                    align="left">';
+    if ($rowLeague['rankCount'] > 1) {
+      $aqLeague .= $rowLeague['rank'] . '=</td>' . chr(13);
+    } else {
+      $aqLeague .= $rowLeague['rank'] . '</td>' . chr(13);
+    }
     $aqLeague .= '<td style="font-family: Helvetica, arial, sans-serif;
                            font-size: 14px;
                            color: #666666;
