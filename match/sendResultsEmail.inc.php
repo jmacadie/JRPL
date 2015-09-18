@@ -246,7 +246,7 @@ function sendResultsEmail ($matchID) {
   $match .= '<tr style="background-color: #d3d3d3;">' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align:left;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -255,7 +255,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Player</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align:left;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -264,7 +264,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Prediction</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align:left;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -273,7 +273,7 @@ function sendResultsEmail ($matchID) {
                   align="left">&nbsp;</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align: center;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -282,7 +282,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Result Points</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align: center;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -291,7 +291,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Score Points</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align: center;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -300,7 +300,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Margin Points</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align: center;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -309,7 +309,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Total Standard Points</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align:left;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -318,7 +318,7 @@ function sendResultsEmail ($matchID) {
                   align="left">&nbsp;</th>' . chr(13);
   $match .= '<th style="font-family: Helvetica, arial, sans-serif;
                         font-size: 14px;
-                        color: #666666;
+                        color: #333333;
                         text-align: center;
                         line-height: 16px;
                         border-collapse: collapse;
@@ -572,7 +572,7 @@ function sendResultsEmail ($matchID) {
   $league .= '<tr style="background-color: #d3d3d3;">' . chr(13);
   $league .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align:left;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -581,7 +581,7 @@ function sendResultsEmail ($matchID) {
                   align="left">&nbsp;</th>' . chr(13);
   $league .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align:left;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -590,7 +590,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Player</th>' . chr(13);
   $league .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align: center;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -599,7 +599,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Result Points</th>' . chr(13);
   $league .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align: center;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -608,7 +608,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Score Points</th>' . chr(13);
   $league .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align: center;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -617,7 +617,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Margin Points</th>' . chr(13);
   $league .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align: center;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -792,7 +792,7 @@ function sendResultsEmail ($matchID) {
   $aqLeague .= '<tr style="background-color: #d3d3d3;">' . chr(13);
   $aqLeague .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align:left;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -801,7 +801,7 @@ function sendResultsEmail ($matchID) {
                   align="left">&nbsp;</th>' . chr(13);
   $aqLeague .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align:left;
                          line-height: 16px;
                          border-collapse: collapse;
@@ -810,7 +810,7 @@ function sendResultsEmail ($matchID) {
                   align="left">Player</th>' . chr(13);
   $aqLeague .= '<th style="font-family: Helvetica, arial, sans-serif;
                          font-size: 14px;
-                         color: #666666;
+                         color: #333333;
                          text-align: center;
                          line-height: 16px;
                          border-collapse: collapse;
