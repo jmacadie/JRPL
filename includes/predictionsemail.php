@@ -106,32 +106,67 @@ while ($row = mysqli_fetch_array($result)) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $heading = '<!-- Title -->' . chr(13);
   $heading .= '<tr>' . chr(13);
-  $heading .= '<td colspan="5" style="font-family: Helvetica, arial, sans-serif; font-size: 30px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
+  $heading .= '<td colspan="5"
+                   style="font-family: Helvetica, arial, sans-serif;
+                          font-size: 30px;
+                          color: #333333;
+                          text-align:center;
+                          line-height: 30px;"
+                   st-title="fulltext-heading">' . chr(13);
   $heading .= 'Next match locked down' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of Title -->' . chr(13);
   $heading .= '<!-- spacing -->' . chr(13);
   $heading .= '<tr>' . chr(13);
-  $heading .= '<td colspan="5" width="100%" height="20" style="font-size:1px; line-height:1px; mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
+  $heading .= '<td colspan="5" width="100%" height="20"
+                   style="font-size:1px;
+                          line-height:1px;
+                          mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of spacing -->' . chr(13);
   $heading .= '<!-- content -->' . chr(13);
   $heading .= '<tr>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= '<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
+  $heading .= '<img border="0"
+                    style="vertical-align: middle;"
+                    src="http://www.julianrimet.com/assets/img/flags/';
+  $heading .= strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
-  $heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:right; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+  $heading .= '<td width="48%"
+                   style="white-space: nowrap;
+                          font-family: Helvetica, arial, sans-serif;
+                          font-size: 25px;
+                          color: #333333;
+                          text-align:right;
+                          line-height: 30px;"
+                   st-content="fulltext-content">' . chr(13);
   $heading .= $row['HomeTeam'] . chr(13);
   $heading .= '</td>' . chr(13);
-  $heading .= '<td style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 16px; color: #333333; text-align:center; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+  $heading .= '<td style="white-space: nowrap;
+                          font-family: Helvetica, arial, sans-serif;
+                          font-size: 16px;
+                          color: #333333;
+                          text-align:center;
+                          line-height: 30px;"
+                   st-content="fulltext-content">' . chr(13);
   $heading .= 'vs.' . chr(13);
   $heading .= '</td>' . chr(13);
-  $heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:left; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+  $heading .= '<td width="48%"
+                   style="white-space: nowrap;
+                          font-family: Helvetica, arial, sans-serif;
+                          font-size: 25px;
+                          color: #333333;
+                          text-align:left;
+                          line-height: 30px;"
+                   st-content="fulltext-content">' . chr(13);
   $heading .= $row['AwayTeam'] . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= '<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
+  $heading .= '<img border="0"
+                    style="vertical-align: middle;"
+                    src="http://www.julianrimet.com/assets/img/flags/';
+  $heading .= strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of content -->' . chr(13);
@@ -143,9 +178,25 @@ while ($row = mysqli_fetch_array($result)) {
   $predictions .= '<tr>' . chr(13);
   $predictions .= '<td st-content="fulltext-content">' . chr(13);
   $predictions .= '<table border="0" width="100%" cellpadding="4" cellspacing="0" border="0" align="left" class="devicewidth">' . chr(13);
-  $predictions .= '<tr>' . chr(13);
-  $predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Player</th>' . chr(13);
-  $predictions .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Prediction</th>' . chr(13);
+  $predictions .= '<tr style="background-color: #d3d3d3;">' . chr(13);
+  $predictions .= '<th style="font-family: Helvetica, arial, sans-serif;
+                              font-size: 14px;
+                              color: #333333;
+                              text-align:left;
+                              line-height: 16px;
+                              border-collapse: collapse;
+                              border-bottom: 1px solid #a0a0a0;
+                              border-top: 1px solid #a0a0a0;"
+                       align="left">Player</th>' . chr(13);
+  $predictions .= '<th style="font-family: Helvetica, arial, sans-serif;
+                              font-size: 14px;
+                              color: #333333;
+                              text-align:left;
+                              line-height: 16px;
+                              border-collapse: collapse;
+                              border-bottom: 1px solid #a0a0a0;
+                              border-top: 1px solid #a0a0a0;"
+                       align="left">Prediction</th>' . chr(13);
   $predictions .= '</tr>' . chr(13);
 
   // Counter for striped rows
@@ -161,25 +212,56 @@ while ($row = mysqli_fetch_array($result)) {
       $i = 1;
     }
     if ($rowBody['HomeTeamPoints'] == 'No prediction') {
-      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left"><i>' . $rowBody['DisplayName'] . '</i></td>' . chr(13);
+      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif;
+                                  font-size: 14px;
+                                  color: #666666;
+                                  text-align:left;
+                                  line-height: 16px;
+                                  white-space: nowrap;
+                                  vertical-align: top;
+                                  border-collapse: collapse;
+                                  border-bottom: 1px solid #b7a075;"
+                           align="left"><i>' . $rowBody['DisplayName'] . '</i></td>' . chr(13);
     } else {
-      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left">' . $rowBody['DisplayName'] . '</td>' . chr(13);
+      $predictions .= '<td style="font-family: Helvetica, arial, sans-serif;
+                                  font-size: 14px;
+                                  color: #666666;
+                                  text-align:left;
+                                  line-height: 16px;
+                                  white-space: nowrap;
+                                  vertical-align: top;
+                                  border-collapse: collapse;
+                                  border-bottom: 1px solid #b7a075;"
+                           align="left">' . $rowBody['DisplayName'] . '</td>' . chr(13);
     }
 
-    $predictions .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; border-collapse: collapse; border-bottom: 1px solid #b7a075;">' . chr(13);
+    $predictions .= '<td style="font-family: Helvetica, arial, sans-serif;
+                                font-size: 14px;
+                                color: #666666;
+                                text-align:left;
+                                line-height: 16px;
+                                white-space: nowrap;
+                                border-collapse: collapse;
+                                border-bottom: 1px solid #b7a075;">' . chr(13);
 
     if ($rowBody['HomeTeamPoints'] == 'No prediction') {
       $predictions .= '<i>No prediction</i>' . chr(13);
     } else {
       if ($rowBody['HomeTeamPoints'] > $rowBody['AwayTeamPoints']) {
         $predictions .= $row['HomeTeam'] . ' to win<br/>' . chr(13);
-        $predictions .= $rowBody['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowBody['AwayTeamPoints'] . chr(13);
+        $predictions .= $rowBody['HomeTeamPoints'];
+        $predictions .= '&nbsp;-&nbsp;';
+        $predictions .= $rowBody['AwayTeamPoints'];
       } elseif ($rowBody['AwayTeamPoints'] > $rowBody['HomeTeamPoints']) {
         $predictions .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
-        $predictions .= $rowBody['AwayTeamPoints'] . '&nbsp;-&nbsp;' . $rowBody['HomeTeamPoints'] . chr(13);
+        $predictions .= $rowBody['AwayTeamPoints'];
+        $predictions .= '&nbsp;-&nbsp;';
+        $predictions .= $rowBody['HomeTeamPoints'];
       } else {
         $predictions .= 'Draw<br/>' . chr(13);
-        $predictions .= $rowBody['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowBody['AwayTeamPoints'] . chr(13);
+        $predictions .= $rowBody['HomeTeamPoints'];
+        $predictions .= '&nbsp;-&nbsp;';
+        $predictions .= $rowBody['AwayTeamPoints'];
       }
     }
     $predictions .= '</td>' . chr(13);

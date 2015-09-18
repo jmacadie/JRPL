@@ -123,32 +123,69 @@ function sendResultsEmail ($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $heading = '<!-- Title -->' . chr(13);
   $heading .= '<tr>' . chr(13);
-  $heading .= '<td colspan="5" style="font-family: Helvetica, arial, sans-serif; font-size: 30px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
+  $heading .= '<td colspan="5"
+                   style="font-family: Helvetica, arial, sans-serif;
+                          font-size: 30px;
+                          color: #333333;
+                          text-align:center;
+                          line-height: 30px;"
+                   st-title="fulltext-heading">' . chr(13);
   $heading .= 'New result posted' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of Title -->' . chr(13);
   $heading .= '<!-- spacing -->' . chr(13);
   $heading .= '<tr>' . chr(13);
-  $heading .= '<td colspan="5" width="100%" height="20" style="font-size:1px; line-height:1px; mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
+  $heading .= '<td colspan="5" width="100%" height="20"
+                   style="font-size:1px;
+                          line-height:1px;
+                          mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of spacing -->' . chr(13);
   $heading .= '<!-- content -->' . chr(13);
   $heading .= '<tr>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= '<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
+  $heading .= '<img border="0"
+                    style="vertical-align: middle;"
+                    src="http://www.julianrimet.com/assets/img/flags/';
+  $heading .= strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
-  $heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:right; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+  $heading .= '<td width="48%"
+                   style="white-space: nowrap;
+                          font-family: Helvetica, arial, sans-serif;
+                          font-size: 25px;
+                          color: #333333;
+                          text-align:right;
+                          line-height: 30px;"
+                   st-content="fulltext-content">' . chr(13);
   $heading .= $row['HomeTeam'] . chr(13);
   $heading .= '</td>' . chr(13);
-  $heading .= '<td style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:center; line-height: 30px;" st-content="fulltext-content">' . chr(13);
-  $heading .= $row['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $row['AwayTeamPoints'] . chr(13);
+  $heading .= '<td style="white-space: nowrap;
+                          font-family: Helvetica, arial, sans-serif;
+                          font-size: 25px;
+                          color: #333333;
+                          text-align:center;
+                          line-height: 30px;"
+                   st-content="fulltext-content">' . chr(13);
+  $heading .= $row['HomeTeamPoints'];
+  $heading .= '&nbsp;-&nbsp;';
+  $heading .= $row['AwayTeamPoints'] . chr(13);
   $heading .= '</td>' . chr(13);
-  $heading .= '<td width="48%" style="white-space: nowrap; font-family: Helvetica, arial, sans-serif; font-size: 25px; color: #333333; text-align:left; line-height: 30px;" st-content="fulltext-content">' . chr(13);
+  $heading .= '<td width="48%"
+                   style="white-space: nowrap;
+                          font-family: Helvetica, arial, sans-serif;
+                          font-size: 25px;
+                          color: #333333;
+                          text-align:left;
+                          line-height: 30px;"
+                   st-content="fulltext-content">' . chr(13);
   $heading .= $row['AwayTeam'] . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= '<img border="0" style="vertical-align: middle;" src="http://www.julianrimet.com/assets/img/flags/' . strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
+  $heading .= '<img border="0"
+                    style="vertical-align: middle;"
+                    src="http://www.julianrimet.com/assets/img/flags/';
+  $heading .= strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of content -->' . chr(13);
@@ -158,27 +195,85 @@ function sendResultsEmail ($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $league = '<!-- Title -->' . chr(13);
   $league .= '<tr>' . chr(13);
-  $league .= '<td colspan="5" style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
+  $league .= '<td colspan="5"
+                  style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 18px;
+                         color: #333333;
+                         text-align:center;
+                         line-height: 30px;"
+                  st-title="fulltext-heading">' . chr(13);
   $league .= 'Current League Table' . chr(13);
   $league .= '</td>' . chr(13);
   $league .= '</tr>' . chr(13);
   $league .= '<!-- End of Title -->' . chr(13);
   $league .= '<!-- spacing -->' . chr(13);
   $league .= '<tr>' . chr(13);
-  $league .= '<td colspan="5" width="100%" height="20" style="font-size:1px; line-height:1px; mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
+  $league .= '<td colspan="5" width="100%" height="20"
+                  style="font-size:1px;
+                         line-height:1px;
+                         mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
   $league .= '</tr>' . chr(13);
   $league .= '<!-- End of spacing -->' . chr(13);
   $league .= '<!-- content -->' . chr(13);
   $league .= '<tr>' . chr(13);
   $league .= '<td st-content="fulltext-content">' . chr(13);
-  $league .= '<table border="0" width="100%" cellpadding="4" cellspacing="0" border="0" align="left" class="devicewidth">' . chr(13);
-  $league .= '<tr>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">&nbsp;</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Player</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Result Points</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Score Points</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Margin Points</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Overall Points</th>' . chr(13);
+  $league .= '<table border="0" width="100%" cellpadding="4" cellspacing="0"
+                     border="0" align="left" class="devicewidth">' . chr(13);
+  $league .= '<tr style="background-color: #d3d3d3;">' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">&nbsp;</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Player</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Result Points</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Score Points</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Margin Points</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Overall Points</th>' . chr(13);
   $league .= '</tr>' . chr(13);
 
   // Counter for striped rows
@@ -194,27 +289,117 @@ function sendResultsEmail ($matchID) {
       $i = 1;
     }
 
-    $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
-    $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left">' . $rowLeague['name'] . '</td>' . chr(13);
+    $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                           font-size: 14px;
+                           color: #666666;
+                           text-align:left;
+                           line-height: 16px;
+                           white-space: nowrap;
+                           vertical-align: top;
+                           border-collapse: collapse;
+                           border-bottom: 1px solid #b7a075;"
+                    align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
+    $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                           font-size: 14px;
+                           color: #666666;
+                           text-align:left;
+                           line-height: 16px;
+                           white-space: nowrap;
+                           vertical-align: top;
+                           border-collapse: collapse;
+                           border-bottom: 1px solid #b7a075;"
+                    align="left">' . $rowLeague['name'] . '</td>' . chr(13);
     if ($rowLeague['results'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
     } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' . (int)$rowLeague['results'] . '</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['results'] . '</td>' . chr(13);
     }
     if ($rowLeague['scores'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
     } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' . (int)$rowLeague['scores'] . '</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align: center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['scores'] . '</td>' . chr(13);
     }
     if ($rowLeague['margins'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
     } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' . (int)$rowLeague['margins'] . '</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['margins'] . '</td>' . chr(13);
     }
     if ($rowLeague['totalPoints'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
     } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' . (int)$rowLeague['totalPoints'] . '</td>' . chr(13);
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['totalPoints'] . '</td>' . chr(13);
     }
     $league .= '</tr>' . chr(13);
 
@@ -230,27 +415,84 @@ function sendResultsEmail ($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $match = '<!-- Title -->' . chr(13);
   $match .= '<tr>' . chr(13);
-  $match .= '<td colspan="3" style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:center; line-height: 30px;" st-title="fulltext-heading">' . chr(13);
+  $match .= '<td colspan="3"
+                 style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 18px;
+                        color: #333333;
+                        text-align:center;
+                        line-height: 30px;"
+                 st-title="fulltext-heading">' . chr(13);
   $match .= 'Details for match' . chr(13);
   $match .= '</td>' . chr(13);
   $match .= '</tr>' . chr(13);
   $match .= '<!-- End of Title -->' . chr(13);
   $match .= '<!-- spacing -->' . chr(13);
   $match .= '<tr>' . chr(13);
-  $match .= '<td colspan="3" width="100%" height="20" style="font-size:1px; line-height:1px; mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
+  $match .= '<td colspan="3" width="100%" height="20"
+                 style="font-size:1px; line-height:1px;
+                        mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
   $match .= '</tr>' . chr(13);
   $match .= '<!-- End of spacing -->' . chr(13);
   $match .= '<!-- content -->' . chr(13);
   $match .= '<tr>' . chr(13);
   $match .= '<td st-content="fulltext-content">' . chr(13);
-  $match .= '<table border="0" width="100%" cellpadding="4" cellspacing="0" border="0" align="left" class="devicewidth">' . chr(13);
-  $match .= '<tr>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Player</th>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:left; line-height: 16px;" align="left">Prediction</th>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Result Points</th>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Score Points</th>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Margin Points</th>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #333333; text-align:center; line-height: 16px;" align="center">Total Points</th>' . chr(13);
+  $match .= '<table border="0" width="100%" cellpadding="4" cellspacing="0"
+                    border="0" align="left" class="devicewidth">' . chr(13);
+  $match .= '<tr style="background-color: #d3d3d3;">' . chr(13);
+  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 14px;
+                        color: #666666;
+                        text-align:left;
+                        line-height: 16px;
+                        border-collapse: collapse;
+                        border-bottom: 1px solid #a0a0a0;
+                        border-top: 1px solid #a0a0a0;"
+                  align="left">&nbsp;</th>' . chr(13);
+  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 14px;
+                        color: #666666;
+                        text-align:left;
+                        line-height: 16px;
+                        border-collapse: collapse;
+                        border-bottom: 1px solid #a0a0a0;
+                        border-top: 1px solid #a0a0a0;"
+                  align="left">Player</th>' . chr(13);
+  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 14px;
+                        color: #666666;
+                        text-align: center;
+                        line-height: 16px;
+                        border-collapse: collapse;
+                        border-bottom: 1px solid #a0a0a0;
+                        border-top: 1px solid #a0a0a0;"
+                  align="left">Result Points</th>' . chr(13);
+  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 14px;
+                        color: #666666;
+                        text-align: center;
+                        line-height: 16px;
+                        border-collapse: collapse;
+                        border-bottom: 1px solid #a0a0a0;
+                        border-top: 1px solid #a0a0a0;"
+                  align="left">Score Points</th>' . chr(13);
+  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 14px;
+                        color: #666666;
+                        text-align: center;
+                        line-height: 16px;
+                        border-collapse: collapse;
+                        border-bottom: 1px solid #a0a0a0;
+                        border-top: 1px solid #a0a0a0;"
+                  align="left">Margin Points</th>' . chr(13);
+  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 14px;
+                        color: #666666;
+                        text-align: center;
+                        line-height: 16px;
+                        border-collapse: collapse;
+                        border-bottom: 1px solid #a0a0a0;
+                        border-top: 1px solid #a0a0a0;"
+                  align="left">Overall Points</th>' . chr(13);
   $match .= '</tr>' . chr(13);
 
   // Counter for striped rows
@@ -265,42 +507,139 @@ function sendResultsEmail ($matchID) {
       $match .= '<tr>' . chr(13);
       $i = 1;
     }
-    $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left">' . $rowMatch['DisplayName'] . '</td>' . chr(13);
-    $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:left; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="left">';
+    $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                          font-size: 14px;
+                          color: #666666;
+                          text-align:left;
+                          line-height: 16px;
+                          white-space: nowrap;
+                          vertical-align: top;
+                          border-collapse: collapse;
+                          border-bottom: 1px solid #b7a075;"
+                   align="left">' . $rowMatch['DisplayName'] . '</td>' . chr(13);
+    $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                          font-size: 14px;
+                          color: #666666;
+                          text-align:left;
+                          line-height: 16px;
+                          white-space: nowrap;
+                          vertical-align: top;
+                          border-collapse: collapse;
+                          border-bottom: 1px solid #b7a075;"
+                   align="left">';
     if ($rowMatch['HomeTeamPoints'] == 'No prediction') {
-      $match .= '<i>No prediction</i>' . chr(13);
+      $match .= 'No prediction<br/>' . chr(13);
+      $match .= '<i>assumed 0 - 0</i>' . chr(13);
     } else {
       if ($rowMatch['HomeTeamPoints'] > $rowMatch['AwayTeamPoints']) {
         $match .= $row['HomeTeam'] . ' to win<br/>' . chr(13);
-        $match .= $rowMatch['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamPoints'];
+        $match .= $rowMatch['HomeTeamPoints'];
+        $match .= '&nbsp;-&nbsp;';
+        $match .= $rowMatch['AwayTeamPoints'];
       } elseif ($rowMatch['AwayTeamPoints'] > $rowMatch['HomeTeamPoints']) {
         $match .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
-        $match .= $rowMatch['AwayTeamPoints'] . '&nbsp;-&nbsp;' . $rowMatch['HomeTeamPoints'];
+        $match .= $rowMatch['AwayTeamPoints'];
+        $match .= '&nbsp;-&nbsp;';
+        $match .= $rowMatch['HomeTeamPoints'];
       } else {
         $match .= 'Draw<br/>' . chr(13);
-        $match .= $rowMatch['HomeTeamPoints'] . '&nbsp;-&nbsp;' . $rowMatch['AwayTeamPoints'];
+        $match .= $rowMatch['HomeTeamPoints'];
+        $match .= '&nbsp;-&nbsp;';
+        $match .= $rowMatch['AwayTeamPoints'];
       }
     }
     $match .= '</td>' . chr(13);
     if ($rowMatch['ResultPoints'] == 0) {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">-</td>' . chr(13);
     } else {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' . (int)$rowMatch['ResultPoints'] . '</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">' . (int)$rowMatch['ResultPoints'] . '</td>' . chr(13);
     }
     if ($rowMatch['ScorePoints'] == 0) {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">-</td>' . chr(13);
     } else {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' .(int)$rowMatch['ScorePoints'] . '</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">' . (int)$rowMatch['ScorePoints'] . '</td>' . chr(13);
     }
     if ($rowMatch['MarginPoints'] == 0) {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">-</td>' . chr(13);
     } else {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' .(int)$rowMatch['MarginPoints'] . '</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">' . (int)$rowMatch['MarginPoints'] . '</td>' . chr(13);
     }
     if ($rowMatch['TotalPoints'] == 0) {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">-</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">-</td>' . chr(13);
     } else {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #666666; text-align:center; line-height: 16px; white-space: nowrap; vertical-align: top; border-collapse: collapse; border-bottom: 1px solid #b7a075;" align="center">' . (int)$rowMatch['TotalPoints'] . '</td>' . chr(13);
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">' . (int)$rowMatch['TotalPoints'] . '</td>' . chr(13);
     }
 
     $match .= '</tr>' . chr(13);
