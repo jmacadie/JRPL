@@ -191,226 +191,6 @@ function sendResultsEmail ($matchID) {
   $heading .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Body - write league table
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  $league = '<!-- Title -->' . chr(13);
-  $league .= '<tr>' . chr(13);
-  $league .= '<td colspan="5"
-                  style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 18px;
-                         color: #333333;
-                         text-align:center;
-                         line-height: 30px;"
-                  st-title="fulltext-heading">' . chr(13);
-  $league .= 'Current League Table' . chr(13);
-  $league .= '</td>' . chr(13);
-  $league .= '</tr>' . chr(13);
-  $league .= '<!-- End of Title -->' . chr(13);
-  $league .= '<!-- spacing -->' . chr(13);
-  $league .= '<tr>' . chr(13);
-  $league .= '<td colspan="5" width="100%" height="20"
-                  style="font-size:1px;
-                         line-height:1px;
-                         mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
-  $league .= '</tr>' . chr(13);
-  $league .= '<!-- End of spacing -->' . chr(13);
-  $league .= '<!-- content -->' . chr(13);
-  $league .= '<tr>' . chr(13);
-  $league .= '<td st-content="fulltext-content">' . chr(13);
-  $league .= '<table border="0" width="100%" cellpadding="4" cellspacing="0"
-                     border="0" align="left" class="devicewidth">' . chr(13);
-  $league .= '<tr style="background-color: #d3d3d3;">' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #666666;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">&nbsp;</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #666666;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">Player</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #666666;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">Result Points</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #666666;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">Score Points</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #666666;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">Margin Points</th>' . chr(13);
-  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #666666;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">Overall Points</th>' . chr(13);
-  $league .= '</tr>' . chr(13);
-
-  // Counter for striped rows
-  $i = 0;
-
-  foreach ($resultLeague as $rowLeague) {
-
-    if($i == 1) {
-      $league .= '<tr style="background-color: #f4ecdc;">' . chr(13);
-      $i = 2;
-    } else{
-      $league .= '<tr>' . chr(13);
-      $i = 1;
-    }
-
-    $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                           font-size: 14px;
-                           color: #666666;
-                           text-align:left;
-                           line-height: 16px;
-                           white-space: nowrap;
-                           vertical-align: top;
-                           border-collapse: collapse;
-                           border-bottom: 1px solid #b7a075;"
-                    align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
-    $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                           font-size: 14px;
-                           color: #666666;
-                           text-align:left;
-                           line-height: 16px;
-                           white-space: nowrap;
-                           vertical-align: top;
-                           border-collapse: collapse;
-                           border-bottom: 1px solid #b7a075;"
-                    align="left">' . $rowLeague['name'] . '</td>' . chr(13);
-    if ($rowLeague['results'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">-</td>' . chr(13);
-    } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">' . (int)$rowLeague['results'] . '</td>' . chr(13);
-    }
-    if ($rowLeague['scores'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">-</td>' . chr(13);
-    } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align: center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">' . (int)$rowLeague['scores'] . '</td>' . chr(13);
-    }
-    if ($rowLeague['margins'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">-</td>' . chr(13);
-    } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">' . (int)$rowLeague['margins'] . '</td>' . chr(13);
-    }
-    if ($rowLeague['totalPoints'] == 0) {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">-</td>' . chr(13);
-    } else {
-      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">' . (int)$rowLeague['totalPoints'] . '</td>' . chr(13);
-    }
-    $league .= '</tr>' . chr(13);
-
-  }
-
-  $league .= '</table>' . chr(13);
-  $league .= '</td>' . chr(13);
-  $league .= '</tr>' . chr(13);
-  $league .= '<!-- End of content -->' . chr(13);
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Body - write match details table
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $match = '<!-- Title -->' . chr(13);
@@ -652,14 +432,234 @@ function sendResultsEmail ($matchID) {
   $match .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Body - write league table
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $league = '<!-- Title -->' . chr(13);
+  $league .= '<tr>' . chr(13);
+  $league .= '<td colspan="5"
+                  style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 18px;
+                         color: #333333;
+                         text-align:center;
+                         line-height: 30px;"
+                  st-title="fulltext-heading">' . chr(13);
+  $league .= 'Current League Table' . chr(13);
+  $league .= '</td>' . chr(13);
+  $league .= '</tr>' . chr(13);
+  $league .= '<!-- End of Title -->' . chr(13);
+  $league .= '<!-- spacing -->' . chr(13);
+  $league .= '<tr>' . chr(13);
+  $league .= '<td colspan="5" width="100%" height="20"
+                  style="font-size:1px;
+                         line-height:1px;
+                         mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
+  $league .= '</tr>' . chr(13);
+  $league .= '<!-- End of spacing -->' . chr(13);
+  $league .= '<!-- content -->' . chr(13);
+  $league .= '<tr>' . chr(13);
+  $league .= '<td st-content="fulltext-content">' . chr(13);
+  $league .= '<table border="0" width="100%" cellpadding="4" cellspacing="0"
+                     border="0" align="left" class="devicewidth">' . chr(13);
+  $league .= '<tr style="background-color: #d3d3d3;">' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">&nbsp;</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Player</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Result Points</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Score Points</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Margin Points</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #666666;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Overall Points</th>' . chr(13);
+  $league .= '</tr>' . chr(13);
+
+  // Counter for striped rows
+  $i = 0;
+
+  foreach ($resultLeague as $rowLeague) {
+
+    if($i == 1) {
+      $league .= '<tr style="background-color: #f4ecdc;">' . chr(13);
+      $i = 2;
+    } else{
+      $league .= '<tr>' . chr(13);
+      $i = 1;
+    }
+
+    $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                           font-size: 14px;
+                           color: #666666;
+                           text-align:left;
+                           line-height: 16px;
+                           white-space: nowrap;
+                           vertical-align: top;
+                           border-collapse: collapse;
+                           border-bottom: 1px solid #b7a075;"
+                    align="left">' . $rowLeague['rank'] . '</td>' . chr(13);
+    $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                           font-size: 14px;
+                           color: #666666;
+                           text-align:left;
+                           line-height: 16px;
+                           white-space: nowrap;
+                           vertical-align: top;
+                           border-collapse: collapse;
+                           border-bottom: 1px solid #b7a075;"
+                    align="left">' . $rowLeague['name'] . '</td>' . chr(13);
+    if ($rowLeague['results'] == 0) {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['results'] . '</td>' . chr(13);
+    }
+    if ($rowLeague['scores'] == 0) {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align: center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['scores'] . '</td>' . chr(13);
+    }
+    if ($rowLeague['margins'] == 0) {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['margins'] . '</td>' . chr(13);
+    }
+    if ($rowLeague['totalPoints'] == 0) {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowLeague['totalPoints'] . '</td>' . chr(13);
+    }
+    $league .= '</tr>' . chr(13);
+
+  }
+
+  $league .= '</table>' . chr(13);
+  $league .= '</td>' . chr(13);
+  $league .= '</tr>' . chr(13);
+  $league .= '<!-- End of content -->' . chr(13);
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Body - build body array for sendEmail routine
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $body = array(array('separator','Separator'),
                 array('table','Heading',$heading),
                 array('separatorHR','Separator'),
-                array('table','Current League table',$league),
+                array('table','Current League table',$match),
                 array('separatorHR','Separator'),
-                array('table','Match details table',$match),
+                array('table','Match details table',$league),
                 array('separatorHR','Separator'));
 
   // Send e-mail
