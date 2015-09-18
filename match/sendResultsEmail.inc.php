@@ -369,7 +369,7 @@ function sendResultsEmail ($matchID) {
         $match .= '&nbsp;-&nbsp;';
         $match .= $rowMatch['AwayTeamPoints'];
         $match .= '<br/>';
-        $margin = abs($rowBody['HomeTeamPoints'] - $rowBody['AwayTeamPoints']);
+        $margin = abs($rowMatch['HomeTeamPoints'] - $rowMatch['AwayTeamPoints']);
         if ($margin == 1) {
           $match .= '(1 point margin)';
         } else {
@@ -381,7 +381,7 @@ function sendResultsEmail ($matchID) {
         $match .= '&nbsp;-&nbsp;';
         $match .= $rowMatch['HomeTeamPoints'];
         $match .= '<br/>';
-        $margin = abs($rowBody['HomeTeamPoints'] - $rowBody['AwayTeamPoints']);
+        $margin = abs($rowMatch['HomeTeamPoints'] - $rowMatch['AwayTeamPoints']);
         if ($margin == 1) {
           $match .= '(1 point margin)';
         } else {
