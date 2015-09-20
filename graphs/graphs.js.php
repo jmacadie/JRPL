@@ -152,7 +152,7 @@
   // make sure they're sorted right!
   $('#collapseUsers').find('[type=checkbox]').each(function( index ) {
     $ckb = $(this);
-    j = $ckb.attr('value')*1 - 1;
+    j = $ckb.attr('value')*1;
     if ($ckb.is(':checked')) {
       series[j] = {visibleInLegend: true, pointSize: 3, lineWidth: 3};
     } else {

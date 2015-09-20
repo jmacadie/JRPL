@@ -25,7 +25,7 @@
               <label>
                 <input
                 type="checkbox"
-                value="<?php htmlout($data[$i]['userID']); ?>"
+                value="<?php htmlout($i); ?>"
                 <?php
                   if (isset($_SESSION['loggedIn']) &&
                       $_SESSION['loggedIn'] == TRUE &&
