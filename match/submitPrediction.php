@@ -51,6 +51,39 @@ if (isset($_POST['action']) && $_POST['action'] == 'submitPrediction')
   $homeTeamScore = mysqli_real_escape_string($link, $homeTeamScore);
   $awayTeamScore = mysqli_real_escape_string($link, $awayTeamScore);
 
+  // Check if match is locked down first
+  $sql = "
+    SELECT
+      CASE
+        WHEN DATE_ADD(NOW(), INTERVAL 30 MINUTE) > TIMESTAMP(m.`Date`, m.`KickOff`) THEN 1
+        ELSE 0
+      END AS `Closed`
+    FROM `Match` m
+    WHERE m.`MatchID` = " . $matchID . ";";
+
+  // Run query and handle any failure
+  $result = mysqli_query($link, $sql);
+  if (!$result)
+  {
+    $error = 'Error finding current lock-down status: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
+
+  $row = mysqli_fetch_assoc($result);
+  if ($row['Closed'] == 1) {
+    // build results into output JSON file
+    header('Content-type: application/json');
+    $arr = array(
+      'result' => 'No'
+      ,'message' => 'Match is already locked-down');
+    echo json_encode($arr);
+    die();
+  }
+
   if (!int($matchID) || ($matchID < 1)) {
     // build results into output JSON file
     header('Content-type: application/json');
