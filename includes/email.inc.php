@@ -235,7 +235,10 @@ function sendEmail($to,$subject,$css,$body) {
   $MESSAGE_BODY .= '</html>' . chr(13);
 
   // Send e-mail
-  //mail('james.macadie@telerealtrillium.com', $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
-  mail($to, $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
+  if (getenv('ENVIR') == 'Production') {
+    mail($to, $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
+  } else {
+    mail('james.macadie@telerealtrillium.com', $subject, $MESSAGE_BODY, $mailHeader) or die ("Failure");
+  }
 
 }
