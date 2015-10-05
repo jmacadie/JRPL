@@ -415,8 +415,53 @@
 <hr>
 <h4>All Predictions</h4>
 <?php if ($lockedDown): ?>
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/scoringSystemForm.html.php'; ?>
+<h5>Graph</h5>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseUsers">
+          Select Users
+        </a>
+      </h4>
+    </div>
+    <div id="collapseUsers" class="panel-collapse collapse">
+      <div class="panel-body">
+        <?php $j=0; $i=0; ?>
+        <?php foreach($arrPredictions as $result): ?>
+        <?php if($j==0): ?>
+        <div class="row">
+          <?php endif; ?>
+          <?php $j++; $i++; ?>
+          <div class="col-xs-6 col-sm-3">
+            <div class="checkbox">
+              <label>
+                <input
+                type="checkbox"
+                value="<?php htmlout($i - 1); ?>"
+                <?php
+                  if (isset($_SESSION['loggedIn']) &&
+                      $_SESSION['loggedIn'] == TRUE &&
+                      isset($_SESSION['displayName']) &&
+                      $_SESSION['displayName'] == $result['DisplayName'])
+                    { echo('checked'); }?>>
+                <?php htmlout($result['DisplayName']); ?>
+              </label>
+            </div>
+          </div>
+          <?php if($j==4): ?>
+          <?php $j=0; ?>
+        </div>
+        <?php endif; ?>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="graph"></div>
 <hr>
+<h5>Table</h5>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/scoringSystemForm.html.php'; ?>
 <table class="table table-striped">
   <thead>
     <tr>
