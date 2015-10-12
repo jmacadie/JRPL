@@ -14,7 +14,7 @@
 <h3>Group Stages</h3>
 <?php
   $sID = 'GSCont';
-  if (!isset($resultGSLeague))
+  if (isset($resultGSLeague))
     $rLeague = $resultGSLeague;
   include 'table.html.php';
 ?>
@@ -23,7 +23,7 @@
     3<sup>rd</sup> 4<sup>th</sup> Place Play-off & Final</h3>
 <?php
   $sID = 'RCont';
-  if (!isset($resultRLeague))
+  if (isset($resultRLeague))
     $rLeague = $resultRLeague;
   include 'table.html.php';
 ?>
