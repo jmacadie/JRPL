@@ -79,6 +79,13 @@ CREATE TABLE IF NOT EXISTS `Broadcaster` (
   `Name` varchar(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `Broadcaster`
+--
+
+INSERT INTO `Broadcaster` (`BroadcasterID`, `Name`) VALUES
+(1, 'BBC'),
+(2, 'ITV');
 
 -- --------------------------------------------------------
 
