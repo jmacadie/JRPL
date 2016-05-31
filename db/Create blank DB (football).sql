@@ -448,7 +448,7 @@ INSERT INTO `Team` (`TeamID`, `Name`, `ShortName`) VALUES
 (17, 'Belgium', 'BEL'),
 (18, 'Italy', 'ITA'),
 (19, 'Republic of Ireland', 'IRL'),
-(20, 'Sweeden', 'SWE'),
+(20, 'Sweden', 'SWE'),
 (21, 'Austria', 'AUT'),
 (22, 'Hungary', 'HUN'),
 (23, 'Iceland', 'ISL'),
