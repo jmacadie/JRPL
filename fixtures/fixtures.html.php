@@ -44,33 +44,53 @@
                   <label>
                   <input type="checkbox" id="ckbGroupA" value="" checked>
                   <strong>Pool A</strong><br />
-                  Australia, England, Wales, Fiji, Uruguay
+                  Albania, France, Romania, Switzerland
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupB" value="" checked>
                   <strong>Pool B</strong><br />
-                  South Africa,Samoa, Japan, Scotland, USA
+                  England, Russia, Slovakia, Wales
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupC" value="" checked>
                   <strong>Pool C</strong><br />
-                  New Zealand, Argentina, Tonga, Georgia, Namibia
+                  Germany, Northern Ireland, Poland, Ukraine
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupD" value="" checked>
                   <strong>Pool D</strong><br />
-                  France, Ireland, Italy, Canada, Romania
+                  Croatia, Czech Republic, Spain, Turkey
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                  <input type="checkbox" id="ckbGroupE" value="" checked>
+                  <strong>Pool C</strong><br />
+                  Belgium, Italy, Republic of Ireland, Sweden
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                  <input type="checkbox" id="ckbGroupF" value="" checked>
+                  <strong>Pool D</strong><br />
+                  Austria, Hungary, Iceland, Portugal
                   </label>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div class="checkbox">
+          <label>
+          <input type="checkbox" id="ckbR16" value="" checked>
+          Round of 16
+          </label>
         </div>
         <div class="checkbox">
           <label>
@@ -82,12 +102,6 @@
           <label>
           <input type="checkbox" id="ckbSemiFinals" value="" checked>
           Semi-finals
-          </label>
-        </div>
-        <div class="checkbox">
-          <label>
-          <input type="checkbox" id="ckb34PlayOff" value="" checked>
-          3<sup>rd</sup> 4<sup>th</sup> Place Play-off
           </label>
         </div>
         <div class="checkbox">
