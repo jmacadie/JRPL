@@ -23,9 +23,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $groupB = (isset($_POST['groupB'])) ? ($_POST['groupB'] === 'true') : true;
   $groupC = (isset($_POST['groupC'])) ? ($_POST['groupC'] === 'true') : true;
   $groupD = (isset($_POST['groupD'])) ? ($_POST['groupD'] === 'true') : true;
+  $groupE = (isset($_POST['groupD'])) ? ($_POST['groupE'] === 'true') : true;
+  $groupF = (isset($_POST['groupD'])) ? ($_POST['groupF'] === 'true') : true;
+  $r16 = (isset($_POST['r16'])) ? ($_POST['r16'] === 'true') : true;
   $quarterFinals = (isset($_POST['quarterFinals'])) ? ($_POST['quarterFinals'] === 'true') : true;
   $semiFinals = (isset($_POST['semiFinals'])) ? ($_POST['semiFinals'] === 'true') : true;
-  $playOff = (isset($_POST['playOff'])) ? ($_POST['playOff'] === 'true') : true;
   $final = (isset($_POST['final'])) ? ($_POST['final'] === 'true') : true;
 
   // Get DB connection
@@ -47,9 +49,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $groupB = mysqli_real_escape_string($link, $groupB);
   $groupC = mysqli_real_escape_string($link, $groupC);
   $groupD = mysqli_real_escape_string($link, $groupD);
+  $groupE = mysqli_real_escape_string($link, $groupE);
+  $groupF = mysqli_real_escape_string($link, $groupF);
+  $r16 = mysqli_real_escape_string($link, $r16);
   $quarterFinals = mysqli_real_escape_string($link, $quarterFinals);
   $semiFinals = mysqli_real_escape_string($link, $semiFinals);
-  $playOff = mysqli_real_escape_string($link, $playOff);
   $final = mysqli_real_escape_string($link, $final);
 
   // Make sure at least 1 stage is selected
@@ -58,9 +62,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
               $groupB ||
               $groupC ||
               $groupD ||
+              $groupE ||
+              $groupF ||
+              $r16 ||
               $quarterFinals ||
-              $semiFinals ||
-              $playOff);
+              $semiFinals);
 
   $firstFilter = true;
 
@@ -133,6 +139,30 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
     }
     $sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'D')";
   }
+  if ($groupE) {
+    if ($firstFilter) {
+      $firstFilter = false;
+    } else {
+      $sql .= " OR ";
+    }
+    $sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'E')";
+  }
+  if ($groupF) {
+    if ($firstFilter) {
+      $firstFilter = false;
+    } else {
+      $sql .= " OR ";
+    }
+    $sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'F')";
+  }
+  if ($r16) {
+    if ($firstFilter) {
+      $firstFilter = false;
+    } else {
+      $sql .= " OR ";
+    }
+    $sql .= "(s.`Name` = 'Round of 16')";
+  }
   if ($quarterFinals) {
     if ($firstFilter) {
       $firstFilter = false;
@@ -148,14 +178,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
       $sql .= " OR ";
     }
     $sql .= "(s.`Name` = 'Semi Finals')";
-  }
-  if ($playOff) {
-    if ($firstFilter) {
-      $firstFilter = false;
-    } else {
-      $sql .= " OR ";
-    }
-    $sql .= "(s.`Name` = '3rd 4th Place Play-off')";
   }
   if ($final) {
     if ($firstFilter) {
