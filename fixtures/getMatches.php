@@ -23,8 +23,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $groupB = (isset($_POST['groupB'])) ? ($_POST['groupB'] === 'true') : true;
   $groupC = (isset($_POST['groupC'])) ? ($_POST['groupC'] === 'true') : true;
   $groupD = (isset($_POST['groupD'])) ? ($_POST['groupD'] === 'true') : true;
-  $groupE = (isset($_POST['groupD'])) ? ($_POST['groupE'] === 'true') : true;
-  $groupF = (isset($_POST['groupD'])) ? ($_POST['groupF'] === 'true') : true;
+  $groupE = (isset($_POST['groupE'])) ? ($_POST['groupE'] === 'true') : true;
+  $groupF = (isset($_POST['groupF'])) ? ($_POST['groupF'] === 'true') : true;
   $r16 = (isset($_POST['r16'])) ? ($_POST['r16'] === 'true') : true;
   $quarterFinals = (isset($_POST['quarterFinals'])) ? ($_POST['quarterFinals'] === 'true') : true;
   $semiFinals = (isset($_POST['semiFinals'])) ? ($_POST['semiFinals'] === 'true') : true;
