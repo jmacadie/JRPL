@@ -54,6 +54,8 @@ function getMatchesData() {
   var groupB = groupOv && $("#ckbGroupB").is(':checked');
   var groupC = groupOv && $("#ckbGroupC").is(':checked');
   var groupD = groupOv && $("#ckbGroupD").is(':checked');
+  var groupE = groupOv && $("#ckbGroupE").is(':checked');
+  var groupF = groupOv && $("#ckbGroupF").is(':checked');
 
   // Make the AJAX call
   $.ajax({
@@ -67,9 +69,11 @@ function getMatchesData() {
       groupB: groupB,
       groupC: groupC,
       groupD: groupD,
+      groupE: groupE,
+      groupF: groupF,
+      r16: $("#ckbR16").is(':checked'),
       quarterFinals: $("#ckbQuarterFinals").is(':checked'),
       semiFinals: $("#ckbSemiFinals").is(':checked'),
-      playOff: $("#ckb34PlayOff").is(':checked'),
       final: $("#ckbFinal").is(':checked')},
     dataType: 'json',
     success: function(data) {
