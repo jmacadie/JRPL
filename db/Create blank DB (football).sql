@@ -481,8 +481,8 @@ INSERT INTO `TournamentRole` (`TournamentRoleID`, `Name`, `TeamID`, `FromMatchID
 (50, 'Winner Quarter-Final 2', NULL, 46, NULL, 4),
 (51, 'Winner Quarter-Final 3', NULL, 47, NULL, 4),
 (52, 'Winner Quarter-Final 4', NULL, 48, NULL, 4),
-(55, 'Winner Semi-Final 1', NULL, 49, NULL, 5),
-(56, 'Winner Semi-Final 2', NULL, 50, NULL, 5);
+(53, 'Winner Semi-Final 1', NULL, 49, NULL, 5),
+(54, 'Winner Semi-Final 2', NULL, 50, NULL, 5);
 
 -- --------------------------------------------------------
 
