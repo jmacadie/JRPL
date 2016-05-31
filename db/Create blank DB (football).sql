@@ -270,6 +270,25 @@ CREATE TABLE IF NOT EXISTS `Prediction` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `RememberMe`
+--
+
+CREATE TABLE IF NOT EXISTS `RememberMe` (
+  `UserID` int(11) NOT NULL,
+  `SeriesID` int(11) NOT NULL,
+  `Token` varchar(50) NOT NULL,
+  `DateAdded` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS FOR TABLE `RememberMe`:
+--   `UserID`
+--       `User` -> `UserID`
+--
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Role`
 --
 
