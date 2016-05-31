@@ -71,14 +71,14 @@
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupE" value="" checked>
-                  <strong>Pool C</strong><br />
+                  <strong>Pool E</strong><br />
                   Belgium, Italy, Republic of Ireland, Sweden
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupF" value="" checked>
-                  <strong>Pool D</strong><br />
+                  <strong>Pool F</strong><br />
                   Austria, Hungary, Iceland, Portugal
                   </label>
                 </div>
