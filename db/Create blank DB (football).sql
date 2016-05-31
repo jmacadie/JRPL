@@ -47,20 +47,26 @@ ORDER BY COUNT(p.`PredictionID`) DESC$$
 
 DELIMITER ;
 
-DROP TABLE IF EXISTS `Broadcaster`;
-DROP TABLE IF EXISTS `Emails`;
-DROP TABLE IF EXISTS `Group`;
-DROP TABLE IF EXISTS `Match`;
 DROP TABLE IF EXISTS `Points`;
-DROP TABLE IF EXISTS `Prediction`;
-DROP TABLE IF EXISTS `Role`;
 DROP TABLE IF EXISTS `ScoringSystem`;
-DROP TABLE IF EXISTS `Stage`;
-DROP TABLE IF EXISTS `Team`;
+DROP TABLE IF EXISTS `Prediction`;
+
+DROP TABLE IF EXISTS `Emails`;
+
+ALTER TABLE `TournamentRole` DROP FOREIGN KEY `FK_TournamentRole_Match`;
+ALTER TABLE `TournamentRole` DROP INDEX `FK_TournamentRole_Match`;
+DROP TABLE IF EXISTS `Match`;
 DROP TABLE IF EXISTS `TournamentRole`;
-DROP TABLE IF EXISTS `User`;
-DROP TABLE IF EXISTS `UserRole`;
+DROP TABLE IF EXISTS `Team`;
+DROP TABLE IF EXISTS `Stage`;
+DROP TABLE IF EXISTS `Group`;
 DROP TABLE IF EXISTS `Venue`;
+DROP TABLE IF EXISTS `Broadcaster`;
+
+DROP TABLE IF EXISTS `RememberMe`;
+DROP TABLE IF EXISTS `UserRole`;
+DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Role`;
 
 -- --------------------------------------------------------
 
