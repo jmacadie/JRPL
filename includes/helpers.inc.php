@@ -206,7 +206,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
       ,`DisplayName` VARCHAR(100) NOT NULL
       ,`ResultPoints` DECIMAL(6,2) NOT NULL
       ,`ScorePoints` DECIMAL(6,2) NOT NULL
-      ,`MarginPoints` DECIMAL(6,2) NOT NULL
       ,`TotalPoints` DECIMAL(6,2) NOT NULL) ; ";
 
   $result = mysqli_query($link, $sql);
@@ -228,7 +227,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
         ,tmp.`DisplayName`
         ,SUM(tmp.`ResultPoints`) AS `ResultPoints`
         ,SUM(tmp.`ScorePoints`) AS `ScorePoints`
-        ,SUM(tmp.`MarginPoints`) AS `MarginPoints`
         ,SUM(tmp.`TotalPoints`) AS `TotalPoints`
 
       FROM
@@ -237,7 +235,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
           ,IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`
           ,IFNULL(po.`ResultPoints`,0) AS `ResultPoints`
           ,IFNULL(po.`ScorePoints`,0) AS `ScorePoints`
-          ,IFNULL(po.`MarginPoints`,0) AS `MarginPoints`
           ,IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
 
         FROM `User` u
@@ -336,7 +333,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
     ORDER BY
       pbu.`TotalPoints` DESC
       ,pbu.`ScorePoints` DESC
-      ,pbu.`MarginPoints` DESC
       ,pbu.`ResultPoints` DESC
       ,pbu.`DisplayName` ASC;";
 
@@ -361,7 +357,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
       ,'notSubmitted' => $row['NotSubmitted']
       ,'results' => $row['ResultPoints']
       ,'scores' => $row['ScorePoints']
-      ,'margins' => $row['MarginPoints']
       ,'totalPoints' => $row['TotalPoints']);
   }
 
