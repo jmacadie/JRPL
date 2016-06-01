@@ -16,7 +16,6 @@
           <th data-priority="2" class="text-center">Predicted</th>
           <th data-priority="3" class="text-center">Correct Results</th>
           <th data-priority="3" class="text-center">Score Points</th>
-          <th data-priority="3" class="text-center">Margin Points</th>
           <th class="text-center">Points</th>
           <th data-priority="6" class="text-center">Points /pred</th>
         </tr>
@@ -53,15 +52,6 @@
               $out = (int($row['scores']))
                         ? round($row['scores'])
                         : $row['scores'];
-              htmlout($out);
-            } ?></td>
-          <td class="text-center"><?php
-            if($row['margins'] == 0) {
-              htmlout('-');
-            } else {
-              $out = (int($row['margins']))
-                        ? round($row['margins'])
-                        : $row['margins'];
               htmlout($out);
             } ?></td>
           <td class="text-center"><strong><?php
