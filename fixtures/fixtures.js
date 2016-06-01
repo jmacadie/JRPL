@@ -255,18 +255,6 @@ function processMatchesReturn (data) {
           result.push('<div class="col-xs-1 col-xs-offset-4 text-center">' + entry['HomeTeamPrediction'] + '</div>'); // Score
           result.push('<div class="col-xs-2 text-center">-</div>'); // Divider
           result.push('<div class="col-xs-1 text-center">' + entry['AwayTeamPrediction'] + '</div>'); // Score
-          if (htp != atp) {
-            result.push('</div>'); // Close row
-            result.push('<div class="row">');
-            var margin = Math.abs(htp - atp);
-            result.push('<div class="col-xs-4 col-xs-offset-4 text-center">');
-            if (margin == 1) {
-              result.push('(' + margin + ' point margin)');
-            } else {
-              result.push('(' + margin + ' points margin)');
-            }
-            result.push('</div>'); // Score
-          }
         }
         result.push('</div>'); // Close row
         result.push('</div>'); // Close alert
