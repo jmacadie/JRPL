@@ -253,25 +253,11 @@ while ($row = mysqli_fetch_array($result)) {
         $predictions .= $rowBody['HomeTeamPoints'];
         $predictions .= '&nbsp;-&nbsp;';
         $predictions .= $rowBody['AwayTeamPoints'];
-        $predictions .= '<br/>';
-        $margin = abs($rowBody['HomeTeamPoints'] - $rowBody['AwayTeamPoints']);
-        if ($margin == 1) {
-          $predictions .= '(1 point margin)';
-        } else {
-          $predictions .= '(' . $margin . ' points margin)';
-        }
       } elseif ($rowBody['AwayTeamPoints'] > $rowBody['HomeTeamPoints']) {
         $predictions .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
         $predictions .= $rowBody['AwayTeamPoints'];
         $predictions .= '&nbsp;-&nbsp;';
         $predictions .= $rowBody['HomeTeamPoints'];
-        $predictions .= '<br/>';
-        $margin = abs($rowBody['HomeTeamPoints'] - $rowBody['AwayTeamPoints']);
-        if ($margin == 1) {
-          $predictions .= '(1 point margin)';
-        } else {
-          $predictions .= '(' . $margin . ' points margin)';
-        }
       } else {
         $predictions .= 'Draw<br/>' . chr(13);
         $predictions .= $rowBody['HomeTeamPoints'];
