@@ -19,8 +19,7 @@
   include 'table.html.php';
 ?>
 <hr>
-<h3>Semi-Finals, Quarter-Finals,
-    3<sup>rd</sup> 4<sup>th</sup> Place Play-off & Final</h3>
+<h3>Round of 16, Semi-Finals, Quarter-Finals & Final</h3>
 <?php
   $sID = 'RCont';
   if (isset($resultRLeague))
