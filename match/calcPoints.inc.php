@@ -143,7 +143,6 @@ function calculateFootballStandardPoints($matchID) {
          `MatchID`,
          `ResultPoints`,
          `ScorePoints`,
-         `MarginPoints`,
          `TotalPoints`)
       VALUES
         (1,
@@ -151,7 +150,6 @@ function calculateFootballStandardPoints($matchID) {
          " . $matchID . ",
          " . $resultPoints . ",
          " . $scorePoints . ",
-         NULL,
          " . $totalPoints . ");";
 
     // Run SQL and trap any errors
