@@ -294,7 +294,6 @@ CREATE TABLE IF NOT EXISTS `Points` (
   `MatchID` int(11) NOT NULL,
   `ResultPoints` decimal(6,2) NOT NULL,
   `ScorePoints` decimal(6,2) NOT NULL,
-  `MarginPoints` decimal(6,2) NOT NULL,
   `TotalPoints` decimal(6,2) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
