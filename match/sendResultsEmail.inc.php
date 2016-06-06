@@ -297,24 +297,6 @@ function sendResultsEmail ($matchID) {
                         border-bottom: 1px solid #a0a0a0;
                         border-top: 1px solid #a0a0a0;"
                   align="left">Total Standard Points</th>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
-                        font-size: 14px;
-                        color: #333333;
-                        text-align:left;
-                        line-height: 16px;
-                        border-collapse: collapse;
-                        border-bottom: 1px solid #a0a0a0;
-                        border-top: 1px solid #a0a0a0;"
-                  align="left">&nbsp;</th>' . chr(13);
-  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
-                        font-size: 14px;
-                        color: #333333;
-                        text-align: center;
-                        line-height: 16px;
-                        border-collapse: collapse;
-                        border-bottom: 1px solid #a0a0a0;
-                        border-top: 1px solid #a0a0a0;"
-                  align="left">Auto-Quiz Points</th>' . chr(13);
   $match .= '</tr>' . chr(13);
 
   // Counter for striped rows
@@ -464,39 +446,6 @@ function sendResultsEmail ($matchID) {
                             border-bottom: 1px solid #b7a075;"
                      align="center">' . (int)$rowMatch['TotalPoints'] . '</td>' . chr(13);
     }
-    $match .= '<td style="font-family: Helvetica, arial, sans-serif;
-                          font-size: 14px;
-                          color: #666666;
-                          text-align:left;
-                          line-height: 16px;
-                          white-space: nowrap;
-                          vertical-align: top;
-                          border-collapse: collapse;
-                          border-bottom: 1px solid #b7a075;"
-                   align="left">&nbsp;</td>' . chr(13);
-    if ($rowMatch['AutoQuizPoints'] == 0) {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
-                            font-size: 14px;
-                            color: #666666;
-                            text-align:center;
-                            line-height: 16px;
-                            white-space: nowrap;
-                            vertical-align: top;
-                            border-collapse: collapse;
-                            border-bottom: 1px solid #b7a075;"
-                     align="center">-</td>' . chr(13);
-    } else {
-      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
-                            font-size: 14px;
-                            color: #666666;
-                            text-align:center;
-                            line-height: 16px;
-                            white-space: nowrap;
-                            vertical-align: top;
-                            border-collapse: collapse;
-                            border-bottom: 1px solid #b7a075;"
-                     align="center">' . $rowMatch['AutoQuizPoints'] . '</td>' . chr(13);
-    }
 
     $match .= '</tr>' . chr(13);
 
@@ -519,7 +468,7 @@ function sendResultsEmail ($matchID) {
                          text-align:center;
                          line-height: 30px;"
                   st-title="fulltext-heading">' . chr(13);
-  $league .= 'Current Standard League Table' . chr(13);
+  $league .= 'Current League Table' . chr(13);
   $league .= '</td>' . chr(13);
   $league .= '</tr>' . chr(13);
   $league .= '<!-- End of Title -->' . chr(13);
@@ -701,135 +650,6 @@ function sendResultsEmail ($matchID) {
   $league .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Body - write Auto-Quiz league table
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  $aqLeague = '<!-- Title -->' . chr(13);
-  $aqLeague .= '<tr>' . chr(13);
-  $aqLeague .= '<td colspan="5"
-                  style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 18px;
-                         color: #333333;
-                         text-align:center;
-                         line-height: 30px;"
-                  st-title="fulltext-heading">' . chr(13);
-  $aqLeague .= 'Current Auto-Quiz League Table' . chr(13);
-  $aqLeague .= '</td>' . chr(13);
-  $aqLeague .= '</tr>' . chr(13);
-  $aqLeague .= '<!-- End of Title -->' . chr(13);
-  $aqLeague .= '<!-- spacing -->' . chr(13);
-  $aqLeague .= '<tr>' . chr(13);
-  $aqLeague .= '<td colspan="5" width="100%" height="20"
-                  style="font-size:1px;
-                         line-height:1px;
-                         mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
-  $aqLeague .= '</tr>' . chr(13);
-  $aqLeague .= '<!-- End of spacing -->' . chr(13);
-  $aqLeague .= '<!-- content -->' . chr(13);
-  $aqLeague .= '<tr>' . chr(13);
-  $aqLeague .= '<td st-content="fulltext-content">' . chr(13);
-  $aqLeague .= '<table border="0" width="100%" cellpadding="4" cellspacing="0"
-                     border="0" align="left" class="devicewidth">' . chr(13);
-  $aqLeague .= '<tr style="background-color: #d3d3d3;">' . chr(13);
-  $aqLeague .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #333333;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">&nbsp;</th>' . chr(13);
-  $aqLeague .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #333333;
-                         text-align:left;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">Player</th>' . chr(13);
-  $aqLeague .= '<th style="font-family: Helvetica, arial, sans-serif;
-                         font-size: 14px;
-                         color: #333333;
-                         text-align: center;
-                         line-height: 16px;
-                         border-collapse: collapse;
-                         border-bottom: 1px solid #a0a0a0;
-                         border-top: 1px solid #a0a0a0;"
-                  align="left">Points</th>' . chr(13);
-  $aqLeague .= '</tr>' . chr(13);
-
-  // Counter for striped rows
-  $i = 0;
-
-  foreach ($resultAqLeague as $rowLeague) {
-
-    if($i == 1) {
-      $aqLeague .= '<tr style="background-color: #f4ecdc;">' . chr(13);
-      $i = 2;
-    } else{
-      $aqLeague .= '<tr>' . chr(13);
-      $i = 1;
-    }
-
-    $aqLeague .= '<td style="font-family: Helvetica, arial, sans-serif;
-                           font-size: 14px;
-                           color: #666666;
-                           text-align:left;
-                           line-height: 16px;
-                           white-space: nowrap;
-                           vertical-align: top;
-                           border-collapse: collapse;
-                           border-bottom: 1px solid #b7a075;"
-                    align="left">';
-    if ($rowLeague['rankCount'] > 1) {
-      $aqLeague .= $rowLeague['rank'] . '=</td>' . chr(13);
-    } else {
-      $aqLeague .= $rowLeague['rank'] . '</td>' . chr(13);
-    }
-    $aqLeague .= '<td style="font-family: Helvetica, arial, sans-serif;
-                           font-size: 14px;
-                           color: #666666;
-                           text-align:left;
-                           line-height: 16px;
-                           white-space: nowrap;
-                           vertical-align: top;
-                           border-collapse: collapse;
-                           border-bottom: 1px solid #b7a075;"
-                    align="left">' . $rowLeague['name'] . '</td>' . chr(13);
-    if ($rowLeague['totalPoints'] == 0) {
-      $aqLeague .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">-</td>' . chr(13);
-    } else {
-      $aqLeague .= '<td style="font-family: Helvetica, arial, sans-serif;
-                             font-size: 14px;
-                             color: #666666;
-                             text-align:center;
-                             line-height: 16px;
-                             white-space: nowrap;
-                             vertical-align: top;
-                             border-collapse: collapse;
-                             border-bottom: 1px solid #b7a075;"
-                      align="center">' . $rowLeague['totalPoints'] . '</td>' . chr(13);
-    }
-    $aqLeague .= '</tr>' . chr(13);
-
-  }
-
-  $aqLeague .= '</table>' . chr(13);
-  $aqLeague .= '</td>' . chr(13);
-  $aqLeague .= '</tr>' . chr(13);
-  $aqLeague .= '<!-- End of content -->' . chr(13);
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Body - build body array for sendEmail routine
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $body = array(array('separator','Separator'),
@@ -838,8 +658,6 @@ function sendResultsEmail ($matchID) {
                 array('table','Current League table',$match),
                 array('separatorHR','Separator'),
                 array('table','Match details table',$league),
-                array('separatorHR','Separator'),
-                array('table','Match details table',$aqLeague),
                 array('separatorHR','Separator'));
 
   // Send e-mail
