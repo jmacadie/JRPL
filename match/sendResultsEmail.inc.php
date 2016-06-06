@@ -73,7 +73,6 @@ function sendResultsEmail ($matchID) {
       ,po.`ResultPoints`
       ,po.`ScorePoints`
       ,po.`TotalPoints`
-      ,IFNULL(aq.`TotalPoints`, 0) AS `AutoQuizPoints`
 
     FROM
       (SELECT `MatchID`, `UserID`, `DisplayName`
@@ -89,14 +88,8 @@ function sendResultsEmail ($matchID) {
         AND po.`MatchID` = mu.`MatchID`
         AND po.`UserID` = mu.`UserID`
 
-      LEFT JOIN `Points` aq ON
-        aq.`ScoringSystemID` = 2
-        AND aq.`MatchID` = mu.`MatchID`
-        AND aq.`UserID` = mu.`UserID`
-
     ORDER BY
-      po.`TotalPoints` DESC
-      ,aq.`TotalPoints` DESC
+       po.`TotalPoints` DESC
       ,(p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC
       ,p.`HomeTeamPoints` DESC;";
 
