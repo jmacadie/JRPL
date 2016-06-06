@@ -60,7 +60,6 @@ function sendResultsEmail ($matchID) {
   // Get league table details
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $resultLeague = getLeagueTable(1);
-  $resultAqLeague = getLeagueTable(2);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get match result details
