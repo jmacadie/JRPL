@@ -59,6 +59,34 @@ function emailCSS () {
   $css .= 'td[class=mobile-hide]{display:none!important;}' . chr(13);
   $css .= 'td[class="padding-bottom25"]{padding-bottom:25px!important;}' . chr(13);
   $css .= '}' . chr(13);
+  $css .= '/*Flags*/' . chr(13);
+  $css .= '.team-flag {width: 45px;height: 45px;background-size: 225px 495px;vertical-align: middle;}' . chr(13);
+  $css .= '[class*=" flag-"],[class^=flag-] {display: inline-block;margin: 0;background-repeat: no-repeat;';
+  $css .= 'background-image: url(http://img.uefa.com/imgml/2016/euro/flags/flags_sprite_empty_64x64.png);}' . chr(13);
+  $css .= '.flag-ALB { background-position: 100% 100%; }' . chr(13);
+  $css .= '.flag-AUT { background-position: 75% 0; }' . chr(13);
+  $css .= '.flag-BEL { background-position: 0 10%; }' . chr(13);
+  $css .= '.flag-CRO { background-position: 100% 10%; }' . chr(13);
+  $css .= '.flag-CZE { background-position: 25% 20%; }' . chr(13);
+  $css .= '.flag-ENG { background-position: 75% 20%; }' . chr(13);
+  $css .= '.flag-FRA { background-position: 25% 30%; }' . chr(13);
+  $css .= '.flag-GER { background-position: 100% 30%; }' . chr(13);
+  $css .= '.flag-HUN { background-position: 50% 40%; }' . chr(13);
+  $css .= '.flag-ISL { background-position: 75% 40%; }' . chr(13);
+  $css .= '.flag-IRL { background-position: 100% 40%; }' . chr(13);
+  $css .= '.flag-ITA { background-position: 25% 50%; }' . chr(13);
+  $css .= '.flag-NIR { background-position: 50% 70%; }' . chr(13);
+  $css .= '.flag-POL { background-position: 100% 70%; }' . chr(13);
+  $css .= '.flag-POR { background-position: 0 80%; }' . chr(13);
+  $css .= '.flag-ROU { background-position: 25% 80%; }' . chr(13);
+  $css .= '.flag-RUS { background-position: 50% 80%; }' . chr(13);
+  $css .= '.flag-ESP { background-position: 25% 90%; }' . chr(13);
+  $css .= '.flag-SUI { background-position: 50% 90%; }' . chr(13);
+  $css .= '.flag-SVK { background-position: 75% 90%; }' . chr(13);
+  $css .= '.flag-SWE { background-position: 100% 90%; }' . chr(13);
+  $css .= '.flag-TUR { background-position: 0 100%; }' . chr(13);
+  $css .= '.flag-UKR { background-position: 25% 100%; }' . chr(13);
+  $css .= '.flag-WAL { background-position: 50% 100%; }' . chr(13);
 
   return $css;
 
