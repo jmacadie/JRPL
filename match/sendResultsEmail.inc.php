@@ -332,7 +332,6 @@ function sendResultsEmail ($matchID) {
         $match .= $rowMatch['HomeTeamPoints'];
         $match .= '&nbsp;-&nbsp;';
         $match .= $rowMatch['AwayTeamPoints'];
-        }
       } elseif ($rowMatch['AwayTeamPoints'] > $rowMatch['HomeTeamPoints']) {
         $match .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
         $match .= $rowMatch['AwayTeamPoints'];
