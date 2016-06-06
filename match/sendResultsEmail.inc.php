@@ -289,7 +289,7 @@ function sendResultsEmail ($matchID) {
                         border-collapse: collapse;
                         border-bottom: 1px solid #a0a0a0;
                         border-top: 1px solid #a0a0a0;"
-                  align="left">Total Standard Points</th>' . chr(13);
+                  align="left">Total Points</th>' . chr(13);
   $match .= '</tr>' . chr(13);
 
   // Counter for striped rows
@@ -379,7 +379,7 @@ function sendResultsEmail ($matchID) {
                             border-bottom: 1px solid #b7a075;"
                      align="center">' . (int)$rowMatch['ResultPoints'] . '</td>' . chr(13);
     }
-    if ($rowMatch['MarginPoints'] == 0) {
+    if ($rowMatch['ScorePoints'] == 0) {
       $match .= '<td style="font-family: Helvetica, arial, sans-serif;
                             font-size: 14px;
                             color: #666666;
@@ -400,7 +400,7 @@ function sendResultsEmail ($matchID) {
                             vertical-align: top;
                             border-collapse: collapse;
                             border-bottom: 1px solid #b7a075;"
-                     align="center">' . (int)$rowMatch['MarginPoints'] . '</td>' . chr(13);
+                     align="center">' . (int)$rowMatch['ScorePoints'] . '</td>' . chr(13);
     }
     if ($rowMatch['TotalPoints'] == 0) {
       $match .= '<td style="font-family: Helvetica, arial, sans-serif;
