@@ -326,32 +326,18 @@ function sendResultsEmail ($matchID) {
                    align="left">';
     if ($rowMatch['HomeTeamPoints'] == 'No prediction') {
       $match .= 'No prediction<br/>' . chr(13);
-      $match .= '<i>assumed 0 - 0</i>' . chr(13);
     } else {
       if ($rowMatch['HomeTeamPoints'] > $rowMatch['AwayTeamPoints']) {
         $match .= $row['HomeTeam'] . ' to win<br/>' . chr(13);
         $match .= $rowMatch['HomeTeamPoints'];
         $match .= '&nbsp;-&nbsp;';
         $match .= $rowMatch['AwayTeamPoints'];
-        $match .= '<br/>';
-        $margin = abs($rowMatch['HomeTeamPoints'] - $rowMatch['AwayTeamPoints']);
-        if ($margin == 1) {
-          $match .= '(1 point margin)';
-        } else {
-          $match .= '(' . $margin . ' points margin)';
         }
       } elseif ($rowMatch['AwayTeamPoints'] > $rowMatch['HomeTeamPoints']) {
         $match .= $row['AwayTeam'] . ' to win<br/>' . chr(13);
         $match .= $rowMatch['AwayTeamPoints'];
         $match .= '&nbsp;-&nbsp;';
         $match .= $rowMatch['HomeTeamPoints'];
-        $match .= '<br/>';
-        $margin = abs($rowMatch['HomeTeamPoints'] - $rowMatch['AwayTeamPoints']);
-        if ($margin == 1) {
-          $match .= '(1 point margin)';
-        } else {
-          $match .= '(' . $margin . ' points margin)';
-        }
       } else {
         $match .= 'Draw<br/>' . chr(13);
         $match .= $rowMatch['HomeTeamPoints'];
