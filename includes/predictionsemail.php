@@ -167,7 +167,7 @@ while ($row = mysqli_fetch_array($result)) {
   $heading .= '<img border="0"
                     style="vertical-align: middle;"
                     src="http://www.julianrimet.com/assets/img/flags/';
-  $heading .= strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
+  $heading .= strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of content -->' . chr(13);
