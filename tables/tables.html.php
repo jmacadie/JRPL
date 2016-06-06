@@ -1,8 +1,6 @@
 <h1>Tables</h1>
 <div id="messageTables"></div>
 <hr>
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/scoringSystemForm.html.php'; ?>
-<hr>
 <h3>Overall</h3>
 <?php
   $sID = 'OverallCont';
