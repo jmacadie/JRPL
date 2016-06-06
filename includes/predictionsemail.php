@@ -129,7 +129,10 @@ while ($row = mysqli_fetch_array($result)) {
   $heading .= '<!-- content -->' . chr(13);
   $heading .= '<tr>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= '<span class="team-flag flag-' . strtoupper($row['HomeTeamS']) . '"></span>' . chr(13);
+  $heading .= '<img border="0"
+                    style="vertical-align: middle;"
+                    src="http://www.julianrimet.com/assets/img/flags/';
+  $heading .= strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td width="48%"
                    style="white-space: nowrap;
@@ -161,7 +164,10 @@ while ($row = mysqli_fetch_array($result)) {
   $heading .= $row['AwayTeam'] . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td>' . chr(13);
-  $heading .= '<span class="team-flag flag-' . strtoupper($row['AwayTeamS']) . '"></span>' . chr(13);
+  $heading .= '<img border="0"
+                    style="vertical-align: middle;"
+                    src="http://www.julianrimet.com/assets/img/flags/';
+  $heading .= strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
   $heading .= '<!-- End of content -->' . chr(13);
