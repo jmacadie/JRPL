@@ -114,9 +114,9 @@ function calculateFootballStandardPoints($matchID) {
     
     // Check for right result
     if (!$missed &&
-        (($ht > $at) && ($htp > $atp)) ||
+        ((($ht > $at) && ($htp > $atp)) ||
         (($ht < $at) && ($htp < $atp)) ||
-        (($ht == $at) && ($htp == $atp))) {
+        (($ht == $at) && ($htp == $atp)))) {
       $resultPoints = 1;
     } else {
       $resultPoints = 0;
