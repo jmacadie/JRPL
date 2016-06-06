@@ -187,23 +187,6 @@ function sendResultsEmail ($matchID) {
   $heading .= strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
-  $margin = abs($row['HomeTeamPoints'] - $row['AwayTeamPoints']);
-  if ($margin != 0) {
-    $heading .= '<tr>' . chr(13);
-    $heading .= '<td colspan="5"
-                     width="100%"
-                     style="white-space: nowrap;
-                            font-family: Helvetica, arial, sans-serif;
-                            font-size: 16px;
-                            color: #333333;
-                            text-align: center;
-                            line-height: 21px;"
-                     st-content="fulltext-content">' . chr(13);
-    $heading .= ($margin == 1) ? '1 point margin' : $margin .' points margin';
-    $heading .= chr(13);
-    $heading .= '</td>' . chr(13);
-    $heading .= '</tr>' . chr(13);
-  }
   $heading .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
