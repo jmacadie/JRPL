@@ -2,9 +2,9 @@
   <?php
     switch($stage) {
       case 'Group Stages' : $shortStage = "Group"; break;
+      case 'Round of 16' : $shortStage = "R16"; break;
       case 'Quarter Finals' : $shortStage = "QuarterFinal"; break;
       case 'Semi Finals' : $shortStage = "SemiFinal"; break;
-      case '3rd 4th Place Play-off' : $shortStage = "34PlayOff"; break;
       case 'Final' : $shortStage = "Final"; break;
     }
   ?>
