@@ -59,9 +59,12 @@ DROP TABLE IF EXISTS `Match`;
 DROP TABLE IF EXISTS `TournamentRole`;
 DROP TABLE IF EXISTS `Team`;
 DROP TABLE IF EXISTS `Stage`;
-DROP TABLE IF EXISTS `Group`;
 DROP TABLE IF EXISTS `Venue`;
 DROP TABLE IF EXISTS `Broadcaster`;
+
+DROP TABLE IF EXISTS `MetaGroupMap`;
+DROP TABLE IF EXISTS `MetaGroup`;
+DROP TABLE IF EXISTS `Group`;
 
 DROP TABLE IF EXISTS `RememberMe`;
 DROP TABLE IF EXISTS `UserRole`;
@@ -280,6 +283,69 @@ INSERT INTO `Match` (`MatchID`, `Date`, `KickOff`, `VenueID`, `HomeTeamID`, `Awa
 (49, '2016-07-06', '20:00:00', 6, 49, 50, NULL, NULL, NULL, NULL, 4, 3),
 (50, '2016-07-07', '20:00:00', 7, 51, 52, NULL, NULL, NULL, NULL, 4, 3),
 (51, '2016-07-10', '20:00:00', 2, 53, 54, NULL, NULL, NULL, NULL, 5, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `MetaGroup`
+--
+
+CREATE TABLE IF NOT EXISTS `MetaGroup` (
+  `MetaGroupID` int(11) NOT NULL,
+  `Name` varchar(10) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `MetaGroup`
+--
+
+INSERT INTO `MetaGroup` (`MetaGroupID`, `Name`) VALUES
+(1, 'A'),
+(2, 'B'),
+(3, 'C'),
+(4, 'D'),
+(5, 'E'),
+(6, 'F'),
+(7, 'A/C/D'),
+(8, 'B/E/F'),
+(9, 'C/D/E'),
+(10, 'A/B/F');
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `MetaGroupMap`
+--
+
+CREATE TABLE IF NOT EXISTS `MetaGroupMap` (
+  `MetaGroupID` int(11) NOT NULL,
+  `GroupID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `MetaGroupMap`
+--
+
+INSERT INTO `MetaGroupMap` (`MetaGroupID`, `GroupID`) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 1),
+(7, 3),
+(7, 4),
+(8, 2),
+(8, 5),
+(8, 6),
+(9, 3),
+(9, 4),
+(9, 5),
+(10, 1),
+(10, 2),
+(10, 6);
 
 -- --------------------------------------------------------
 
@@ -521,10 +587,10 @@ INSERT INTO `TournamentRole` (`TournamentRoleID`, `Name`, `TeamID`, `FromMatchID
 (34, 'Runner Up Group E', NULL, NULL, 5, 2),
 (35, 'Winner Group F', NULL, NULL, 6, 2),
 (36, 'Runner Up Group F', NULL, NULL, 6, 2),
-(37, 'Third Place A/C/D', NULL, NULL, 1, 2),
-(38, 'Third Place B/E/F', NULL, NULL, 2, 2),
-(39, 'Third Place C/D/E', NULL, NULL, 3, 2),
-(40, 'Third Place A/B/F', NULL, NULL, 6, 2),
+(37, 'Third Place A/C/D', NULL, NULL, 7, 2),
+(38, 'Third Place B/E/F', NULL, NULL, 8, 2),
+(39, 'Third Place C/D/E', NULL, NULL, 9, 2),
+(40, 'Third Place A/B/F', NULL, NULL, 10, 2),
 (41, 'Winner R16 1', NULL, 37, NULL, 3),
 (42, 'Winner R16 2', NULL, 38, NULL, 3),
 (43, 'Winner R16 3', NULL, 39, NULL, 3),
@@ -677,6 +743,18 @@ ALTER TABLE `Group`
 ALTER TABLE `Match`
  ADD PRIMARY KEY (`MatchID`), ADD KEY `FK_Match_Venue` (`VenueID`), ADD KEY `FK_Match_Home_Team` (`HomeTeamID`), ADD KEY `FK_Match_Away_team` (`AwayTeamID`), ADD KEY `FK_Match_Broadcaster` (`BroadcasterID`), ADD KEY `FK_Match_Stage` (`StageID`), ADD KEY `FK_Match_User` (`ResultPostedBy`);
 
+--
+-- Indexes for table `MetaGroup`
+--
+ALTER TABLE `MetaGroup`
+ ADD PRIMARY KEY (`MetaGroupID`);
+
+--
+-- Indexes for table `MetaGroupMap`
+--
+ALTER TABLE `MetaGroupMap`
+ ADD KEY `FK_MetaGroupMap_MetaGroup` (`MetaGroupID`), ADD KEY `FK_MetaGroupMap_Group` (`GroupID`);
+ 
 --
 -- Indexes for table `Points`
 --
@@ -834,6 +912,13 @@ ADD CONSTRAINT `FK_Match_User` FOREIGN KEY (`ResultPostedBy`) REFERENCES `User` 
 ADD CONSTRAINT `FK_Match_Venue` FOREIGN KEY (`VenueID`) REFERENCES `Venue` (`VenueID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `MetaGroupMap`
+--
+ALTER TABLE `MetaGroupMap`
+ADD CONSTRAINT `FK_MetaGroupMap_MetaGroup` FOREIGN KEY (`MetaGroupID`) REFERENCES `MetaGroup` (`MetaGroupID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `FK_MetaGroupMap_Group` FOREIGN KEY (`GroupID`) REFERENCES `Group` (`GroupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `Points`
 --
 ALTER TABLE `Points`
@@ -858,7 +943,7 @@ ADD CONSTRAINT `FK_RememberMe_User` FOREIGN KEY (`UserID`) REFERENCES `User` (`U
 -- Constraints for table `TournamentRole`
 --
 ALTER TABLE `TournamentRole`
-ADD CONSTRAINT `FK_TournamentRole_Group` FOREIGN KEY (`FromGroupID`) REFERENCES `Group` (`GroupID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `FK_TournamentRole_Group` FOREIGN KEY (`FromGroupID`) REFERENCES `MetaGroup` (`MetaGroupID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_TournamentRole_Match` FOREIGN KEY (`FromMatchID`) REFERENCES `Match` (`MatchID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_TournamentRole_Stage` FOREIGN KEY (`StageID`) REFERENCES `Stage` (`StageID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_TournamentRole_Team` FOREIGN KEY (`TeamID`) REFERENCES `Team` (`TeamID`) ON DELETE CASCADE ON UPDATE CASCADE;
