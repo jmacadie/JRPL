@@ -42,23 +42,27 @@ FROM `TournamentRole` tr
 
   LEFT JOIN `Team` t ON
     t.`TeamID` = tr.`TeamID`
-
-  LEFT JOIN `TournamentRole` trg ON
-    trg.`FromGroupID` = tr.`FromGroupID` AND trg.`StageID` = 1
-
-  LEFT JOIN `Team` gt ON
-    gt.`TeamID` = trg.`TeamID`
-
+    
+  LEFT JOIN `MetaGroupMap` mgm ON
+  	mgm.`MetaGroupID` = tr.`FromGroupID`
+    
+    LEFT JOIN `TournamentRole` trg ON
+      trg.`FromGroupID` = mgm.`GroupID`
+      AND trg.`StageID` = 1
+        
+    LEFT JOIN `Team` gt ON
+      gt.`TeamID` = trg.`TeamID`
+  
   LEFT JOIN
     (SELECT `MatchID`,`HomeTeamID` AS `TeamID` FROM `Match` UNION ALL
     SELECT `MatchID`,`AwayTeamID` AS `TeamID` FROM `Match`) m ON
-    m.`MatchID` = tr.`FromMatchID`
-
-  LEFT JOIN `TournamentRole` trt ON
-    trt.`TournamentRoleID` = m.`TeamID`
-
-  LEFT JOIN `Team` st ON
-    st.`TeamID` = trt.`TeamID`
+      m.`MatchID` = tr.`FromMatchID`
+  
+    LEFT JOIN `TournamentRole` trt ON
+      trt.`TournamentRoleID` = m.`TeamID`
+      
+    LEFT JOIN `Team` st ON
+      st.`TeamID` = trt.`TeamID`
 
 ORDER BY
   s.`StageID` ASC,
