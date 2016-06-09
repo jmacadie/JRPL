@@ -37,3 +37,22 @@
   </div>
 </div>
 <div id="matchesMessage"></div>
+<div class="panel-group" id="accordionUsers">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse"
+           data-parent="#accordionUsers"
+           href="#collapseUsers">
+          Reset User Password
+        </a>
+      </h4>
+    </div>
+    <div id="collapseUsers" class="panel-collapse collapse">
+      <div class="panel-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div id="usersMessage"></div>
