@@ -17,15 +17,15 @@
           include 'stage.html.php';
         ?>
         <?php
+          $stage = 'Round of 16';
+          include 'stage.html.php';
+        ?>
+        <?php
           $stage = 'Quarter Finals';
           include 'stage.html.php';
         ?>
         <?php
           $stage = 'Semi Finals';
-          include 'stage.html.php';
-        ?>
-        <?php
-          $stage = '3rd 4th Place Play-off';
           include 'stage.html.php';
         ?>
         <?php
