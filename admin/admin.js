@@ -17,6 +17,7 @@ $(document).ready(function() {
     var $sel = $(this).closest('form').find('select');
     resetPassword(
       $sel.val(),
+      $sel.find(':selected').text(),
       $("#usersMessage"));
   });
 
@@ -100,39 +101,42 @@ function processUpdateTRReturn (data, $message) {
 }
 
 // Function to handle resetting a user's password
-function resetPassword(userID, $message) {
+function resetPassword(userID, name, $message) {
   
   // TODO: write a dialog box to confirm really want to reset this user's password
+  if (window.confirm("Do you really want to reset " + name + "'s password?")) { 
   
-  // Build HTML for info message
-  var result = [
-    '<div class="alert alert-info alert-dismissable">',
-    '<button type="button"',
-    ' class="close"',
-    ' data-dismiss="alert"',
-    ' aria-hidden="true">&times;</button>',
-    'Submitting update to database...',
-    '</div>'];
-
-  // Output message
-  $message.html(result.join(''));
-
-  // Make the AJAX call
-  $.ajax({
-    url: 'resetPassword.php',
-    type: 'POST',
-    data:
-      {action: "resetPassword",
-      userID: userID},
-    dataType: 'json',
-    success: function(data) {
-      //alert ('Success');
-      processResetPasswordReturn (data, $message);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      alert ('AJAX callback error: ' + textStatus + ', ' + errorThrown);
-    }
-  });
+    // Build HTML for info message
+    var result = [
+      '<div class="alert alert-info alert-dismissable">',
+      '<button type="button"',
+      ' class="close"',
+      ' data-dismiss="alert"',
+      ' aria-hidden="true">&times;</button>',
+      'Submitting update to database...',
+      '</div>'];
+  
+    // Output message
+    $message.html(result.join(''));
+  
+    // Make the AJAX call
+    $.ajax({
+      url: 'resetPassword.php',
+      type: 'POST',
+      data:
+        {action: "resetPassword",
+        userID: userID},
+      dataType: 'json',
+      success: function(data) {
+        //alert ('Success');
+        processResetPasswordReturn (data, $message);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert ('AJAX callback error: ' + textStatus + ', ' + errorThrown);
+      }
+    });
+  
+  }
 
 }
 
