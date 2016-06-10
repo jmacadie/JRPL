@@ -167,7 +167,7 @@ function processResetPasswordReturn (data, $message) {
       ' class="close"',
       ' data-dismiss="alert"',
       ' aria-hidden="true">&times;</button>',
-      'Password successfully reset!'
+      'Password successfully reset!',
       '</div>'];
 
     // Output error message
