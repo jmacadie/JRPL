@@ -17,7 +17,7 @@ $(document).ready(function() {
     var $sel = $(this).closest('form').find('select');
     resetPassword(
       $sel.val(),
-      $sel.find(':selected').text(),
+      $sel.find(':selected').text().trim(),
       $("#usersMessage"));
   });
 
