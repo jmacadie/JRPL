@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
 // Make sure all relevant includes are loaded
 require 'getTournamentRoles.php';
+require 'getUsers.php';
 
 // Set tab variable to indicate point to admin tab
 $tab = 'admin';
