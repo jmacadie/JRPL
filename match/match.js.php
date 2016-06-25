@@ -14,12 +14,12 @@
   google.setOnLoadCallback(function (){
 
     // Load the data - only need do this once
-    var tmp = initDataPoints();
-    dataPoints = tmp.data;
-    maxScale = tmp.maxScale;
+    //var tmp = initDataPoints();
+    //dataPoints = tmp.data;
+    //maxScale = tmp.maxScale;
 
     // Draw the charts
-    drawChart(dataPoints, maxScale);
+    //drawChart(dataPoints, maxScale);
   });
 
   // Add click handler to all user checkboxes
@@ -39,7 +39,7 @@
 
   // Redraw graph when window resize is completed
   $(window).on('resizeEnd', function() {
-    drawChart(dataPoints, maxScale);
+    //drawChart(dataPoints, maxScale);
   });
 
   // A function to initialise the points data
