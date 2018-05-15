@@ -199,8 +199,8 @@ function sendEmail($to,$subject,$css,$body) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Email header
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  $mailHeader = "From: henri@julianrimet.com\r\n";
-  $mailHeader .= "Reply-To: henri@julianrimet.com\r\n";
+  $mailHeader = "From: jules@julianrimet.com\r\n";
+  $mailHeader .= "Reply-To: jules@julianrimet.com\r\n";
   $mailHeader .= "Content-type: text/html; charset=iso-8859-1\r\n";
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -215,7 +215,7 @@ function sendEmail($to,$subject,$css,$body) {
   } else {
     $MESSAGE_BODY .= $css;
   }
-    $MESSAGE_BODY .= '</style>' . chr(13);
+  $MESSAGE_BODY .= '</style>' . chr(13);
   $MESSAGE_BODY .= '</head>' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -228,7 +228,7 @@ function sendEmail($to,$subject,$css,$body) {
   } else {
     $MESSAGE_BODY .= $body;
   }
-  $MESSAGE_BODY .= '<br /><br />Yours,<br /><a href="https://en.wikipedia.org/wiki/Henri_Delaunay">Henri Delaunay</a><br />' . chr(13);
+  $MESSAGE_BODY .= '<br /><br />Yours,<br /><a href="https://en.wikipedia.org/wiki/Jules_Rimet">JR</a><br />' . chr(13);
   $MESSAGE_BODY .= '<a href="http://www.julianrimet.com">JRPL website</a>' . chr(13);
   $MESSAGE_BODY .= '</body>' . chr(13);
   $MESSAGE_BODY .= '</html>' . chr(13);
