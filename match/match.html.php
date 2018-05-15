@@ -162,7 +162,7 @@
 <h3>
   <!-- Layout for tablets and bigger -->
   <div class="row hidden-xs">
-    <div class="col-sm-2 text-center"><img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png"></div>
+    <div class="col-sm-2 text-center"><img width="80" hieght="40" alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png"></div>
     <div class="col-sm-2 text-right">
       <span class="lead"><?php htmlout($homeTeam); ?></span>
       <br />
@@ -176,7 +176,7 @@
       <br />
       <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
     </div>
-    <div class="col-sm-2 text-center"><img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png"></div>
+    <div class="col-sm-2 text-center"><img width="80" hieght="40" alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png"></div>
   </div>
   <!-- Team origin details for tablets and bigger -->
   <div class="row hidden-xs text-left">
@@ -189,12 +189,12 @@
         </p></div>
         <small>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
             <div class="col-xs-3 text-left"><?php htmlout($homeTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
             <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamPoints); ?></div>
           </p></div>
@@ -212,12 +212,12 @@
         </p></div>
         <small>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
             <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
             <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamPoints); ?></div>
           </p></div>
@@ -230,7 +230,7 @@
   <!-- Layout for phones -->
   <div class="row visible-xs text-left">
     <div class="col-xs-2">
-      <img alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png">
+      <img width="80" hieght="40" alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png">
     </div>
     <div class="col-xs-6">
       <?php htmlout($homeTeam); ?>
@@ -254,12 +254,12 @@
         </p></div>
         <small>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
             <div class="col-xs-3"><?php htmlout($homeTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
             <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamPoints); ?></div>
           </p></div>
@@ -274,7 +274,7 @@
   </div>
   <div class="row visible-xs text-left">
     <div class="col-xs-2">
-      <img alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png">
+      <img width="80" hieght="40" alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png">
     </div>
     <div class="col-xs-6">
       <?php htmlout($awayTeam); ?>
@@ -298,12 +298,12 @@
         </p></div>
         <small>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
             <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamPoints); ?></div>
           </p></div>
           <div class="row"><p>
-            <div class="col-xs-3 text-right"><img alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
+            <div class="col-xs-3 text-right"><img width="80" hieght="40" alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
             <div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
             <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamPoints); ?></div>
           </div>
