@@ -229,10 +229,10 @@
   </div>
   <!-- Layout for phones -->
   <div class="row visible-xs text-left">
-    <div class="col-xs-2">
+    <div class="col-xs-3">
       <img width="80" hieght="40" alt="<?php htmlout($homeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeFlag); ?>.png">
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-5">
       <?php htmlout($homeTeam); ?>
     </div>
     <div class="col-xs-4" id="homeTeamPointsXS">
@@ -273,10 +273,10 @@
     <div class="col-xs-6 col-xs-offset-2"><small>vs.</small></div>
   </div>
   <div class="row visible-xs text-left">
-    <div class="col-xs-2">
+    <div class="col-xs-3">
       <img width="80" hieght="40" alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png">
     </div>
-    <div class="col-xs-6">
+    <div class="col-xs-5">
       <?php htmlout($awayTeam); ?>
     </div>
     <div class="col-xs-4" id="awayTeamPointsXS">
