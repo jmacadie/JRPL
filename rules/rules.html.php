@@ -7,7 +7,7 @@
   <li>Matches will be locked down from further prediction
     <strong>30 minutes</strong> before kick-off</li>
   <li>The system will send an e-mail at lock-down saying what every player
-    predicted for that match. <small>Note that the e-mail may not go out exactly half
+    predicted for that match<br /><small>Note that the e-mail may not go out exactly half
     an hour before the kick-off but when the first person tries to interact with
     the website after the lock-down point. This ensures that it is not possible
     to illegally tamper with your prediction after the lock-down</small></li>
@@ -25,18 +25,17 @@ the knock-out stages</u></p>
 <p>So points awarded as follows:</p>
 <ul>
   <li>
-    <p><strong>3 Points</strong> for exactly the right scorline predicted</p>
-	<p><small>e.g. Saudi Arabia to beat Russia 2 - 1 and then that's what happens</small></p>
+    <p><strong>3 Points</strong> for exactly the right scorline predicted<br />
+	<small>e.g. Saudi Arabia to beat Russia 2 - 1 and then that's what happens</small></p>
   </li>
   <li>
-    <p><strong>1 Point</strong> for the wrong scoreline but the right result</p>
-	<p><small>e.g. Saudi Arabia to beat Russia 2 - 1 but then they win by any other scoreline</small></p>
+    <p><strong>1 Point</strong> for the wrong scoreline but the right result<br />
+	<small>e.g. Saudi Arabia to beat Russia 2 - 1 but then they win by any other scoreline</small></p>
   </li>
   <li>
-    <p><strong>No Points</strong> for the wrong result</p>
-	<p><small>e.g. Saudi Arabia to beat Russia 2 - 1 but it's a draw or Russia win</small></p>
+    <p><strong>No Points</strong> for the wrong result<br />
+	<small>e.g. Saudi Arabia to beat Russia 2 - 1 but it's a draw or Russia win</small></p>
   </li>
-  <li><strong>No Points</strong> for the wrong result</li>
 </ul>
 <s><h2>Auto-Quiz Scoring System</h2>
 <p>After much debate (and bemusement) we settled on the following system:</p>
