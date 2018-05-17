@@ -30,11 +30,14 @@ $(document).ready(function() {
     e.preventDefault();
     var $this =$(this);
     $this.blur();
-    if ($this.attr('data-state') == 'show') {
-      $this.attr('data-state','hide').html('Hide Origin');
-    } else {
-      $this.attr('data-state','show').html('Show Origin');
-    }
+	var attr = $(this).attr('disabled');
+	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
+		if ($this.attr('data-state') == 'show') {
+		  $this.attr('data-state','hide').html('Hide Origin');
+		} else {
+		  $this.attr('data-state','show').html('Show Origin');
+		}
+	}
     $('#homeOrigin').slideToggle('slow');
   });
 
@@ -43,11 +46,14 @@ $(document).ready(function() {
     e.preventDefault();
     var $this =$(this);
     $this.blur();
-    if ($this.attr('data-state') == 'show') {
-      $this.attr('data-state','hide').html('Hide Origin');
-    } else {
-      $this.attr('data-state','show').html('Show Origin');
-    }
+	var attr = $(this).attr('disabled');
+	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
+		if ($this.attr('data-state') == 'show') {
+		  $this.attr('data-state','hide').html('Hide Origin');
+		} else {
+		  $this.attr('data-state','show').html('Show Origin');
+		}
+	}
     $('#awayOrigin').slideToggle('slow');
   });
 
@@ -56,11 +62,14 @@ $(document).ready(function() {
     e.preventDefault();
     var $this =$(this);
     $this.blur();
-    if ($this.attr('data-state') == 'show') {
-      $this.attr('data-state','hide').html('Hide Origin');
-    } else {
-      $this.attr('data-state','show').html('Show Origin');
-    }
+	var attr = $(this).attr('disabled');
+	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
+		if ($this.attr('data-state') == 'show') {
+		  $this.attr('data-state','hide').html('Hide Origin');
+		} else {
+		  $this.attr('data-state','show').html('Show Origin');
+		}
+	}
     $('#homeOriginXS').slideToggle('slow');
   });
 
@@ -69,11 +78,14 @@ $(document).ready(function() {
     e.preventDefault();
     var $this =$(this);
     $this.blur();
-    if ($this.attr('data-state') == 'show') {
-      $this.attr('data-state','hide').html('Hide Origin');
-    } else {
-      $this.attr('data-state','show').html('Show Origin');
-    }
+	var attr = $(this).attr('disabled');
+	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
+		if ($this.attr('data-state') == 'show') {
+		  $this.attr('data-state','hide').html('Hide Origin');
+		} else {
+		  $this.attr('data-state','show').html('Show Origin');
+		}
+	}
     $('#awayOriginXS').slideToggle('slow');
   });
 

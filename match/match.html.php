@@ -166,7 +166,11 @@
     <div class="col-sm-2 text-right">
       <span class="lead"><?php htmlout($homeTeam); ?></span>
       <br />
-      <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+      <?php if ($stage == "Group Stages"): ?>
+	  <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
+	  <?php else: ?>
+	  <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+	  <?php endif; ?>
     </div>
     <div class="col-sm-1 text-center lead"><b><span id="homeTeamPoints"><?php htmlout($homeTeamPoints); ?></span></b></div>
     <div class="col-sm-2 text-center">vs.</div>
@@ -174,7 +178,11 @@
     <div class="col-sm-2 text-left lead">
       <span class="lead"><?php htmlout($awayTeam); ?></span>
       <br />
-      <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+	  <?php if ($stage == "Group Stages"): ?>
+	  <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
+	  <?php else: ?>
+	  <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+	  <?php endif; ?>
     </div>
     <div class="col-sm-2 text-center"><img width="80" hieght="40" alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png"></div>
   </div>
@@ -241,7 +249,11 @@
   </div>
   <div class="row visible-xs text-left">
     <div class="col-xs-2">
-      <button id="btnHomeOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+	  <?php if ($stage == "Group Stages"): ?>
+	  <button id="btnHomeOriginXS" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
+	  <?php else: ?>
+	  <button id="btnHomeOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+	  <?php endif; ?>
     </div>
   </div>
   <div class="row visible-xs text-left">
@@ -285,7 +297,11 @@
   </div>
   <div class="row visible-xs text-left">
     <div class="col-xs-2">
-      <button id="btnAwayOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+	<?php if ($stage == "Group Stages"): ?>
+	  <button id="btnAwayOriginXS" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
+	  <?php else: ?>
+	  <button id="btnAwayOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+	  <?php endif; ?>
     </div>
   </div>
   <div class="row visible-xs text-left">
