@@ -65,7 +65,7 @@ body {
 
 html,
 body {
-  background: url(assets/img/jonny-mobile.jpg) no-repeat center center fixed;
+  background: url(assets/img/WC2018Collage.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -75,7 +75,7 @@ body {
 @media (min-width: 400px) {
   html,
   body {
-    background: url(assets/img/jonny-small.jpg) no-repeat center center fixed;
+    background: url(assets/img/WC2018Collage.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -86,7 +86,7 @@ body {
 @media (min-width: 768px) {
   html,
   body {
-    background: url(assets/img/EuroCollage2.png) no-repeat center center fixed;
+    background: url(assets/img/WC2018Collage.png) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

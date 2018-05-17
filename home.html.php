@@ -3,5 +3,5 @@
 
 <div class="cover">
   <h1>Julian Rimet Prediction League</h1>
-  <p>European Football Championships 2016, France</p>
+  <p>Football World Cup 2018, Russia</p>
 </div>
