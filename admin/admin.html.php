@@ -28,6 +28,10 @@
           $stage = 'Semi Finals';
           include 'stage.html.php';
         ?>
+		<?php
+          $stage = 'Third Fourth Place Play-Off';
+          include 'stage.html.php';
+        ?>
         <?php
           $stage = 'Final';
           include 'stage.html.php';

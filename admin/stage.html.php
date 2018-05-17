@@ -5,6 +5,7 @@
       case 'Round of 16' : $shortStage = "R16"; break;
       case 'Quarter Finals' : $shortStage = "QuarterFinal"; break;
       case 'Semi Finals' : $shortStage = "SemiFinal"; break;
+	  case 'Third Fourth Place Play-Off' : $shortStage = "34PlayOff"; break;
       case 'Final' : $shortStage = "Final"; break;
     }
   ?>
@@ -32,7 +33,7 @@
                       <?php echo($row['tournamentRole']); ?>:
                     </label>
         <?php $flag = ($row['teamS'] === NULL) ? 'tmp' : strtolower($row['teamS']); ?>
-                    <img alt="<?php echo($row['team']); ?>"
+                    <img width="80" hieght="40" alt="<?php echo($row['team']); ?>"
                          class="flag"
                          src="../assets/img/flags/<?php echo($flag); ?>.png">
                     <span class="tr-team"><?php echo($row['team']); ?></span>
