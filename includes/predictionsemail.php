@@ -131,7 +131,17 @@ while ($row = mysqli_fetch_array($result)) {
   $heading .= '<td>' . chr(13);
   $heading .= '<img border="0"
                     style="vertical-align: middle;"
-                    src="http://www.julianrimet.com/assets/img/flags/';
+                    src="http://';
+  if (getenv('ENVIR') == 'Production') {
+	  $heading .= 'www';
+  } else if (getenv('ENVIR') == 'Test') {
+	  $heading .= 'test';
+  } else if (getenv('ENVIR') == 'Development') {
+	  $heading .= 'dev';
+  } else {
+	  $heading .= 'www';
+  }
+  $heading .= '.julianrimet.com/assets/img/flags/';
   $heading .= strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '<td width="48%"
@@ -166,7 +176,17 @@ while ($row = mysqli_fetch_array($result)) {
   $heading .= '<td>' . chr(13);
   $heading .= '<img border="0"
                     style="vertical-align: middle;"
-                    src="http://www.julianrimet.com/assets/img/flags/';
+                    src="http://';
+  if (getenv('ENVIR') == 'Production') {
+	  $heading .= 'www';
+  } else if (getenv('ENVIR') == 'Test') {
+	  $heading .= 'test';
+  } else if (getenv('ENVIR') == 'Development') {
+	  $heading .= 'dev';
+  } else {
+	  $heading .= 'www';
+  }
+  $heading .= '.julianrimet.com/assets/img/flags/';
   $heading .= strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
   $heading .= '</td>' . chr(13);
   $heading .= '</tr>' . chr(13);
