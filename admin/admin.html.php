@@ -29,7 +29,7 @@
           include 'stage.html.php';
         ?>
 		<?php
-          $stage = 'Third Fourth Place Play-Off';
+          $stage = 'Third Fourth Place Play-off';
           include 'stage.html.php';
         ?>
         <?php

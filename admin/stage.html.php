@@ -5,7 +5,7 @@
       case 'Round of 16' : $shortStage = "R16"; break;
       case 'Quarter Finals' : $shortStage = "QuarterFinal"; break;
       case 'Semi Finals' : $shortStage = "SemiFinal"; break;
-	  case 'Third Fourth Place Play-Off' : $shortStage = "34PlayOff"; break;
+	  case 'Third Fourth Place Play-off' : $shortStage = "34PlayOff"; break;
       case 'Final' : $shortStage = "Final"; break;
     }
   ?>
