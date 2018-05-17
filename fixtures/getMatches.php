@@ -25,6 +25,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $groupD = (isset($_POST['groupD'])) ? ($_POST['groupD'] === 'true') : true;
   $groupE = (isset($_POST['groupE'])) ? ($_POST['groupE'] === 'true') : true;
   $groupF = (isset($_POST['groupF'])) ? ($_POST['groupF'] === 'true') : true;
+  $groupG = (isset($_POST['groupG'])) ? ($_POST['groupG'] === 'true') : true;
+  $groupH = (isset($_POST['groupH'])) ? ($_POST['groupH'] === 'true') : true;
   $r16 = (isset($_POST['r16'])) ? ($_POST['r16'] === 'true') : true;
   $quarterFinals = (isset($_POST['quarterFinals'])) ? ($_POST['quarterFinals'] === 'true') : true;
   $semiFinals = (isset($_POST['semiFinals'])) ? ($_POST['semiFinals'] === 'true') : true;
@@ -51,6 +53,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $groupD = mysqli_real_escape_string($link, $groupD);
   $groupE = mysqli_real_escape_string($link, $groupE);
   $groupF = mysqli_real_escape_string($link, $groupF);
+  $groupG = mysqli_real_escape_string($link, $groupG);
+  $groupH = mysqli_real_escape_string($link, $groupH);
   $r16 = mysqli_real_escape_string($link, $r16);
   $quarterFinals = mysqli_real_escape_string($link, $quarterFinals);
   $semiFinals = mysqli_real_escape_string($link, $semiFinals);
@@ -64,6 +68,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
               $groupD ||
               $groupE ||
               $groupF ||
+			  $groupG ||
+			  $groupH ||
               $r16 ||
               $quarterFinals ||
               $semiFinals);
@@ -155,6 +161,22 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
     }
     $sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'F')";
   }
+  if ($groupG) {
+    if ($firstFilter) {
+      $firstFilter = false;
+    } else {
+      $sql .= " OR ";
+    }
+    $sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'G')";
+  }
+  if ($groupH) {
+    if ($firstFilter) {
+      $firstFilter = false;
+    } else {
+      $sql .= " OR ";
+    }
+    $sql .= "(s.`Name` = 'Group Stages' AND g.`Name` = 'H')";
+  }
   if ($r16) {
     if ($firstFilter) {
       $firstFilter = false;
@@ -185,7 +207,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
     } else {
       $sql .= " OR ";
     }
-    $sql .= "(s.`Name` = 'Final')";
+    $sql .= "(s.`Name` = 'Final' OR s.`Name` = 'Third Fourth Place Play-off')";
   }
   $sql .= ")";
   if ($excPlayed) $sql .= " AND m.`ResultPostedBy` IS NULL";

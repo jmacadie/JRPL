@@ -44,42 +44,56 @@
                   <label>
                   <input type="checkbox" id="ckbGroupA" value="" checked>
                   <strong>Pool A</strong><br />
-                  Albania, France, Romania, Switzerland
+                  Egypt, Russia, Saudi Arabia, Uruguay
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupB" value="" checked>
                   <strong>Pool B</strong><br />
-                  England, Russia, Slovakia, Wales
+                  Iran, Morocco, Portugal, Spain
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupC" value="" checked>
                   <strong>Pool C</strong><br />
-                  Germany, Northern Ireland, Poland, Ukraine
+                  Australia, Denmark, France, Peru
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupD" value="" checked>
                   <strong>Pool D</strong><br />
-                  Croatia, Czech Republic, Spain, Turkey
+                  Argentina, Croatia, Iceland, Nigeria
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupE" value="" checked>
                   <strong>Pool E</strong><br />
-                  Belgium, Italy, Republic of Ireland, Sweden
+                  Brazil, Costa Rica, Serbia, Switzerland
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupF" value="" checked>
                   <strong>Pool F</strong><br />
-                  Austria, Hungary, Iceland, Portugal
+                  Germany, South Korea, Mexico, Sweden
+                  </label>
+                </div>
+				<div class="checkbox">
+                  <label>
+                  <input type="checkbox" id="ckbGroupG" value="" checked>
+                  <strong>Pool G</strong><br />
+                  Belguim, England, Panama, Tunisia
+                  </label>
+                </div>
+				<div class="checkbox">
+                  <label>
+                  <input type="checkbox" id="ckbGroupH" value="" checked>
+                  <strong>Pool H</strong><br />
+                  Colombia, Japan, Poland, Senegal
                   </label>
                 </div>
               </div>
