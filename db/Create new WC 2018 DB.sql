@@ -543,7 +543,7 @@ INSERT INTO `Team` (`TeamID`, `Name`, `ShortName`) VALUES
 (22, 'Sweden', 'SWE'),
 (23, 'South Korea', 'KOR'),
 (24, 'Mexico', 'MEX'),
-(25, 'Belgum', 'BEL'),
+(25, 'Belgium', 'BEL'),
 (26, 'Tunisia', 'TUN'),
 (27, 'England', 'ENG'),
 (28, 'Panama', 'PAN'),
@@ -662,7 +662,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   `DisplayName` varchar(50) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Password` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `User`
@@ -677,13 +677,14 @@ INSERT INTO `User` (`UserID`, `FirstName`, `LastName`, `DisplayName`, `Email`, `
 (6, 'William', 'MacAdie', 'Will Mac', 'will.macadie@gmail.com', '74c46d2453cc27f2911432363c986746'),
 (7, 'Richard', 'Kowenicki', 'Kov', 'doctorkov@googlemail.com', '4011bbf0faf06684cc7eba99d2d016dd'),
 (8, 'Sarah', 'Kowenicki', 'Sammie', 'sarahkowenicki@hotmail.com', 'eeaae7a93367d447ef056708acbc6116'),
-(9, 'Mark', 'Rusling', 'The Councillor', 'markrusling@hotmail.com', '6d73f43911551b5ed98b7d6d712bf591'),
+(9, 'Mark', 'Rusling', 'Uwe', 'markrusling@hotmail.com', '6d73f43911551b5ed98b7d6d712bf591'),
 (10, 'Clare', 'MacAdie', 'Clare Mac', 'clare@macadie.co.uk', 'e706adb60ed514bd612e49c915425ed1'),
-(11, 'Tom', 'MacAdie', 'Tom Mac', 'thomasmacadie@eversheds.com', '45a79221ef9f6bc2dfb4e21ad6c6f9d9'),
+(11, 'Tom', 'MacAdie', 'Tom Mac', 'tom_macadie@hotmail.com', '45a79221ef9f6bc2dfb4e21ad6c6f9d9'),
 (12, 'Fiona', 'MacAdie', 'Fi Mac', 'fknox1@hotmail.com', '713dc3d995d57eb25e632786983ee2f3'),
 (13, 'Matt', 'Margrett', 'Matt', 'mattmargrett@gmail.com', '2d0fb7f2e960f8c47ce514ce8a863c69'),
-(14, 'Graham', 'Morrison', 'G.Mozz', 'gmorrison@cantab.net', 'baaf4a1cc7c187378e67535a2fb148a6'),
+(14, 'Graham', 'Morrison', 'G.Mozz', 'gmorrison100@gmail.com', 'baaf4a1cc7c187378e67535a2fb148a6'),
 (15, 'James', 'Hall', 'Haller', 'james.russell.hall@gmail.com', '6e20c6b09ad5c38d6da40696f6713c8f'),
+(16, 'Archie', 'Bland', 'Archie', 'archie.bland@theguardian.com', 'f0c9a442ef67e81b3a1340ae95700eb3'),
 (17, 'Benjamin ', 'Hart', 'Ben', 'ben@benhart.co.uk', '2566ce3b7e59f9f23baeb77e7d4fe044'),
 (18, 'Oliver', 'Peck', 'Ollie', 'oliver.peck@rocketmail.com', 'f8b4ad619a9b4f9f50451943b0b268ba'),
 (19, 'Mr.', 'Mode', 'Mr. Mode', 'mrmode@julianrimet.com', 'f0c9a442ef67e81b3a1340ae95700eb3'),
@@ -691,13 +692,17 @@ INSERT INTO `User` (`UserID`, `FirstName`, `LastName`, `DisplayName`, `Email`, `
 (21, 'Paul', 'Coupar', 'Coups', 'pcoupar@hotmail.com', '96ed9a860e90485c20c1030095b3b16c'),
 (22, 'Tom', 'Peck', 'Peck', 'tompeck1000@gmail.com', '9d37874755d2f8f9cd2779996048f97f'),
 (23, 'Genevieve', 'Smith', 'Gen', 'gen.smith@gmail.com', 'c4683de7ded706807b711abf5b37f79b'),
+(24, 'Martin', 'Ayers', 'Diego', 'martin.ayers@talk21.com', 'f0c9a442ef67e81b3a1340ae95700eb3'),
 (25, 'Ross', 'Allen', 'Ross', 'rceallen@gmail.com', '410e30c15c7c9f7b5dde86ee9227c458'),
 (26, 'Mark', 'Spinks', 'Mark S', 'maspinks@hotmail.com', '00a51fd1eea9f936d90f4809e62bc423'),
 (27, 'Des', 'McEwan', 'Mond', 'desmcewan@hotmail.com', 'dcfab7445dd7fb9779750c56ce581e54'),
 (28, 'Charlotte', 'Peck', 'Lottie', 'happylottie@hotmail.com', 'efbed475f64469145e9b8d19f838b588'),
-(30, 'Alice', 'Jones', 'Lady Peck', 'a.jones@independent.co.uk', '78c8566f78eb142414d15bd1e73bcffe'),
-(31, 'Sam', 'Gallagher', 'galsnakes', 'Sam.Gallagher@progressivecp.com', '876a9703f04b99cc019c7bc6df3c02b4'),
-(32, 'Jonny', 'Pearson', 'Jonny', 'jonnyzpearson@gmail.com', '87a7c24bf14d213c9f9ddbcb2c04dddc');
+(29, 'Jari', 'Stehn', 'Sven', 'jari.stehn@gmail.com', 'f0c9a442ef67e81b3a1340ae95700eb3'),
+(30, 'Alice', 'Jones', 'Lady Peck', 'alice.jones@inews.co.uk', '78c8566f78eb142414d15bd1e73bcffe'),
+(31, 'Sam', 'Gallagher', 'galsnakes', 'Sam.Gallagher@progressivecontent.com', '876a9703f04b99cc019c7bc6df3c02b4'),
+(32, 'Jonny', 'Pearson', 'Jonny', 'jonnyzpearson@gmail.com', '87a7c24bf14d213c9f9ddbcb2c04dddc'),
+(33, 'Manon', 'Cornu', 'Manon', 'manoncornu@live.fr', 'f0c9a442ef67e81b3a1340ae95700eb3'),
+(34, 'Rosa', 'Monserrat', 'Rosa', 'rosama68@hotmail.com', 'f0c9a442ef67e81b3a1340ae95700eb3');
 
 -- --------------------------------------------------------
 
