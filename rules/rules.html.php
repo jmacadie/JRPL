@@ -7,10 +7,17 @@
   <li>Matches will be locked down from further prediction
     <strong>30 minutes</strong> before kick-off</li>
   <li>The system will send an e-mail at lock-down saying what every player
-    predicted for that match<br /><small>Note that the e-mail may not go out exactly half
-    an hour before the kick-off but when the first person tries to interact with
-    the website after the lock-down point. This ensures that it is not possible
-    to illegally tamper with your prediction after the lock-down</small></li>
+    predicted for that match<br />
+	<small>Note that the e-mail may not go out exactly half an hour before the 
+	kick-off but when the first person tries to interact with the website after
+	the lock-down point. This ensures that it is not possible to illegally
+	tamper with your prediction after the lock-down</small></li>
+  <li>You will not know anyone else's predictions before lock-down, which allows
+    all players to make predictions without any possibility of gaming a prediction
+	relative to someone else. Disclosure of predictions before lock-down is a
+	serious offense, so don't do it</li>
+  <li>It is essential that you use these 30 minutes between lock-down and kick-off
+    to riducule other players' predictions, preferably in public</li>
   <li>After the match is over, and someone has posted the result, the
     predictions will be scored and a further e-mail will be sent out</li>
   <li>In the knock-out stages it is <strong>the score after extra time and
@@ -37,8 +44,10 @@ the knock-out stages</u></p>
 	<small>e.g. Saudi Arabia to beat Russia 2 - 1 but it's a draw or Russia win</small></p>
   </li>
 </ul>
-<s><h2>Auto-Quiz Scoring System</h2>
-<p>After much debate (and bemusement) we settled on the following system:</p>
+<h2>Auto-Quiz Scoring System</h2>
+<p>Not being used this year but I enjoyed coming up with these rules so much I
+thought I'd leave them in</p>
+<s><p>After much debate (and bemusement) we settled on the following system:</p>
 <ul>
   <li>Every prediction is measured for "goodness" by taking its Euclidean
     distance from the result</li>
