@@ -548,13 +548,11 @@ function calculateAutoQuizPoints($matchID) {
           `MatchID`,
           `ResultPoints`,
           `ScorePoints`,
-          `MarginPoints`,
           `TotalPoints`)
         VALUES
           (2,
           " . $userPoints['userID'] . ",
           " . $matchID . ",
-          0,
           0,
           0,
           " . $aqPoints . ");";
