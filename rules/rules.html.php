@@ -104,6 +104,7 @@ The pool will be distributed as follows:
     <tr>
       <td>Kov</td>
       <td>Nasty</td>
+	  <td></td>
     </tr>
   </tbody>
 </table>
