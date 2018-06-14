@@ -45,25 +45,22 @@ the knock-out stages</u></p>
   </li>
 </ul>
 <h2>Auto-Quiz Scoring System</h2>
-<p>Not being used this year but I enjoyed coming up with these rules so much I
-thought I'd leave them in</p>
-<s><p>After much debate (and bemusement) we settled on the following system:</p>
+<p>After much debate (and bemusement) we settled on the following system:</p>
 <ul>
   <li>Every prediction is measured for "goodness" by taking its Euclidean
     distance from the result</li>
+  <li>Since result is important, as well as home team score and away team score,
+    which define a 2D space, the result will mapped on the third dimension. Home
+	team win will be worth 0, a draw 3 and away team win 6. Euclidean distance
+	will then be measured in 3D space</li>
   <li>Everyone's Euclidean distance (ED) is inverted by subtracting each player's
     ED from the player with the biggest (i.e. worst) ED</li>
-  <li>There is a fixed pool of points available for each match being 10 points
-    for each player that makes a prediction. Note that this means if people do
-    not predict in a given match, it reduces the avialable points for everyone
-    else</li>
+  <li>There is a fixed pool of 100 points available for each match</li>
   <li>The fixed pool of points is then allocated to each player proportionate to
     their inverted ED score. This means the player with the worst prediction
     will always get no Auto-Quiz points in the match</li>
-  <li>If you miss a prediction (as well as reducing the available points pot to
-    be allocated for that match) you will always get zero Auto-Quiz points</li>
-  <li>There are no multipliers in Auto-Quiz</li>
-</ul></s>
+  <li>If you miss a prediction you will always get zero Auto-Quiz points</li>
+</ul>
 <h2>Prizes</h2>
 <p>There will be an overall league for most points across the entire tournament
 plus two sub-leagues for the individual parts of the tournament:
@@ -79,21 +76,30 @@ The pool will be distributed as follows:
   <thead>
     <tr>
       <th>Position</th>
-      <th>Standrd Prize</th>
+      <th>Standrd</th>
+	  <th>Auto-Quiz</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1<sup>st</td>
-      <td>30%</td>
+      <td>12.5%</td>
+	  <td>12.5%</td>
     </tr>
     <tr>
       <td>2<sup>nd</td>
-      <td>15%</td>
+      <td>8.75%</td>
+	  <td>8.75%</td>
     </tr>
     <tr>
       <td>3<sup>rd</td>
       <td>5%</td>
+	  <td>5%</td>
+    </tr>
+	<tr>
+      <td>18<sup>th</td>
+      <td>2.5%</td>
+	  <td>2.5%</td>
     </tr>
     <tr>
       <td>Kov</td>
@@ -107,16 +113,19 @@ The pool will be distributed as follows:
     <tr>
       <th>Position</th>
       <th>Standrd Prize</th>
+	  <th>Auto-Quiz</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1<sup>st</td>
-      <td>10%</td>
+      <td>2.5%</td>
+	  <td>2.5%</td>
     </tr>
     <tr>
       <td>2<sup>nd</td>
-      <td>5%</td>
+      <td>1.25%</td>
+	  <td>1.25%</td>
     </tr>
   </tbody>
 </table>
@@ -126,18 +135,27 @@ The pool will be distributed as follows:
     <tr>
       <th>Position</th>
       <th>Standrd Prize</th>
+	  <th>Auto-Quiz</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1<sup>st</td>
-      <td>25%</td>
+      <td>6.25%</td>
+	  <td>6.25%</td>
     </tr>
     <tr>
       <td>2<sup>nd</td>
-      <td>10%</td>
+      <td>5%</td>
+	  <td>5%</td>
+    </tr>
+	<tr>
+      <td>3<sup>rd</td>
+      <td>2.5%</td>
+	  <td>2.5%</td>
     </tr>
   </tbody>
 </table>
-Prizes expressed as a percentage as I don't yet know how big the prize pool will
-be.
+<p>The final 8% of the prize pool will be donated to charity</p>
+<p>Prizes expressed as a percentage as I don't yet know how big the prize pool will
+be.</p>
