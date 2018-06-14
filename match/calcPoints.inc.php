@@ -494,9 +494,9 @@ function calculateAutoQuizPoints($matchID) {
     $out['userID'] = $rowP['UserID'];
 
     // Calculate this user's Ecludian Distance
-    $ed = sqrt(pow($htp - $ht), 2) +
-               pow($atp - $at), 2) +
-               pow($resp - $res), 2));
+    $ed = sqrt(pow($htp - $ht, 2) +
+               pow($atp - $at, 2) +
+               pow($resp - $res, 2));
     $out['ed'] = $ed;
 
     // Track the maximum Ecludian Distance
