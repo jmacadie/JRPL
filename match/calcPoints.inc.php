@@ -3,7 +3,7 @@
 // Calculate the all the points systems for a given match
 function calculatePoints($matchID) {
   calculateFootballStandardPoints($matchID);
-  //calculateAutoQuizPoints($matchID);
+  calculateAutoQuizPoints($matchID);
 
 }
 
@@ -435,6 +435,15 @@ function calculateAutoQuizPoints($matchID) {
   $rowM = mysqli_fetch_array($resultM);
   $ht = $rowM['HomeTeamPoints'];
   $at = $rowM['AwayTeamPoints'];
+  
+  // Set value for third (results) dimension
+  if ($ht > $at) {
+	  $res = 0; // Home Win
+  } else if ($ht == $at) {
+	  $res = 3; // Draw
+  } else {
+	  $res = 6; // Away Win
+  }
 
   // Grab predictions
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -463,23 +472,31 @@ function calculateAutoQuizPoints($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Set variables
-  $numUsers = 0;
   $maxED = 0;
   $arrCalc = array();
 
   // Loop through all predictions made
   while ($rowP = mysqli_fetch_array($resultP)) {
 
-    // Increment the number of users counter
-    $numUsers++;
+	// Grab values
+	$htp = $rowP['HomeTeamPoints'];
+	$atp = $rowP['AwayTeamPoints'];
+	if ($htp > $atp) {
+	  $resp = 0; // Home Win
+	} else if ($htp == $atp) {
+	  $resp = 3; // Draw
+	} else {
+	  $resp = 6; // Away Win
+	}
 
     // Reset single user output array
     $out = array();
     $out['userID'] = $rowP['UserID'];
 
     // Calculate this user's Ecludian Distance
-    $ed = sqrt(pow(($rowP['HomeTeamPoints'] - $ht), 2) +
-               pow(($rowP['AwayTeamPoints'] - $at), 2));
+    $ed = sqrt(pow($htp - $ht), 2) +
+               pow($atp - $at), 2) +
+               pow($resp - $res), 2));
     $out['ed'] = $ed;
 
     // Track the maximum Ecludian Distance
@@ -494,10 +511,14 @@ function calculateAutoQuizPoints($matchID) {
 
   // Set variables
   $cumIED = 0;
+  $numPlayers = 0;
 
   // Loop through all predictions made
   for ($i = 0, $max = count($arrCalc); $i < $max; $i++) {
-
+	
+	// Increment player count
+	$numPlayers++;
+	
     // Calculate this user's Inverted Ecludian Distance
     $ied = $maxED - $arrCalc[$i]['ed'];
     $arrCalc[$i]['ied'] = $ied;
@@ -510,15 +531,14 @@ function calculateAutoQuizPoints($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // Set variables
-  $targetPoints = 10;
-  $pointsPool = $targetPoints * $numUsers;
+  $pointsPool = 100;
 
   // Loop through all predictions made
   foreach ($arrCalc as $userPoints) {
 
     // Calculate the actual points
     $aqPoints = ($cumIED == 0)
-                  ? $targetPoints
+                  ? ($pointsPool / $numPlayers)
                   : ($pointsPool * $userPoints['ied'] / $cumIED);
 
     // Build SQL

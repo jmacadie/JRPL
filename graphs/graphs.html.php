@@ -1,5 +1,7 @@
 <h1>Graphs</h1>
 <hr>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/scoringSystemForm.html.php'; ?>
+<hr>
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
     <div class="panel-heading">

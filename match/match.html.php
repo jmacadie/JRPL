@@ -477,6 +477,7 @@
 <div id="graph"></div>
 <hr>
 <h5>Table</h5>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/scoringSystemForm.html.php'; ?>
 <table class="table table-striped">
   <thead>
     <tr>
