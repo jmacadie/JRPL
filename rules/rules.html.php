@@ -76,7 +76,7 @@ The pool will be distributed as follows:
   <thead>
     <tr>
       <th>Position</th>
-      <th>Standrd</th>
+      <th>Standard</th>
 	  <th>Auto-Quiz</th>
     </tr>
   </thead>
@@ -113,7 +113,7 @@ The pool will be distributed as follows:
   <thead>
     <tr>
       <th>Position</th>
-      <th>Standrd Prize</th>
+      <th>Standard</th>
 	  <th>Auto-Quiz</th>
     </tr>
   </thead>
@@ -135,7 +135,7 @@ The pool will be distributed as follows:
   <thead>
     <tr>
       <th>Position</th>
-      <th>Standrd Prize</th>
+      <th>Standard</th>
 	  <th>Auto-Quiz</th>
     </tr>
   </thead>
