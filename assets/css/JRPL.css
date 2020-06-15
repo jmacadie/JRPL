@@ -89,6 +89,9 @@ hr {
   padding-top: 10px;
   margin-bottom: 10px;
 }
+.matchRowDetails {
+  margin-bottom: 10px;
+}
 
 /*
  * Match page

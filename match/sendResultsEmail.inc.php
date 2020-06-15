@@ -24,22 +24,18 @@ function sendResultsEmail ($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $sql = "
     SELECT
-      IFNULL(ht.`Name`,trht.`Name`) AS `HomeTeam`
-      ,IFNULL(at.`Name`,trat.`Name`) AS `AwayTeam`
-      ,IFNULL(ht.`ShortName`,'') AS `HomeTeamS`
-      ,IFNULL(at.`ShortName`,'') AS `AwayTeamS`
+      ht.`Name` AS `HomeTeam`
+      ,at.`Name` AS `AwayTeam`
+      ,ht.`ShortName` AS `HomeTeamS`
+      ,at.`ShortName` AS `AwayTeamS`
       ,m.`HomeTeamPoints`
       ,m.`AwayTeamPoints`
 
     FROM `Match` m
-      INNER JOIN `TournamentRole` trht ON
-        trht.`TournamentRoleID` = m.`HomeTeamID`
-      LEFT JOIN `Team` ht ON
-        ht.`TeamID` = trht.`TeamID`
-      INNER JOIN `TournamentRole` trat ON
-        trat.`TournamentRoleID` = m.`AwayTeamID`
-      LEFT JOIN `Team` at ON
-        at.`TeamID` = trat.`TeamID`
+      INNER JOIN `Team` ht ON
+        ht.`TeamID` = m.`HomeTeamID`
+      INNER JOIN `Team` at ON
+        at.`TeamID` = m.`AwayTeamID`
 
     WHERE m.`MatchID` = " . $matchID . ";";
 
@@ -59,7 +55,7 @@ function sendResultsEmail ($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get league table details
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  $resultLeague = getLeagueTable(1);
+  $resultLeague = getLeagueTable();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get match result details
@@ -83,8 +79,7 @@ function sendResultsEmail ($matchID) {
         AND p.`MatchID` = mu.`MatchID`
 
       INNER JOIN `Points` po ON
-        po.`ScoringSystemID` = 1
-        AND po.`MatchID` = mu.`MatchID`
+        po.`MatchID` = mu.`MatchID`
         AND po.`UserID` = mu.`UserID`
 
     ORDER BY

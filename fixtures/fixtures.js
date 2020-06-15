@@ -17,17 +17,6 @@ $(document).ready(function() {
     getMatchesData();
   });
 
-  // Add click handler to select / unselect all group stages button
-  $("#btnSelectGroup").click(function(e) {
-    e.preventDefault();
-    selectAllGroups($(this).attr('data-mode'));
-  });
-
-  // Add click handler to all group stages checkbox
-  $("#ckbGroupStage").click(function(e) {
-    disableAllGroups($(this).is(':checked'));
-  });
-
 });
 
 // Function to handle getting session data
@@ -48,17 +37,6 @@ function getMatchesData() {
   // Output warning message
   $("#matchesMessage").html(result.join(''));
 
-  // Sort out the group stage filters
-  var groupOv = $("#ckbGroupStage").is(':checked');
-  var groupA = groupOv && $("#ckbGroupA").is(':checked');
-  var groupB = groupOv && $("#ckbGroupB").is(':checked');
-  var groupC = groupOv && $("#ckbGroupC").is(':checked');
-  var groupD = groupOv && $("#ckbGroupD").is(':checked');
-  var groupE = groupOv && $("#ckbGroupE").is(':checked');
-  var groupF = groupOv && $("#ckbGroupF").is(':checked');
-  var groupG = groupOv && $("#ckbGroupG").is(':checked');
-  var groupH = groupOv && $("#ckbGroupH").is(':checked');
-
   // Make the AJAX call
   $.ajax({
     url: 'getMatches.php',
@@ -66,19 +44,7 @@ function getMatchesData() {
     data:
       {action: "updateMatches",
       excPlayed: $("#ckbPlayedMatches").is(':checked'),
-      excPredicted: $("#ckbPredictedMatches").is(':checked'),
-      groupA: groupA,
-      groupB: groupB,
-      groupC: groupC,
-      groupD: groupD,
-      groupE: groupE,
-      groupF: groupF,
-	  groupG: groupG,
-	  groupH: groupH,
-      r16: $("#ckbR16").is(':checked'),
-      quarterFinals: $("#ckbQuarterFinals").is(':checked'),
-      semiFinals: $("#ckbSemiFinals").is(':checked'),
-      final: $("#ckbFinal").is(':checked')},
+      excPredicted: $("#ckbPredictedMatches").is(':checked')},
     dataType: 'json',
     success: function(data) {
       //alert ('Success');
@@ -207,7 +173,7 @@ function processMatchesReturn (data) {
       result.push('</div>');
 
       // Main row with team names, flags and result on
-      result.push('<div class="row">');
+      result.push('<div class="row matchRowDetails">');
       result.push('<div class="col-sm-2 hidden-xs text-center"><img width="80" hieght="40" alt="' + entry['HomeTeam'] + '" class="flag" src="../assets/img/flags/' + homeFlag + '.png"></div>'); // in-line flag for devices bigger than a phone
       result.push('<div class="col-xs-4 visible-xs text-center matchText">' + entry['HomeTeam'] + '</div>'); // Centred name for phones
       result.push('<div class="col-sm-2 hidden-xs text-right lead matchText">' + entry['HomeTeam'] + '</div>'); // Full name for tablets & desktops
@@ -276,38 +242,6 @@ function processMatchesReturn (data) {
     // Close "Getting data" alert
     $("#aGettingMatchData").alert('close');
 
-  }
-
-}
-
-function selectAllGroups (mode) {
-
-  // see if we're selecting or unselecting
-  if (mode === 'unselect') {
-    // Change all the checkbox states to unchecked
-    $('#collapseGroup').find('[type=checkbox]').prop('checked',false);
-    // Change button text back to select all
-    $("#btnSelectGroup").text('Select All').attr('data-mode','select');
-  } else {
-    // Change all the checkbox states to checked
-    $('#collapseGroup').find('[type=checkbox]').prop('checked',true);
-    // Change button text back to unselect all
-    $("#btnSelectGroup").text('Unselect All').attr('data-mode','unselect');
-  }
-
-}
-
-function disableAllGroups (mode) {
-
-  // see if we're disabling or enabling
-  if (mode === true) {
-    // Enable all the checkboxes + the button
-    $('#collapseGroup').find('[type=checkbox]').prop('disabled', false);
-    $('#btnSelectGroup').prop('disabled', false);
-  } else {
-    // Disable all the checkboxes + the button
-    $('#collapseGroup').find('[type=checkbox]').prop('disabled', true);
-    $('#btnSelectGroup').prop('disabled', true);
   }
 
 }
