@@ -48,23 +48,13 @@ ORDER BY COUNT(p.`PredictionID`) DESC$$
 DELIMITER ;
 
 DROP TABLE IF EXISTS `Points`;
-DROP TABLE IF EXISTS `ScoringSystem`;
 DROP TABLE IF EXISTS `Prediction`;
 
 DROP TABLE IF EXISTS `Emails`;
-
-ALTER TABLE `TournamentRole` DROP FOREIGN KEY `FK_TournamentRole_Match`;
-ALTER TABLE `TournamentRole` DROP INDEX `FK_TournamentRole_Match`;
 DROP TABLE IF EXISTS `Match`;
-DROP TABLE IF EXISTS `TournamentRole`;
 DROP TABLE IF EXISTS `Team`;
-DROP TABLE IF EXISTS `Stage`;
 DROP TABLE IF EXISTS `Venue`;
 DROP TABLE IF EXISTS `Broadcaster`;
-
-DROP TABLE IF EXISTS `MetaGroupMap`;
-DROP TABLE IF EXISTS `MetaGroup`;
-DROP TABLE IF EXISTS `Group`;
 
 DROP TABLE IF EXISTS `RememberMe`;
 DROP TABLE IF EXISTS `UserRole`;
@@ -165,30 +155,48 @@ INSERT INTO `Emails` (`EmailsID`, `MatchID`, `PredictionsSent`, `ResultsSent`) V
 (48, 48, 0, 0),
 (49, 49, 0, 0),
 (50, 50, 0, 0),
-(51, 51, 0, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Group`
---
-
-CREATE TABLE IF NOT EXISTS `Group` (
-`GroupID` int(11) NOT NULL,
-  `Name` varchar(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `Group`
---
-
-INSERT INTO `Group` (`GroupID`, `Name`) VALUES
-(1, 'A'),
-(2, 'B'),
-(3, 'C'),
-(4, 'D'),
-(5, 'E'),
-(6, 'F');
+(51, 51, 0, 0),
+(52, 52, 0, 0),
+(53, 53, 0, 0),
+(54, 54, 0, 0),
+(55, 55, 0, 0),
+(56, 56, 0, 0),
+(57, 57, 0, 0),
+(58, 58, 0, 0),
+(59, 59, 0, 0),
+(60, 60, 0, 0),
+(61, 61, 0, 0),
+(62, 62, 0, 0),
+(63, 63, 0, 0),
+(64, 64, 0, 0),
+(65, 65, 0, 0),
+(66, 66, 0, 0),
+(67, 67, 0, 0),
+(68, 68, 0, 0),
+(69, 69, 0, 0),
+(70, 70, 0, 0),
+(71, 71, 0, 0),
+(72, 72, 0, 0),
+(73, 73, 0, 0),
+(74, 74, 0, 0),
+(75, 75, 0, 0),
+(76, 76, 0, 0),
+(77, 77, 0, 0),
+(78, 78, 0, 0),
+(79, 79, 0, 0),
+(80, 80, 0, 0),
+(81, 81, 0, 0),
+(82, 82, 0, 0),
+(83, 83, 0, 0),
+(84, 84, 0, 0),
+(85, 85, 0, 0),
+(86, 86, 0, 0),
+(87, 87, 0, 0),
+(88, 88, 0, 0),
+(89, 89, 0, 0),
+(90, 90, 0, 0),
+(91, 91, 0, 0),
+(92, 92, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -197,7 +205,7 @@ INSERT INTO `Group` (`GroupID`, `Name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `Match` (
-`MatchID` int(11) NOT NULL,
+  `MatchID` int(11) NOT NULL,
   `Date` date NOT NULL,
   `KickOff` time NOT NULL,
   `VenueID` int(11) NOT NULL,
@@ -207,20 +215,17 @@ CREATE TABLE IF NOT EXISTS `Match` (
   `AwayTeamPoints` int(11) DEFAULT NULL,
   `ResultPostedBy` int(11) DEFAULT NULL,
   `ResultPostedOn` datetime DEFAULT NULL,
-  `StageID` int(11) NOT NULL DEFAULT '1',
   `BroadcasterID` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
 
 --
 -- RELATIONS FOR TABLE `Match`:
 --   `AwayTeamID`
---       `TournamentRole` -> `TournamentRoleID`
+--       `Team` -> `TeamID`
 --   `BroadcasterID`
 --       `Broadcaster` -> `BroadcasterID`
 --   `HomeTeamID`
---       `TournamentRole` -> `TournamentRoleID`
---   `StageID`
---       `Stage` -> `StageID`
+--       `Team` -> `TeamID`
 --   `ResultPostedBy`
 --       `User` -> `UserID`
 --   `VenueID`
@@ -231,121 +236,99 @@ CREATE TABLE IF NOT EXISTS `Match` (
 -- Dumping data for table `Match`
 --
 
-INSERT INTO `Match` (`MatchID`, `Date`, `KickOff`, `VenueID`, `HomeTeamID`, `AwayTeamID`, `HomeTeamPoints`, `AwayTeamPoints`, `ResultPostedBy`, `ResultPostedOn`, `StageID`, `BroadcasterID`) VALUES
-(1, '2016-06-10', '20:00:00', 2, 2, 3, NULL, NULL, NULL, NULL, 1, 2),
-(2, '2016-06-11', '14:00:00', 4, 1, 4, NULL, NULL, NULL, NULL, 1, 1),
-(3, '2016-06-11', '17:00:00', 3, 8, 7, NULL, NULL, NULL, NULL, 1, 1),
-(4, '2016-06-11', '20:00:00', 7, 5, 6, NULL, NULL, NULL, NULL, 1, 2),
-(5, '2016-06-12', '14:00:00', 1, 16, 13, NULL, NULL, NULL, NULL, 1, 2),
-(6, '2016-06-12', '17:00:00', 8, 11, 10, NULL, NULL, NULL, NULL, 1, 1),
-(7, '2016-06-12', '20:00:00', 5, 9, 12, NULL, NULL, NULL, NULL, 1, 1),
-(8, '2016-06-13', '14:00:00', 10, 15, 14, NULL, NULL, NULL, NULL, 1, 2),
-(9, '2016-06-13', '17:00:00', 2, 19, 20, NULL, NULL, NULL, NULL, 1, 1),
-(10, '2016-06-13', '20:00:00', 6, 17, 18, NULL, NULL, NULL, NULL, 1, 1),
-(11, '2016-06-14', '17:00:00', 3, 21, 22, NULL, NULL, NULL, NULL, 1, 2),
-(12, '2016-06-14', '20:00:00', 9, 24, 23, NULL, NULL, NULL, NULL, 1, 1),
-(13, '2016-06-15', '14:00:00', 5, 6, 7, NULL, NULL, NULL, NULL, 1, 1),
-(14, '2016-06-15', '17:00:00', 1, 3, 4, NULL, NULL, NULL, NULL, 1, 2),
-(15, '2016-06-15', '20:00:00', 7, 2, 1, NULL, NULL, NULL, NULL, 1, 2),
-(16, '2016-06-16', '14:00:00', 4, 5, 8, NULL, NULL, NULL, NULL, 1, 1),
-(17, '2016-06-16', '17:00:00', 6, 12, 10, NULL, NULL, NULL, NULL, 1, 2),
-(18, '2016-06-16', '20:00:00', 2, 9, 11, NULL, NULL, NULL, NULL, 1, 2),
-(19, '2016-06-17', '14:00:00', 10, 18, 20, NULL, NULL, NULL, NULL, 1, 2),
-(20, '2016-06-17', '17:00:00', 9, 14, 13, NULL, NULL, NULL, NULL, 1, 1),
-(21, '2016-06-17', '20:00:00', 8, 15, 16, NULL, NULL, NULL, NULL, 1, 2),
-(22, '2016-06-18', '14:00:00', 3, 17, 19, NULL, NULL, NULL, NULL, 1, 2),
-(23, '2016-06-18', '17:00:00', 7, 23, 22, NULL, NULL, NULL, NULL, 1, 1),
-(24, '2016-06-18', '20:00:00', 1, 24, 21, NULL, NULL, NULL, NULL, 1, 1),
-(25, '2016-06-19', '20:00:00', 6, 3, 1, NULL, NULL, NULL, NULL, 1, 1),
-(26, '2016-06-19', '20:00:00', 5, 4, 2, NULL, NULL, NULL, NULL, 1, 1),
-(27, '2016-06-20', '20:00:00', 9, 7, 5, NULL, NULL, NULL, NULL, 1, 2),
-(28, '2016-06-20', '20:00:00', 10, 6, 8, NULL, NULL, NULL, NULL, 1, 2),
-(29, '2016-06-21', '17:00:00', 1, 10, 9, NULL, NULL, NULL, NULL, 1, 1),
-(30, '2016-06-21', '17:00:00', 7, 12, 11, NULL, NULL, NULL, NULL, 1, 1),
-(31, '2016-06-21', '20:00:00', 3, 13, 15, NULL, NULL, NULL, NULL, 1, 2),
-(32, '2016-06-21', '20:00:00', 4, 14, 16, NULL, NULL, NULL, NULL, 1, 2),
-(33, '2016-06-22', '17:00:00', 2, 23, 21, NULL, NULL, NULL, NULL, 1, 1),
-(34, '2016-06-22', '17:00:00', 6, 22, 24, NULL, NULL, NULL, NULL, 1, 1),
-(35, '2016-06-22', '20:00:00', 5, 18, 19, NULL, NULL, NULL, NULL, 1, 2),
-(36, '2016-06-22', '20:00:00', 8, 20, 17, NULL, NULL, NULL, NULL, 1, 2),
-(37, '2016-06-25', '14:00:00', 9, 26, 30, NULL, NULL, NULL, NULL, 2, 3),
-(38, '2016-06-25', '17:00:00', 1, 27, 37, NULL, NULL, NULL, NULL, 2, 3),
-(39, '2016-06-25', '20:00:00', 4, 31, 38, NULL, NULL, NULL, NULL, 2, 3),
-(40, '2016-06-26', '14:00:00', 6, 25, 39, NULL, NULL, NULL, NULL, 2, 3),
-(41, '2016-06-26', '17:00:00', 5, 29, 40, NULL, NULL, NULL, NULL, 2, 3),
-(42, '2016-06-26', '20:00:00', 10, 35, 34, NULL, NULL, NULL, NULL, 2, 3),
-(43, '2016-06-27', '17:00:00', 2, 33, 32, NULL, NULL, NULL, NULL, 2, 3),
-(44, '2016-06-27', '20:00:00', 8, 28, 36, NULL, NULL, NULL, NULL, 2, 3),
-(45, '2016-06-30', '20:00:00', 7, 41, 43, NULL, NULL, NULL, NULL, 3, 3),
-(46, '2016-07-01', '20:00:00', 5, 42, 46, NULL, NULL, NULL, NULL, 3, 3),
-(47, '2016-07-02', '20:00:00', 3, 45, 47, NULL, NULL, NULL, NULL, 3, 3),
-(48, '2016-07-03', '20:00:00', 2, 44, 48, NULL, NULL, NULL, NULL, 3, 3),
-(49, '2016-07-06', '20:00:00', 6, 49, 50, NULL, NULL, NULL, NULL, 4, 3),
-(50, '2016-07-07', '20:00:00', 7, 51, 52, NULL, NULL, NULL, NULL, 4, 3),
-(51, '2016-07-10', '20:00:00', 2, 53, 54, NULL, NULL, NULL, NULL, 5, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `MetaGroup`
---
-
-CREATE TABLE IF NOT EXISTS `MetaGroup` (
-  `MetaGroupID` int(11) NOT NULL,
-  `Name` varchar(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `MetaGroup`
---
-
-INSERT INTO `MetaGroup` (`MetaGroupID`, `Name`) VALUES
-(1, 'A'),
-(2, 'B'),
-(3, 'C'),
-(4, 'D'),
-(5, 'E'),
-(6, 'F'),
-(7, 'A/C/D'),
-(8, 'B/E/F'),
-(9, 'C/D/E'),
-(10, 'A/B/F');
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `MetaGroupMap`
---
-
-CREATE TABLE IF NOT EXISTS `MetaGroupMap` (
-  `MetaGroupID` int(11) NOT NULL,
-  `GroupID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `MetaGroupMap`
---
-
-INSERT INTO `MetaGroupMap` (`MetaGroupID`, `GroupID`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 1),
-(7, 3),
-(7, 4),
-(8, 2),
-(8, 5),
-(8, 6),
-(9, 3),
-(9, 4),
-(9, 5),
-(10, 1),
-(10, 2),
-(10, 6);
+INSERT INTO `Match` (`MatchID`, `Date`, `KickOff`, `VenueID`, `HomeTeamID`, `AwayTeamID`, `HomeTeamPoints`, `AwayTeamPoints`, `ResultPostedBy`, `ResultPostedOn`, `BroadcasterID`) VALUES
+(1, '2020-06-17', '18:00:00', 1, 3, 15, NULL, NULL, NULL, NULL, 1),
+(2, '2020-06-17', '20:15:00', 1, 11, 2, NULL, NULL, NULL, NULL, 1),
+(3, '2020-06-19', '18:00:00', 1, 14, 16, NULL, NULL, NULL, NULL, 1),
+(4, '2020-06-19', '20:15:00', 1, 17, 12, NULL, NULL, NULL, NULL, 1),
+(5, '2020-06-20', '12:30:00', 1, 18, 9, NULL, NULL, NULL, NULL, 1),
+(6, '2020-06-20', '15:00:00', 1, 4, 2, NULL, NULL, NULL, NULL, 1),
+(7, '2020-06-20', '17:30:00', 1, 19, 20, NULL, NULL, NULL, NULL, 1),
+(8, '2020-06-20', '19:45:00', 1, 1, 7, NULL, NULL, NULL, NULL, 1),
+(9, '2020-06-21', '14:00:00', 1, 13, 15, NULL, NULL, NULL, NULL, 1),
+(10, '2020-06-21', '16:15:00', 1, 3, 6, NULL, NULL, NULL, NULL, 1),
+(11, '2020-06-21', '19:00:00', 1, 8, 10, NULL, NULL, NULL, NULL, 1),
+(12, '2020-06-22', '20:00:00', 1, 11, 5, NULL, NULL, NULL, NULL, 1),
+(13, '2020-06-23', '18:00:00', 1, 9, 4, NULL, NULL, NULL, NULL, 1),
+(14, '2020-06-23', '20:15:00', 1, 17, 19, NULL, NULL, NULL, NULL, 1),
+(15, '2020-06-24', '18:00:00', 1, 12, 15, NULL, NULL, NULL, NULL, 1),
+(16, '2020-06-24', '18:00:00', 1, 13, 3, NULL, NULL, NULL, NULL, 1),
+(17, '2020-06-24', '18:00:00', 1, 14, 8, NULL, NULL, NULL, NULL, 1),
+(18, '2020-06-24', '18:00:00', 1, 20, 1, NULL, NULL, NULL, NULL, 1),
+(19, '2020-06-24', '20:15:00', 1, 10, 7, NULL, NULL, NULL, NULL, 1),
+(20, '2020-06-25', '18:00:00', 1, 5, 18, NULL, NULL, NULL, NULL, 1),
+(21, '2020-06-25', '18:00:00', 1, 16, 2, NULL, NULL, NULL, NULL, 1),
+(22, '2020-06-25', '20:15:00', 1, 6, 11, NULL, NULL, NULL, NULL, 1),
+(23, '2020-06-27', '12:30:00', 1, 3, 20, NULL, NULL, NULL, NULL, 1),
+(24, '2020-06-28', '16:30:00', 1, 18, 16, NULL, NULL, NULL, NULL, 1),
+(25, '2020-06-29', '20:00:00', 1, 7, 5, NULL, NULL, NULL, NULL, 1),
+(26, '2020-06-30', '20:15:00', 1, 4, 12, NULL, NULL, NULL, NULL, 1),
+(27, '2020-07-01', '18:00:00', 1, 2, 14, NULL, NULL, NULL, NULL, 1),
+(28, '2020-07-01', '18:00:00', 1, 1, 13, NULL, NULL, NULL, NULL, 1),
+(29, '2020-07-01', '18:00:00', 1, 8, 9, NULL, NULL, NULL, NULL, 1),
+(30, '2020-07-01', '20:15:00', 1, 19, 6, NULL, NULL, NULL, NULL, 1),
+(31, '2020-07-02', '18:00:00', 1, 15, 17, NULL, NULL, NULL, NULL, 1),
+(32, '2020-07-02', '20:15:00', 1, 11, 10, NULL, NULL, NULL, NULL, 1),
+(33, '2020-07-04', '15:00:00', 1, 5, 15, NULL, NULL, NULL, NULL, 1),
+(34, '2020-07-04', '15:00:00', 1, 6, 18, NULL, NULL, NULL, NULL, 1),
+(35, '2020-07-04', '15:00:00', 1, 9, 7, NULL, NULL, NULL, NULL, 1),
+(36, '2020-07-04', '15:00:00', 1, 10, 3, NULL, NULL, NULL, NULL, 1),
+(37, '2020-07-04', '15:00:00', 1, 12, 1, NULL, NULL, NULL, NULL, 1),
+(38, '2020-07-04', '15:00:00', 1, 13, 19, NULL, NULL, NULL, NULL, 1),
+(39, '2020-07-04', '15:00:00', 1, 14, 4, NULL, NULL, NULL, NULL, 1),
+(40, '2020-07-04', '15:00:00', 1, 16, 11, NULL, NULL, NULL, NULL, 1),
+(41, '2020-07-04', '15:00:00', 1, 17, 8, NULL, NULL, NULL, NULL, 1),
+(42, '2020-07-04', '15:00:00', 1, 20, 2, NULL, NULL, NULL, NULL, 1),
+(43, '2020-07-08', '20:00:00', 1, 2, 9, NULL, NULL, NULL, NULL, 1),
+(44, '2020-07-08', '20:00:00', 1, 3, 12, NULL, NULL, NULL, NULL, 1),
+(45, '2020-07-08', '20:00:00', 1, 1, 17, NULL, NULL, NULL, NULL, 1),
+(46, '2020-07-08', '20:00:00', 1, 4, 10, NULL, NULL, NULL, NULL, 1),
+(47, '2020-07-08', '20:00:00', 1, 7, 6, NULL, NULL, NULL, NULL, 1),
+(48, '2020-07-08', '20:00:00', 1, 8, 16, NULL, NULL, NULL, NULL, 1),
+(49, '2020-07-08', '20:00:00', 1, 11, 13, NULL, NULL, NULL, NULL, 1),
+(50, '2020-07-08', '20:00:00', 1, 15, 20, NULL, NULL, NULL, NULL, 1),
+(51, '2020-07-08', '20:00:00', 1, 18, 14, NULL, NULL, NULL, NULL, 1),
+(52, '2020-07-08', '20:00:00', 1, 19, 5, NULL, NULL, NULL, NULL, 1),
+(53, '2020-07-11', '15:00:00', 1, 3, 7, NULL, NULL, NULL, NULL, 1),
+(54, '2020-07-11', '15:00:00', 1, 1, 9, NULL, NULL, NULL, NULL, 1),
+(55, '2020-07-11', '15:00:00', 1, 4, 11, NULL, NULL, NULL, NULL, 1),
+(56, '2020-07-11', '15:00:00', 1, 10, 5, NULL, NULL, NULL, NULL, 1),
+(57, '2020-07-11', '15:00:00', 1, 12, 16, NULL, NULL, NULL, NULL, 1),
+(58, '2020-07-11', '15:00:00', 1, 14, 19, NULL, NULL, NULL, NULL, 1),
+(59, '2020-07-11', '15:00:00', 1, 15, 6, NULL, NULL, NULL, NULL, 1),
+(60, '2020-07-11', '15:00:00', 1, 17, 2, NULL, NULL, NULL, NULL, 1),
+(61, '2020-07-11', '15:00:00', 1, 18, 13, NULL, NULL, NULL, NULL, 1),
+(62, '2020-07-11', '15:00:00', 1, 20, 8, NULL, NULL, NULL, NULL, 1),
+(63, '2020-07-15', '20:00:00', 1, 2, 10, NULL, NULL, NULL, NULL, 1),
+(64, '2020-07-15', '20:00:00', 1, 5, 20, NULL, NULL, NULL, NULL, 1),
+(65, '2020-07-15', '20:00:00', 1, 6, 14, NULL, NULL, NULL, NULL, 1),
+(66, '2020-07-15', '20:00:00', 1, 7, 12, NULL, NULL, NULL, NULL, 1),
+(67, '2020-07-15', '20:00:00', 1, 8, 3, NULL, NULL, NULL, NULL, 1),
+(68, '2020-07-15', '20:00:00', 1, 9, 15, NULL, NULL, NULL, NULL, 1),
+(69, '2020-07-15', '20:00:00', 1, 11, 1, NULL, NULL, NULL, NULL, 1),
+(70, '2020-07-15', '20:00:00', 1, 13, 17, NULL, NULL, NULL, NULL, 1),
+(71, '2020-07-15', '20:00:00', 1, 16, 4, NULL, NULL, NULL, NULL, 1),
+(72, '2020-07-15', '20:00:00', 1, 19, 18, NULL, NULL, NULL, NULL, 1),
+(73, '2020-07-18', '15:00:00', 1, 3, 2, NULL, NULL, NULL, NULL, 1),
+(74, '2020-07-18', '15:00:00', 1, 1, 16, NULL, NULL, NULL, NULL, 1),
+(75, '2020-07-18', '15:00:00', 1, 4, 13, NULL, NULL, NULL, NULL, 1),
+(76, '2020-07-18', '15:00:00', 1, 10, 6, NULL, NULL, NULL, NULL, 1),
+(77, '2020-07-18', '15:00:00', 1, 12, 19, NULL, NULL, NULL, NULL, 1),
+(78, '2020-07-18', '15:00:00', 1, 14, 5, NULL, NULL, NULL, NULL, 1),
+(79, '2020-07-18', '15:00:00', 1, 15, 8, NULL, NULL, NULL, NULL, 1),
+(80, '2020-07-18', '15:00:00', 1, 17, 9, NULL, NULL, NULL, NULL, 1),
+(81, '2020-07-18', '15:00:00', 1, 18, 11, NULL, NULL, NULL, NULL, 1),
+(82, '2020-07-18', '15:00:00', 1, 20, 7, NULL, NULL, NULL, NULL, 1),
+(83, '2020-07-26', '15:00:00', 1, 2, 18, NULL, NULL, NULL, NULL, 1),
+(84, '2020-07-26', '15:00:00', 1, 5, 4, NULL, NULL, NULL, NULL, 1),
+(85, '2020-07-26', '15:00:00', 1, 6, 20, NULL, NULL, NULL, NULL, 1),
+(86, '2020-07-26', '15:00:00', 1, 7, 17, NULL, NULL, NULL, NULL, 1),
+(87, '2020-07-26', '15:00:00', 1, 8, 1, NULL, NULL, NULL, NULL, 1),
+(88, '2020-07-26', '15:00:00', 1, 9, 12, NULL, NULL, NULL, NULL, 1),
+(89, '2020-07-26', '15:00:00', 1, 11, 14, NULL, NULL, NULL, NULL, 1),
+(90, '2020-07-26', '15:00:00', 1, 13, 10, NULL, NULL, NULL, NULL, 1),
+(91, '2020-07-26', '15:00:00', 1, 16, 15, NULL, NULL, NULL, NULL, 1),
+(92, '2020-07-26', '15:00:00', 1, 19, 3, NULL, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -354,8 +337,7 @@ INSERT INTO `MetaGroupMap` (`MetaGroupID`, `GroupID`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `Points` (
-`PointsID` int(11) NOT NULL,
-  `ScoringSystemID` int(11) NOT NULL DEFAULT '1',
+  `PointsID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
   `MatchID` int(11) NOT NULL,
   `ResultPoints` decimal(6,2) NOT NULL,
@@ -367,8 +349,6 @@ CREATE TABLE IF NOT EXISTS `Points` (
 -- RELATIONS FOR TABLE `Points`:
 --   `MatchID`
 --       `Match` -> `MatchID`
---   `ScoringSystemID`
---       `ScoringSystem` -> `ScoringSystemID`
 --   `UserID`
 --       `User` -> `UserID`
 --
@@ -380,7 +360,7 @@ CREATE TABLE IF NOT EXISTS `Points` (
 --
 
 CREATE TABLE IF NOT EXISTS `Prediction` (
-`PredictionID` int(11) NOT NULL,
+  `PredictionID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
   `MatchID` int(11) NOT NULL,
   `HomeTeamPoints` int(11) DEFAULT NULL,
@@ -439,52 +419,11 @@ INSERT INTO `Role` (`RoleID`, `Role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ScoringSystem`
---
-
-CREATE TABLE IF NOT EXISTS `ScoringSystem` (
-  `ScoringSystemID` int(11) NOT NULL,
-  `Name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ScoringSystem`
---
-
-INSERT INTO `ScoringSystem` (`ScoringSystemID`, `Name`) VALUES
-(1, 'Official'),
-(2, 'AutoQuiz');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Stage`
---
-
-CREATE TABLE IF NOT EXISTS `Stage` (
-`StageID` int(11) NOT NULL,
-  `Name` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `Stage`
---
-
-INSERT INTO `Stage` (`StageID`, `Name`) VALUES
-(1, 'Group Stages'),
-(2, 'Round of 16'),
-(3, 'Quarter Finals'),
-(4, 'Semi Finals'),
-(5, 'Final');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `Team`
 --
 
 CREATE TABLE IF NOT EXISTS `Team` (
-`TeamID` int(11) NOT NULL,
+  `TeamID` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `ShortName` varchar(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
@@ -494,117 +433,26 @@ CREATE TABLE IF NOT EXISTS `Team` (
 --
 
 INSERT INTO `Team` (`TeamID`, `Name`, `ShortName`) VALUES
-(1, 'Albania', 'ALB'),
-(2, 'France', 'FRA'),
-(3, 'Romania', 'ROU'),
-(4, 'Switzerland', 'SUI'),
-(5, 'England', 'ENG'),
-(6, 'Russia', 'RUS'),
-(7, 'Slovakia', 'SVK'),
-(8, 'Wales', 'WAL'),
-(9, 'Germany', 'GER'),
-(10, 'Northern Ireland', 'NIR'),
-(11, 'Poland', 'POL'),
-(12, 'Ukraine', 'UKR'),
-(13, 'Croatia', 'CRO'),
-(14, 'Czech Republic', 'CZE'),
-(15, 'Spain', 'ESP'),
-(16, 'Turkey', 'TUR'),
-(17, 'Belgium', 'BEL'),
-(18, 'Italy', 'ITA'),
-(19, 'Republic of Ireland', 'IRL'),
-(20, 'Sweden', 'SWE'),
-(21, 'Austria', 'AUT'),
-(22, 'Hungary', 'HUN'),
-(23, 'Iceland', 'ISL'),
-(24, 'Portugal', 'POR');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `TournamentRole`
---
-
-CREATE TABLE IF NOT EXISTS `TournamentRole` (
-`TournamentRoleID` int(11) NOT NULL,
-  `Name` varchar(50) NOT NULL,
-  `TeamID` int(11) DEFAULT NULL,
-  `FromMatchID` int(11) DEFAULT NULL,
-  `FromGroupID` int(11) DEFAULT NULL,
-  `StageID` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
-
---
--- RELATIONS FOR TABLE `TournamentRole`:
---   `FromGroupID`
---       `Group` -> `GroupID`
---   `FromMatchID`
---       `Match` -> `MatchID`
---   `StageID`
---       `Stage` -> `StageID`
---   `TeamID`
---       `Team` -> `TeamID`
---
-
---
--- Dumping data for table `TournamentRole`
---
-
-INSERT INTO `TournamentRole` (`TournamentRoleID`, `Name`, `TeamID`, `FromMatchID`, `FromGroupID`, `StageID`) VALUES
-(1, 'Group A Team 1', 1, NULL, 1, 1),
-(2, 'Group A Team 2', 2, NULL, 1, 1),
-(3, 'Group A Team 3', 3, NULL, 1, 1),
-(4, 'Group A Team 4', 4, NULL, 1, 1),
-(5, 'Group B Team 1', 5, NULL, 2, 1),
-(6, 'Group B Team 2', 6, NULL, 2, 1),
-(7, 'Group B Team 3', 7, NULL, 2, 1),
-(8, 'Group B Team 4', 8, NULL, 2, 1),
-(9, 'Group C Team 1', 9, NULL, 3, 1),
-(10, 'Group C Team 2', 10, NULL, 3, 1),
-(11, 'Group C Team 3', 11, NULL, 3, 1),
-(12, 'Group C Team 4', 12, NULL, 3, 1),
-(13, 'Group D Team 1', 13, NULL, 4, 1),
-(14, 'Group D Team 2', 14, NULL, 4, 1),
-(15, 'Group D Team 3', 15, NULL, 4, 1),
-(16, 'Group D Team 4', 16, NULL, 4, 1),
-(17, 'Group E Team 1', 17, NULL, 5, 1),
-(18, 'Group E Team 2', 18, NULL, 5, 1),
-(19, 'Group E Team 3', 19, NULL, 5, 1),
-(20, 'Group E Team 4', 20, NULL, 5, 1),
-(21, 'Group F Team 1', 21, NULL, 6, 1),
-(22, 'Group F Team 2', 22, NULL, 6, 1),
-(23, 'Group F Team 3', 23, NULL, 6, 1),
-(24, 'Group F Team 4', 24, NULL, 6, 1),
-(25, 'Winner Group A', NULL, NULL, 1, 2),
-(26, 'Runner Up Group A', NULL, NULL, 1, 2),
-(27, 'Winner Group B', NULL, NULL, 2, 2),
-(28, 'Runner Up Group B', NULL, NULL, 2, 2),
-(29, 'Winner Group C', NULL, NULL, 3, 2),
-(30, 'Runner Up Group C', NULL, NULL, 3, 2),
-(31, 'Winner Group D', NULL, NULL, 4, 2),
-(32, 'Runner Up Group D', NULL, NULL, 4, 2),
-(33, 'Winner Group E', NULL, NULL, 5, 2),
-(34, 'Runner Up Group E', NULL, NULL, 5, 2),
-(35, 'Winner Group F', NULL, NULL, 6, 2),
-(36, 'Runner Up Group F', NULL, NULL, 6, 2),
-(37, 'Third Place A/C/D', NULL, NULL, 7, 2),
-(38, 'Third Place B/E/F', NULL, NULL, 8, 2),
-(39, 'Third Place C/D/E', NULL, NULL, 9, 2),
-(40, 'Third Place A/B/F', NULL, NULL, 10, 2),
-(41, 'Winner R16 1', NULL, 37, NULL, 3),
-(42, 'Winner R16 2', NULL, 38, NULL, 3),
-(43, 'Winner R16 3', NULL, 39, NULL, 3),
-(44, 'Winner R16 4', NULL, 40, NULL, 3),
-(45, 'Winner R16 5', NULL, 41, NULL, 3),
-(46, 'Winner R16 6', NULL, 42, NULL, 3),
-(47, 'Winner R16 7', NULL, 43, NULL, 3),
-(48, 'Winner R16 8', NULL, 44, NULL, 3),
-(49, 'Winner Quarter-Final 1', NULL, 45, NULL, 4),
-(50, 'Winner Quarter-Final 2', NULL, 46, NULL, 4),
-(51, 'Winner Quarter-Final 3', NULL, 47, NULL, 4),
-(52, 'Winner Quarter-Final 4', NULL, 48, NULL, 4),
-(53, 'Winner Semi-Final 1', NULL, 49, NULL, 5),
-(54, 'Winner Semi-Final 2', NULL, 50, NULL, 5);
+(1, 'AFC Bournemouth', 'BOU'),
+(2, 'Arsenal', 'ARS'),
+(3, 'Aston Villa', 'AVA'),
+(4, 'Brighton & Hove Albion', 'BRH'),
+(5, 'Burnley', 'BUR'),
+(6, 'Chelsea', 'CHE'),
+(7, 'Crystal Palace', 'CRY'),
+(8, 'Everton', 'EVE'),
+(9, 'Leicester City', 'LEI'),
+(10, 'Liverpool', 'LIV'),
+(11, 'Manchester City', 'MCI'),
+(12, 'Manchester United', 'MUN'),
+(13, 'Newcastle United', 'NEW'),
+(14, 'Norwich City', 'NOR'),
+(15, 'Sheffield United', 'SHU'),
+(16, 'Southampton', 'SOU'),
+(17, 'Tottenham Hotspur', 'TOT'),
+(18, 'Watford', 'WAT'),
+(19, 'West Ham United', 'WHU'),
+(20, 'Wolverhampton Wanderers', 'WLV');
 
 -- --------------------------------------------------------
 
@@ -732,34 +580,16 @@ ALTER TABLE `Emails`
  ADD PRIMARY KEY (`EmailsID`), ADD KEY `FK_Email_Match` (`MatchID`);
 
 --
--- Indexes for table `Group`
---
-ALTER TABLE `Group`
- ADD PRIMARY KEY (`GroupID`);
-
---
 -- Indexes for table `Match`
 --
 ALTER TABLE `Match`
- ADD PRIMARY KEY (`MatchID`), ADD KEY `FK_Match_Venue` (`VenueID`), ADD KEY `FK_Match_Home_Team` (`HomeTeamID`), ADD KEY `FK_Match_Away_team` (`AwayTeamID`), ADD KEY `FK_Match_Broadcaster` (`BroadcasterID`), ADD KEY `FK_Match_Stage` (`StageID`), ADD KEY `FK_Match_User` (`ResultPostedBy`);
-
---
--- Indexes for table `MetaGroup`
---
-ALTER TABLE `MetaGroup`
- ADD PRIMARY KEY (`MetaGroupID`);
-
---
--- Indexes for table `MetaGroupMap`
---
-ALTER TABLE `MetaGroupMap`
- ADD KEY `FK_MetaGroupMap_MetaGroup` (`MetaGroupID`), ADD KEY `FK_MetaGroupMap_Group` (`GroupID`);
+ ADD PRIMARY KEY (`MatchID`), ADD KEY `FK_Match_Venue` (`VenueID`), ADD KEY `FK_Match_Home_Team` (`HomeTeamID`), ADD KEY `FK_Match_Away_team` (`AwayTeamID`), ADD KEY `FK_Match_Broadcaster` (`BroadcasterID`), ADD KEY `FK_Match_User` (`ResultPostedBy`);
  
 --
 -- Indexes for table `Points`
 --
 ALTER TABLE `Points`
- ADD PRIMARY KEY (`PointsID`), ADD KEY `FK_Points_Match` (`MatchID`), ADD KEY `FK_Points_User` (`UserID`), ADD KEY `FK_Points_ScoringSystem` (`ScoringSystemID`);
+ ADD PRIMARY KEY (`PointsID`), ADD KEY `FK_Points_Match` (`MatchID`), ADD KEY `FK_Points_User` (`UserID`);
 
 --
 -- Indexes for table `Prediction`
@@ -780,28 +610,10 @@ ALTER TABLE `Role`
  ADD PRIMARY KEY (`RoleID`);
 
 --
--- Indexes for table `ScoringSystem`
---
-ALTER TABLE `ScoringSystem`
- ADD PRIMARY KEY (`ScoringSystemID`);
-
---
--- Indexes for table `Stage`
---
-ALTER TABLE `Stage`
- ADD PRIMARY KEY (`StageID`);
-
---
 -- Indexes for table `Team`
 --
 ALTER TABLE `Team`
  ADD PRIMARY KEY (`TeamID`);
-
---
--- Indexes for table `TournamentRole`
---
-ALTER TABLE `TournamentRole`
- ADD PRIMARY KEY (`TournamentRoleID`), ADD KEY `FK_TournamentRole_Team` (`TeamID`), ADD KEY `FK_TournamentRole_Match` (`FromMatchID`), ADD KEY `FK_TournamentRole_Group` (`FromGroupID`), ADD KEY `FK_TournamentRole_Stage` (`StageID`);
 
 --
 -- Indexes for table `User`
@@ -834,17 +646,12 @@ MODIFY `BroadcasterID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT for table `Emails`
 --
 ALTER TABLE `Emails`
-MODIFY `EmailsID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
---
--- AUTO_INCREMENT for table `Group`
---
-ALTER TABLE `Group`
-MODIFY `GroupID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `EmailsID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=93;
 --
 -- AUTO_INCREMENT for table `Match`
 --
 ALTER TABLE `Match`
-MODIFY `MatchID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=52;
+MODIFY `MatchID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=93;
 --
 -- AUTO_INCREMENT for table `Points`
 --
@@ -861,20 +668,10 @@ MODIFY `PredictionID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 ALTER TABLE `Role`
 MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
--- AUTO_INCREMENT for table `Stage`
---
-ALTER TABLE `Stage`
-MODIFY `StageID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
 -- AUTO_INCREMENT for table `Team`
 --
 ALTER TABLE `Team`
 MODIFY `TeamID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
---
--- AUTO_INCREMENT for table `TournamentRole`
---
-ALTER TABLE `TournamentRole`
-MODIFY `TournamentRoleID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
 --
 -- AUTO_INCREMENT for table `User`
 --
@@ -904,26 +701,17 @@ ADD CONSTRAINT `FK_Email_Match` FOREIGN KEY (`MatchID`) REFERENCES `Match` (`Mat
 -- Constraints for table `Match`
 --
 ALTER TABLE `Match`
-ADD CONSTRAINT `FK_Match_Away_Team` FOREIGN KEY (`AwayTeamID`) REFERENCES `TournamentRole` (`TournamentRoleID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `FK_Match_Away_Team` FOREIGN KEY (`AwayTeamID`) REFERENCES `Team` (`TeamID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_Match_Broadcaster` FOREIGN KEY (`BroadcasterID`) REFERENCES `Broadcaster` (`BroadcasterID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `FK_Match_Home_team` FOREIGN KEY (`HomeTeamID`) REFERENCES `TournamentRole` (`TournamentRoleID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `FK_Match_Stage` FOREIGN KEY (`StageID`) REFERENCES `Stage` (`StageID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `FK_Match_Home_team` FOREIGN KEY (`HomeTeamID`) REFERENCES `Team` (`TeamID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_Match_User` FOREIGN KEY (`ResultPostedBy`) REFERENCES `User` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_Match_Venue` FOREIGN KEY (`VenueID`) REFERENCES `Venue` (`VenueID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `MetaGroupMap`
---
-ALTER TABLE `MetaGroupMap`
-ADD CONSTRAINT `FK_MetaGroupMap_MetaGroup` FOREIGN KEY (`MetaGroupID`) REFERENCES `MetaGroup` (`MetaGroupID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `FK_MetaGroupMap_Group` FOREIGN KEY (`GroupID`) REFERENCES `Group` (`GroupID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Points`
 --
 ALTER TABLE `Points`
 ADD CONSTRAINT `FK_Points_Match` FOREIGN KEY (`MatchID`) REFERENCES `Match` (`MatchID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `FK_Points_ScoringSystem` FOREIGN KEY (`ScoringSystemID`) REFERENCES `ScoringSystem` (`ScoringSystemID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `FK_Points_User` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -938,15 +726,6 @@ ADD CONSTRAINT `FK_Prediction_User` FOREIGN KEY (`UserID`) REFERENCES `User` (`U
 --
 ALTER TABLE `RememberMe`
 ADD CONSTRAINT `FK_RememberMe_User` FOREIGN KEY (`UserID`) REFERENCES `User` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `TournamentRole`
---
-ALTER TABLE `TournamentRole`
-ADD CONSTRAINT `FK_TournamentRole_Group` FOREIGN KEY (`FromGroupID`) REFERENCES `MetaGroup` (`MetaGroupID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `FK_TournamentRole_Match` FOREIGN KEY (`FromMatchID`) REFERENCES `Match` (`MatchID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `FK_TournamentRole_Stage` FOREIGN KEY (`StageID`) REFERENCES `Stage` (`StageID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `FK_TournamentRole_Team` FOREIGN KEY (`TeamID`) REFERENCES `Team` (`TeamID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `UserRole`
