@@ -24,10 +24,6 @@
     $next = min($prev, 64);
   }
 
-  // Check for existence of stage variable
-  if (!isset($stage))
-    $stage = "";
-
   // Check for existence of date variable
   if (!isset($date))
     $date  = "";
@@ -52,41 +48,9 @@
   if (!isset($homeFlag))
     $homeFlag = "";
 
-  // Check for existence of homeTeamMatchID variable
-  if (!isset($homeTeamMatchID))
-    $homeTeamMatchID = "";
-
-  // Check for existence of homeTeamStage variable
-  if (!isset($homeTeamStage))
-    $homeTeamStage = "";
-
   // Check for existence of homeTeamPoints variable
   if (!isset($homeTeamPoints))
     $homeTeamPoints = "";
-
-  // Check for existence of homeTeamHomeTeam variable
-  if (!isset($homeTeamHomeTeam))
-    $homeTeamHomeTeam = "";
-
-  // Check for existence of homeTeamHomeTeamPoints variable
-  if (!isset($homeTeamHomeTeamPoints))
-    $homeTeamHomeTeamPoints = "";
-
-  // Check for existence of homeHomeFlag variable
-  if (!isset($homeHomeFlag))
-    $homeHomeFlag = "";
-
-  // Check for existence of homeTeamAwayTeam variable
-  if (!isset($homeTeamAwayTeam))
-    $homeTeamAwayTeam = "";
-
-  // Check for existence of homeTeamAwayTeamPoints variable
-  if (!isset($homeTeamAwayTeamPoints))
-    $homeTeamAwayTeamPoints = "";
-
-  // Check for existence of homeAwayFlag variable
-  if (!isset($homeAwayFlag))
-    $homeAwayFlag = "";
 
   // Check for existence of homeTeamPredPoints variable
   if (!isset($homeTeamPredPoints))
@@ -100,41 +64,9 @@
   if (!isset($awayFlag))
     $awayFlag = "";
 
-  // Check for existence of awayTeamMatchID variable
-  if (!isset($awayTeamMatchID))
-    $awayTeamMatchID = "";
-
-  // Check for existence of awayTeamStage variable
-  if (!isset($awayTeamStage))
-    $awayTeamStage = "";
-
   // Check for existence of awayTeamPoints variable
   if (!isset($awayTeamPoints))
     $awayTeamPoints = "";
-
-  // Check for existence of awayTeamHomeTeam variable
-  if (!isset($awayTeamHomeTeam))
-    $awayTeamHomeTeam = "";
-
-  // Check for existence of awayTeamHomeTeamPoints variable
-  if (!isset($awayTeamHomeTeamPoints))
-    $awayTeamHomeTeamPoints = "";
-
-  // Check for existence of awayHomeFlag variable
-  if (!isset($awayHomeFlag))
-    $awayHomeFlag = "";
-
-  // Check for existence of awayTeamAwayTeam variable
-  if (!isset($awayTeamAwayTeam))
-    $awayTeamAwayTeam = "";
-
-  // Check for existence of awayTeamAwayTeamPoints variable
-  if (!isset($awayTeamAwayTeamPoints))
-    $awayTeamAwayTeamPoints = "";
-
-  // Check for existence of awayAwayFlag variable
-  if (!isset($awayAwayFlag))
-    $awayAwayFlag = "";
 
   // Check for existence of awayTeamPredPoints variable
   if (!isset($awayTeamPredPoints))
@@ -153,7 +85,7 @@
   <div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
   <div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
 </div>
-<h3><?php htmlout($stage); ?><br />
+<h3>
   <?php htmlout($date); ?><br />
   <?php htmlout(substr($kickOff, 0, 5)); ?><br />
   <small><?php htmlout($venue); ?><br/>
@@ -166,11 +98,6 @@
     <div class="col-sm-2 text-right">
       <span class="lead"><?php htmlout($homeTeam); ?></span>
       <br />
-      <?php if ($stage == "Group Stages"): ?>
-	  <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
-	  <?php else: ?>
-	  <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
-	  <?php endif; ?>
     </div>
     <div class="col-sm-1 text-center lead"><b><span id="homeTeamPoints"><?php htmlout($homeTeamPoints); ?></span></b></div>
     <div class="col-sm-2 text-center">vs.</div>
@@ -178,62 +105,8 @@
     <div class="col-sm-2 text-left lead">
       <span class="lead"><?php htmlout($awayTeam); ?></span>
       <br />
-	  <?php if ($stage == "Group Stages"): ?>
-	  <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
-	  <?php else: ?>
-	  <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
-	  <?php endif; ?>
     </div>
     <div class="col-sm-2 text-center"><img width="80" hieght="40" alt="<?php htmlout($awayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayFlag); ?>.png"></div>
-  </div>
-  <!-- Team origin details for tablets and bigger -->
-  <div class="row hidden-xs text-left">
-    <div class="col-sm-5">
-      <div id="homeOrigin" class="panel panel-default" style="display: none;">
-        <div class="panel-body">
-        <a href="../match/?id=<?php htmlout($homeTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
-        <div class="row text-center"><p>
-          <div class="col-xs-12"><?php htmlout($homeTeamStage); ?></div>
-        </p></div>
-        <small>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
-            <div class="col-xs-3 text-left"><?php htmlout($homeTeamHomeTeamPoints); ?></div>
-          </p></div>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamPoints); ?></div>
-          </p></div>
-        </small>
-        </a>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-5 col-sm-offset-2">
-      <div id="awayOrigin" class="panel panel-default" style="display: none;">
-        <div class="panel-body">
-        <a href="../match/?id=<?php htmlout($awayTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
-        <div class="row text-center"><p>
-          <div class="col-xs-12"><?php htmlout($awayTeamStage); ?></div>
-        </p></div>
-        <small>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamPoints); ?></div>
-          </p></div>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamPoints); ?></div>
-          </p></div>
-        </small>
-        </a>
-        </div>
-      </div>
-    </div>
   </div>
   <!-- Layout for phones -->
   <div class="row visible-xs text-left">
@@ -248,40 +121,6 @@
     </div>
   </div>
   <div class="row visible-xs text-left">
-    <div class="col-xs-2">
-	  <?php if ($stage == "Group Stages"): ?>
-	  <button id="btnHomeOriginXS" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
-	  <?php else: ?>
-	  <button id="btnHomeOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
-	  <?php endif; ?>
-    </div>
-  </div>
-  <div class="row visible-xs text-left">
-    <div class="col-xs-12">
-      <div id="homeOriginXS" class="panel panel-default" style="display: none;">
-        <div class="panel-body">
-        <a href="../match/?id=<?php htmlout($homeTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
-        <div class="row text-center"><p>
-          <div class="col-xs-12"><?php htmlout($homeTeamStage); ?></div>
-        </p></div>
-        <small>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($homeTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeHomeFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($homeTeamHomeTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($homeTeamHomeTeamPoints); ?></div>
-          </p></div>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($homeTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($homeAwayFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($homeTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($homeTeamAwayTeamPoints); ?></div>
-          </p></div>
-        </small>
-        </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row visible-xs text-left">
     <div class="col-xs-6 col-xs-offset-2"><small>vs.</small></div>
   </div>
   <div class="row visible-xs text-left">
@@ -293,40 +132,6 @@
     </div>
     <div class="col-xs-4" id="awayTeamPointsXS">
       <?php htmlout($awayTeamPoints); ?>
-    </div>
-  </div>
-  <div class="row visible-xs text-left">
-    <div class="col-xs-2">
-	<?php if ($stage == "Group Stages"): ?>
-	  <button id="btnAwayOriginXS" type="button" class="btn btn-info btn-xs" data-state="show" disabled="disabled">Show Origin</button>
-	  <?php else: ?>
-	  <button id="btnAwayOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
-	  <?php endif; ?>
-    </div>
-  </div>
-  <div class="row visible-xs text-left">
-    <div class="col-xs-12">
-      <div id="awayOriginXS" class="panel panel-default" style="display: none;">
-        <div class="panel-body">
-        <a href="../match/?id=<?php htmlout($awayTeamMatchID); ?>&ring=<?php htmlout($_GET['ring']) ?>">
-        <div class="row text-center"><p>
-          <div class="col-xs-12"><?php htmlout($awayTeamStage); ?></div>
-        </p></div>
-        <small>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($awayTeamHomeTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayHomeFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($awayTeamHomeTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamHomeTeamPoints); ?></div>
-          </p></div>
-          <div class="row"><p>
-            <div class="col-xs-3 text-right"><img width="40" hieght="20" alt="<?php htmlout($awayTeamAwayTeam); ?>" class="flag" src="../assets/img/flags/<?php htmlout($awayAwayFlag); ?>.png"></div>
-            <div class="col-xs-6"><?php htmlout($awayTeamAwayTeam); ?></div>
-            <div class="col-xs-3"><?php htmlout($awayTeamAwayTeamPoints); ?></div>
-          </div>
-        </small>
-        </a>
-        </div>
-      </div>
     </div>
   </div>
 </h3>
@@ -477,7 +282,6 @@
 <div id="graph"></div>
 <hr>
 <h5>Table</h5>
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/scoringSystemForm.html.php'; ?>
 <table class="table table-striped">
   <thead>
     <tr>

@@ -7,9 +7,6 @@
 // Make sure all relevant includes are loaded
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 
-// Run scoring system checks and set-up
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/processScoringSystem.inc.php';
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Load the graph data
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -54,7 +51,7 @@ function getGraphData ($scoringSystem = 1) {
     INSERT INTO `CumulativePointsByMatchUser`
 
       SELECT
-        m.`MatchID`
+         m.`MatchID`
         ,tmp.`UserID`
         ,SUM(tmp.`Points`) AS `Points`
 
@@ -70,8 +67,7 @@ function getGraphData ($scoringSystem = 1) {
           WHERE m.`ResultPostedBy` IS NOT NULL) mu
 
           LEFT JOIN `Points` po ON
-            po.`ScoringSystemID` = " . $scoringSystem . "
-            AND po.`UserID` = mu.`UserID`
+            po.`UserID` = mu.`UserID`
             AND po.`MatchID` = mu.`MatchID`) tmp
 
       INNER JOIN `Match` m ON
@@ -115,16 +111,14 @@ function getGraphData ($scoringSystem = 1) {
       WHERE cpmu2.`Points` > cpmu.`Points`
         AND cpmu2.`MatchID` = cpmu.`MatchID`) AS `Rank`
       ,IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`
-      ,CONCAT(IFNULL(ht.`Name`,trht.`Name`),' vs. ',IFNULL(at.`Name`,trat.`Name`)) AS `Match`
+      ,CONCAT(ht.`Name`,' vs. ',at.`Name`) AS `Match`
       ,cpmu.*
 
     FROM `CumulativePointsByMatchUser` cpmu
       INNER JOIN `Match` m ON m.`MatchID` = cpmu.`MatchID`
       INNER JOIN `User` u ON u.`UserID` = cpmu.`UserID`
-      INNER JOIN `TournamentRole` trht ON trht.`TournamentRoleID` = m.`HomeTeamID`
-        LEFT JOIN `Team` ht ON ht.`TeamID` = trht.`TeamID`
-      INNER JOIN `TournamentRole` trat ON trat.`TournamentRoleID` = m.`AwayTeamID`
-        LEFT JOIN `Team` at ON at.`TeamID` = trat.`TeamID`
+      INNER JOIN `Team` ht ON ht.`TeamID` = m.`HomeTeamID`
+      INNER JOIN `Team` at ON at.`TeamID` = m.`AwayTeamID`
 
     ORDER BY cpmu.`MatchID` ASC, cpmu.`UserID` ASC";
 

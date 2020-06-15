@@ -92,7 +92,7 @@ function ring_base_convert ($ring) {
 }
 
 // Generate data for tables
-function getLeagueTable($scoringSystem = 1, $stage = '') {
+function getLeagueTable() {
 
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -103,19 +103,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
     $arr = array('result' => 'No', 'message' => $error);
     echo json_encode($arr);
     die();
-  }
-
-  // Sort out selected stages
-  if (($stage == '') || (!is_array($stage))) {
-    $stageStr = '1,2,3,4,5';
-  } else {
-    $stageStr = '';
-    if ($stage[0]) { $stageStr .= '1,'; }
-    if ($stage[1]) { $stageStr .= '2,'; }
-    if ($stage[2]) { $stageStr .= '3,'; }
-    if ($stage[3]) { $stageStr .= '4,'; }
-    if ($stage[4]) { $stageStr .= '5,'; }
-    $stageStr .= '0';
   }
 
   // Drop temporary table to hold submitted matches count
@@ -159,7 +146,6 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
         FROM `Match` m
           LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
         WHERE p.`UserID` = u.`UserID`
-          AND m.`StageID` IN (" . $stageStr . ")
           AND (p.`HomeTeamPoints` IS NOT NULL AND p.`AwayTeamPoints` IS NOT NULL)
           AND (m.`ResultPostedBy` IS NOT NULL)) AS `Submitted`
 
@@ -167,7 +153,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
         FROM
           (SELECT `MatchID`, `UserID`
           FROM `Match`, `User`
-          WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
+          WHERE `ResultPostedBy` IS NOT NULL) mu
           LEFT JOIN `Prediction` p ON
             p.`MatchID` = mu.`MatchID`
             AND p.`UserID` = mu.`UserID`
@@ -202,7 +188,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   // Create temporary table to hold points by user
   $sql = "
     CREATE TEMPORARY TABLE `PointsByUser` (
-      `UserID` INT NOT NULL
+       `UserID` INT NOT NULL
       ,`DisplayName` VARCHAR(100) NOT NULL
       ,`ResultPoints` DECIMAL(6,2) NOT NULL
       ,`ScorePoints` DECIMAL(6,2) NOT NULL
@@ -223,7 +209,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
     INSERT INTO `PointsByUser`
 
       SELECT
-        tmp.`UserID`
+         tmp.`UserID`
         ,tmp.`DisplayName`
         ,SUM(tmp.`ResultPoints`) AS `ResultPoints`
         ,SUM(tmp.`ScorePoints`) AS `ScorePoints`
@@ -242,15 +228,14 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
           LEFT JOIN
             (SELECT `MatchID`, `UserID`
             FROM `Match`, `User`
-            WHERE `ResultPostedBy` IS NOT NULL AND `StageID` IN (" . $stageStr . ")) mu
+            WHERE `ResultPostedBy` IS NOT NULL) mu
               ON mu.`UserID` = u.`UserID`
 
           LEFT JOIN `Points` po ON
-            po.`ScoringSystemID` = " . $scoringSystem . "
-            AND po.`UserID` = mu.`UserID`
+            po.`UserID` = mu.`UserID`
             AND po.`MatchID` = mu.`MatchID`) tmp
 
-      GROUP BY tmp.`DisplayName`; ";
+      GROUP BY tmp.`UserID`, tmp.`DisplayName`; ";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -350,7 +335,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
   $out = array();
   while ($row = mysqli_fetch_array($result)) {
     $out[] = array(
-      'rank' => $row['Rank']
+       'rank' => $row['Rank']
       ,'rankCount' => $row['RankCount']
       ,'name' => $row['DisplayName']
       ,'submitted' => $row['Submitted']

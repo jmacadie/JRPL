@@ -3,7 +3,7 @@
 // Calculate the all the points systems for a given match
 function calculatePoints($matchID) {
   calculateFootballStandardPoints($matchID);
-  calculateAutoQuizPoints($matchID);
+  //calculateAutoQuizPoints($matchID);
 
 }
 
@@ -28,8 +28,7 @@ function calculateFootballStandardPoints($matchID) {
   $sql = "
     DELETE FROM `Points`
     WHERE
-      `MatchID` = " . $matchID . "
-      AND `ScoringSystemID` = 1;";
+      `MatchID` = " . $matchID . ";";
 
   // Run SQL and trap any errors
   $result = mysqli_query($link, $sql);
@@ -111,7 +110,7 @@ function calculateFootballStandardPoints($matchID) {
     $htp = ($rowP['HomeTeamPoints'] === NULL) ? 0 : $rowP['HomeTeamPoints'];
     $atp = ($rowP['AwayTeamPoints'] === NULL) ? 0 : $rowP['AwayTeamPoints'];
     $missed = ($rowP['AwayTeamPoints'] === NULL);
-    
+
     // Check for right result
     if (!$missed &&
         ((($ht > $at) && ($htp > $atp)) ||
@@ -121,7 +120,7 @@ function calculateFootballStandardPoints($matchID) {
     } else {
       $resultPoints = 0;
     }
-    
+
     // Check for exact score
     if (!$missed &&
         ($ht == $htp) &&
@@ -138,15 +137,13 @@ function calculateFootballStandardPoints($matchID) {
     // Build SQL
     $sql = "
       INSERT INTO `Points`
-        (`ScoringSystemID`,
-         `UserID`,
+        (`UserID`,
          `MatchID`,
          `ResultPoints`,
          `ScorePoints`,
          `TotalPoints`)
       VALUES
-        (1,
-         " . $rowP['UserID'] . ",
+        (" . $rowP['UserID'] . ",
          " . $matchID . ",
          " . $resultPoints . ",
          " . $scorePoints . ",
@@ -435,7 +432,7 @@ function calculateAutoQuizPoints($matchID) {
   $rowM = mysqli_fetch_array($resultM);
   $ht = $rowM['HomeTeamPoints'];
   $at = $rowM['AwayTeamPoints'];
-  
+
   // Set value for third (results) dimension
   if ($ht > $at) {
 	  $res = 0; // Home Win
@@ -515,10 +512,10 @@ function calculateAutoQuizPoints($matchID) {
 
   // Loop through all predictions made
   for ($i = 0, $max = count($arrCalc); $i < $max; $i++) {
-	
+
 	// Increment player count
 	$numPlayers++;
-	
+
     // Calculate this user's Inverted Ecludian Distance
     $ied = $maxED - $arrCalc[$i]['ed'];
     $arrCalc[$i]['ied'] = $ied;
