@@ -40,22 +40,10 @@ if (isset($gMatchID) && int($gMatchID) && ($gMatchID > 0)) {
     $homeTeamS = "";
   if (!isset($awayTeamS))
     $awayTeamS = "";
-  if (!isset($homeTeamHomeTeamS))
-    $homeTeamHomeTeamS = "";
-  if (!isset($homeTeamAwayTeamS))
-    $homeTeamAwayTeamS = "";
-  if (!isset($awayTeamHomeTeamS))
-    $awayTeamHomeTeamS = "";
-  if (!isset($awayTeamAwayTeamS))
-    $awayTeamAwayTeamS = "";
 
   // Sort out flag links
   $homeFlag = ($homeTeamS == '') ? 'tmp' : strtolower($homeTeamS);
   $awayFlag = ($awayTeamS == '') ? 'tmp' : strtolower($awayTeamS);
-  $homeHomeFlag = ($homeTeamHomeTeamS == '') ? 'tmp' : strtolower($homeTeamHomeTeamS);
-  $homeAwayFlag = ($homeTeamAwayTeamS == '') ? 'tmp' : strtolower($homeTeamAwayTeamS);
-  $awayHomeFlag = ($awayTeamHomeTeamS == '') ? 'tmp' : strtolower($awayTeamHomeTeamS);
-  $awayAwayFlag = ($awayTeamAwayTeamS == '') ? 'tmp' : strtolower($awayTeamAwayTeamS);
 
   // Sort out the previous and next links based on the ring variable
   if (isset($gRing) || ($gRing == 0)) {
@@ -68,7 +56,7 @@ if (isset($gMatchID) && int($gMatchID) && ($gMatchID > 0)) {
     $i = $gMatchID + 0;
     do {
       if ($i == 1) {
-        $i = 64;
+        $i = 128;
       } else {
         $i -= 1;
       }
@@ -81,21 +69,21 @@ if (isset($gMatchID) && int($gMatchID) && ($gMatchID > 0)) {
     // which is set in the ring variable, with a 1
     $i = $gMatchID + 0;
     do {
-      if ($i == 64) {
+      if ($i == 128) {
         $i = 1;
       } else {
         $i += 1;
       }
       $j = substr($tmp, $i - 1, 1);
     } while ($j == 0);
-    $nextID = min($i, 64);
+    $nextID = min($i, 128);
     $next = '../match?id=' . $nextID .'&ring='. $gRing;
 
   } else {
 
     // Absent the ring variable just increment the Match ID
     $prevID = $gMatchID - 1;
-    if ($prevID == 0) $prevID == 64;
+    if ($prevID == 0) $prevID == 128;
     $prev = '../match?id=' . $prevID;
 
     $nextID = $gMatchID + 1;
