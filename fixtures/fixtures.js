@@ -125,7 +125,7 @@ function processMatchesReturn (data) {
 
     // Initialise the result variable to hold which matches have been selected
     var result = [];
-    for (var i = 0; i < 64; i++) { result.push(0); }
+    for (var i = 0; i < 128; i++) { result.push(0); }
 
     // Record which matches have actually been selected
     $.each(data.data, function(entryIndex, entry){

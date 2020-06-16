@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/includesfile.inc.php';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Generate data for graphs
-function getGraphData ($scoringSystem = 1) {
+function getGraphData () {
 
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -159,7 +159,7 @@ function getGraphData ($scoringSystem = 1) {
 }
 
 // Grab raw data
-$data = getGraphData($_SESSION['scoringSystem']);
+$data = getGraphData();
 
 // Get the number of users
 $numUsers = 0;

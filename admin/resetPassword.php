@@ -96,8 +96,6 @@ WHERE `UserID` = " . $userID . ";";
   header('Content-type: application/json');
   $arr = array(
     'result' => 'Yes'
-    ,'message' => ''
-    ,'team' => $team
-    ,'teamS' => $teamS);
+    ,'message' => '');
   echo json_encode($arr);
 }
