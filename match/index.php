@@ -16,14 +16,31 @@ if (isset($_GET['id'])) {
   $gMatchID = $_SESSION['matchID'];
 }
 
-// Check $_GET and $_SESSION variables for Ring
-if (isset($_GET['ring'])) {
-  $gRing = $_GET['ring'];
-  $_SESSION['ring'] = $gRing;
-} elseif (isset($_SESSION['ring'])) {
-  $gRing = $_SESSION['ring'];
-}
+// Check if $_SESSION variable for the ring is set and generate if not
+if (!isset($_SESSION['ring'])) {
+  //TODO: Fix this section
+	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+  if (!isset($link)) {
+    $error = 'Error getting DB connection';
+		die($error);
+  }
 
+  $sql = "SELECT `MatchID` FROM `Match` ORDER BY `Date` ASC, `KickOff` ASC;";
+
+  // Run query and handle any failure
+  $result = mysqli_query($link, $sql);
+  if (!$result) {
+    $error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+		die($error);
+  }
+
+  // Store results
+  $arrMatchIDs = array();
+  while($row = mysqli_fetch_assoc($result)) {
+    $arrMatchIDs[] = $row;
+  }
+	$_SESSION['ring'] = $arrMatchIDs;
+}
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Process Match ID and ring variables
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,50 +63,23 @@ if (isset($gMatchID) && int($gMatchID) && ($gMatchID > 0)) {
   $awayFlag = ($awayTeamS == '') ? 'tmp' : strtolower($awayTeamS);
 
   // Sort out the previous and next links based on the ring variable
-  if (isset($gRing) || ($gRing == 0)) {
-
-    //Convert hex string back into binary
-    $tmp = ring_base_convert($gRing);
-
-    // Set previous match link by looping back until we hit a match
-    // which is set in the ring variable, with a 1
-    $i = $gMatchID + 0;
-    do {
-      if ($i == 1) {
-        $i = 128;
-      } else {
-        $i -= 1;
-      }
-      $j = substr($tmp, $i - 1, 1);
-    } while ($j == 0);
-    $prevID = max($i, 1);
-    $prev = '../match?id=' . $prevID .'&ring='. $gRing;
-
-    // Set next match link by looping forward until we hit a match
-    // which is set in the ring variable, with a 1
-    $i = $gMatchID + 0;
-    do {
-      if ($i == 128) {
-        $i = 1;
-      } else {
-        $i += 1;
-      }
-      $j = substr($tmp, $i - 1, 1);
-    } while ($j == 0);
-    $nextID = min($i, 128);
-    $next = '../match?id=' . $nextID .'&ring='. $gRing;
-
-  } else {
-
-    // Absent the ring variable just increment the Match ID
-    $prevID = $gMatchID - 1;
-    if ($prevID == 0) $prevID == 128;
-    $prev = '../match?id=' . $prevID;
-
-    $nextID = $gMatchID + 1;
-    if ($nextID == 65) $nextID == 1;
-    $next = '../match?id=' . $nextID;
-
+  $ring = $_SESSION['ring'];
+  $i = 0;
+  $found = false;
+  $max = count($ring);
+  while (!$found || ($i < $max)) {
+    // Found the match in the ring
+    if ($ring[$i] == $gMatchID) {
+      // Find previous & next matches
+      $prevID = ($i == 0) ? ($max - 1) : ($i - 1);
+      $nextID = ($i == $max - 1) ? 0 : ($i + 1);
+      $prev = '../match?id=' . $ring[$prevID];
+      $next = '../match?id=' . $ring[$nextID];
+      // Set found variable to be true
+      $found = true;
+    }
+    // Increment the counter
+    $i++;
   }
 
   // Set tab variable to indicate point to match page

@@ -1,29 +1,5 @@
 <?php
 
-  // Check for existence of prev variable
-  if (!isset($prev)) {
-    if (isset($_GET['id'])) {
-      $prev = $_GET['id'] - 1;
-    } elseif (isset($_SESSION['matchID'])) {
-      $prev = $_SESSION['matchID'] - 1;
-    } else {
-      $prev = 1;
-    }
-    $prev = max($prev, 1);
-  }
-
-  // Check for existence of next variable
-  if (!isset($next)) {
-    if (isset($_GET['id'])) {
-      $next = $_GET['id'] + 1;
-    } elseif (isset($_SESSION['matchID'])) {
-      $next = $_SESSION['matchID'] + 1;
-    } else {
-      $next = 1;
-    }
-    $next = min($prev, 64);
-  }
-
   // Check for existence of date variable
   if (!isset($date))
     $date  = "";

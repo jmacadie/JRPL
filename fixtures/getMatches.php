@@ -91,9 +91,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
 
   // Store results
   $arrMatches = array();
+  $arrMatchIDs = array();
   while($row = mysqli_fetch_assoc($result)) {
     $arrMatches[] = $row;
+    $arrMatchIDs[] = $row['MatchID'];
   }
+  $_SESSION['ring'] = $arrMatchIDs;
 
   // Test Code
   /*header('Content-type: application/json');
