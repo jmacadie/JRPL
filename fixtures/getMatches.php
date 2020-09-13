@@ -179,8 +179,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
           at.`TeamID` = m.`AwayTeamID`
         LEFT JOIN `Prediction` p ON
           p.`MatchID` = m.`MatchID`
-          AND p.`UserID` =  " . $userID;
-  if ($excPredicted || $excPlayed) $sql .= "
+          AND p.`UserID` =  " . $userID . "
       WHERE
         (";
   if ($t1) $sql .= "m.`HomeTeamID` = 1 OR m.`AwayTeamID` = 1 OR ";
