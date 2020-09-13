@@ -67,7 +67,7 @@ if (isset($gMatchID) && int($gMatchID) && ($gMatchID > 0)) {
   $i = 0;
   $found = false;
   $max = count($ring);
-  while (!$found || ($i < $max)) {
+  while (!$found && ($i < $max)) {
     // Found the match in the ring
     if ($ring[$i] == $gMatchID) {
       // Find previous & next matches
