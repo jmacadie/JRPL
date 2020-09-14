@@ -1,6 +1,16 @@
 // Do stuff when page is ready
 $(document).ready(function() {
 
+  // Add click handler to chnage date button
+  $("#btnSubmitDT").click(function(e) {
+    e.preventDefault();
+    submitDT(
+      $("#matchIDXS").val(),
+      $("#datepicker").data("DateTimePicker").viewDate().format("YYYY-MM-DD"),
+      $("#timepicker").data("DateTimePicker").viewDate().format("HH:mm")
+    );
+  });
+
   // Add click handler to submit prediction button
   $("#btnSubmitPrediction").click(function(e) {
     e.preventDefault();
@@ -25,97 +35,117 @@ $(document).ready(function() {
     submitResult($("#matchIDResXS").val(), $("#homeScoreResXS").val(), $("#awayScoreResXS").val());
   });
 
-  // Add click handler to show / hide home team origin
-  $("#btnHomeOrigin").click(function(e) {
-    e.preventDefault();
-    var $this =$(this);
-    $this.blur();
-	var attr = $(this).attr('disabled');
-	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
-		if ($this.attr('data-state') == 'show') {
-		  $this.attr('data-state','hide').html('Hide Origin');
-		} else {
-		  $this.attr('data-state','show').html('Show Origin');
-		}
-	}
-    $('#homeOrigin').slideToggle('slow');
-  });
+  $('#datepicker').datetimepicker({
+    format: 'ddd, Do MMM YYYY',
+    minDate: moment().startOf('day'),
+    maxDate: '2021-05-31'
+  })
+    .data("DateTimePicker")
+    .date(moment($('#date').html(), 'dddd, Do MMMM YYYY'));
 
-  // Add click handler to show / hide away team origin
-  $("#btnAwayOrigin").click(function(e) {
-    e.preventDefault();
-    var $this =$(this);
-    $this.blur();
-	var attr = $(this).attr('disabled');
-	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
-		if ($this.attr('data-state') == 'show') {
-		  $this.attr('data-state','hide').html('Hide Origin');
-		} else {
-		  $this.attr('data-state','show').html('Show Origin');
-		}
-	}
-    $('#awayOrigin').slideToggle('slow');
-  });
-
-  // Add click handler to show / hide home team origin
-  $("#btnHomeOriginXS").click(function(e) {
-    e.preventDefault();
-    var $this =$(this);
-    $this.blur();
-	var attr = $(this).attr('disabled');
-	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
-		if ($this.attr('data-state') == 'show') {
-		  $this.attr('data-state','hide').html('Hide Origin');
-		} else {
-		  $this.attr('data-state','show').html('Show Origin');
-		}
-	}
-    $('#homeOriginXS').slideToggle('slow');
-  });
-
-  // Add click handler to show / hide away team origin
-  $("#btnAwayOriginXS").click(function(e) {
-    e.preventDefault();
-    var $this =$(this);
-    $this.blur();
-	var attr = $(this).attr('disabled');
-	if (typeof attr !== typeof undefined && attr !== false && attr != 'disabled') {
-		if ($this.attr('data-state') == 'show') {
-		  $this.attr('data-state','hide').html('Hide Origin');
-		} else {
-		  $this.attr('data-state','show').html('Show Origin');
-		}
-	}
-    $('#awayOriginXS').slideToggle('slow');
-  });
+  $('#timepicker').datetimepicker({
+    format: 'HH:mm',
+    stepping: 15
+  })
+    .data("DateTimePicker")
+    .date(moment($('#time').html(), 'HH:mm'));
 
 });
 
 // Function to handle submitting prediction
+function submitDT(matchID, date, time) {
+
+  // Build HTML for warning message
+  var result = [
+      '<div class="alert alert-info alert-dismissable">',
+      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+      'Changing date & time...',
+      '</div>'];
+
+  // Output warning message
+  $("#updateDT").html(result.join(''));
+
+  // Make the AJAX call
+  $.ajax({
+    url: 'submitDT.php',
+    type: 'POST',
+    data: {
+      action: "submitDT",
+      matchID: matchID,
+      date: date,
+      time: time
+    },
+    dataType: 'json',
+    success: function(data) {
+      processSubmitDTReturn (data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      alert ('AJAX callback error: ' + textStatus + ', ' + errorThrown);
+    }
+  });
+
+}
+
+// Callback function to process the returned data after the prediction has been submitted
+function processSubmitDTReturn (data) {
+
+  var result;
+
+  if (data.result === "No") {
+  // If result returned no then something went wrong so build and display an error message
+
+    // Build HTML for error message
+    result = [
+      '<div class="alert alert-danger alert-dismissable">',
+      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+      '<h4>Change Date / Time Error</h4>',
+      data.message,
+      '</div>'];
+
+    // Output error message
+    $("#updateDT").html(result.join(''));
+
+  } else { // Data came back OK so build and display a success message
+
+    // Clear warning message
+    $("#updateDT").html('');
+
+    // Change the date and time on the page
+    $('#date').html(moment(data.date, 'YYYY-MM-DD').format('dddd, Do MMMM YYYY'));
+    $('#time').html(data.time);
+
+    // Collapse change date / time accordion
+    $("#collapseDT").collapse('hide');
+
+  }
+
+}
+
+// Function to handle submitting prediction
 function submitPrediction(matchID, homeTeamScore, awayTeamScore) {
 
-    // Build HTML for warning message
-    var result = [
-        '<div class="alert alert-info alert-dismissable">',
-        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
-        'Submitting prediction to database...',
-        '</div>'];
+  // Build HTML for warning message
+  var result = [
+      '<div class="alert alert-info alert-dismissable">',
+      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+      'Submitting prediction to database...',
+      '</div>'];
 
-    // Output warning message
-    $("#updatePrediction").html(result.join(''));
+  // Output warning message
+  $("#updatePrediction").html(result.join(''));
 
   // Make the AJAX call
   $.ajax({
     url: 'submitPrediction.php',
     type: 'POST',
-    data:
-      {action: "submitPrediction",
+    data: {
+      action: "submitPrediction",
       matchID: matchID,
       homeTeamScore: homeTeamScore,
-      awayTeamScore: awayTeamScore},
+      awayTeamScore: awayTeamScore
+    },
     dataType: 'json',
     success: function(data) {
-      //alert ('Success');
       processSubmitReturn (data);
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -128,7 +158,7 @@ function submitPrediction(matchID, homeTeamScore, awayTeamScore) {
 // Callback function to process the returned data after the prediction has been submitted
 function processSubmitReturn (data) {
 
-    var result;
+  var result;
 
   if (data.result === "No") {
   // If result returned no then something went wrong so build and display an error message
@@ -177,14 +207,14 @@ function submitResult(matchID, homeTeamScore, awayTeamScore) {
   $.ajax({
     url: 'submitResult.php',
     type: 'POST',
-    data:
-      {action: "submitResult",
+    data: {
+      action: "submitResult",
       matchID: matchID,
       homeTeamScore: homeTeamScore,
-      awayTeamScore: awayTeamScore},
+      awayTeamScore: awayTeamScore
+    },
     dataType: 'json',
     success: function(data) {
-      //alert ('Success');
       processSubmitResReturn (data);
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -197,7 +227,7 @@ function submitResult(matchID, homeTeamScore, awayTeamScore) {
 // Callback function to process the returned data after the result has been submitted
 function processSubmitResReturn (data) {
 
-    var result;
+  var result;
 
   if (data.result === "No") {
   // If result returned no then something went wrong so build and display an error message

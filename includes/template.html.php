@@ -24,6 +24,9 @@
   <!-- Responsive Tables CSS -->
   <link rel="stylesheet" href="../assets/css/rwd-table.min.css">
 
+  <!-- Datepicker -->
+  <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
   <!-- Custom styles for this template -->
   <?php
     if (!isset($tab))
@@ -139,6 +142,8 @@
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+  <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
   <script src="<?php htmlout($tab == 'home' ? '' : '../'); ?>assets/js/logout.js"></script>
 
   <?php

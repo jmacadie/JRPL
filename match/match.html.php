@@ -62,11 +62,56 @@
   <div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
 </div>
 <h3>
-  <?php htmlout($date); ?><br />
-  <?php htmlout(substr($kickOff, 0, 5)); ?><br />
+  <div id="date"><?php htmlout($date); ?></div>
+  <div id ="time"><?php htmlout(substr($kickOff, 0, 5)); ?></div>
   <small><?php htmlout($venue); ?><br/>
   <?php htmlout($broadcaster); ?></small>
 </h3>
+<?php if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == TRUE && !$lockedDown): ?>
+<div class="panel-group" id="accordionDT">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseDT">
+          Change match date & time
+        </a>
+      </h4>
+    </div>
+    <div id="collapseDT" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class='input-group date' id='datepicker'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class='input-group date' id='timepicker'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-time"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+              <button class="btn btn-sm btn-primary" type="submit" id="btnSubmitDT">Change Date / Time</button>
+            </div>
+        </div>
+      </div>
+      <div id="updateDT"></div>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
 <h3>
   <!-- Layout for tablets and bigger -->
   <div class="row hidden-xs">

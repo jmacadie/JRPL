@@ -19,10 +19,10 @@ if (isset($_GET['id'])) {
 // Check if $_SESSION variable for the ring is set and generate if not
 if (!isset($_SESSION['ring'])) {
   //TODO: Fix this section
-	include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+  include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
   if (!isset($link)) {
     $error = 'Error getting DB connection';
-		die($error);
+    die($error);
   }
 
   $sql = "SELECT `MatchID` FROM `Match` ORDER BY `Date` ASC, `KickOff` ASC;";
@@ -31,7 +31,7 @@ if (!isset($_SESSION['ring'])) {
   $result = mysqli_query($link, $sql);
   if (!$result) {
     $error = 'Error fetching matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
-		die($error);
+    die($error);
   }
 
   // Store results
@@ -39,7 +39,7 @@ if (!isset($_SESSION['ring'])) {
   while($row = mysqli_fetch_assoc($result)) {
     $arrMatchIDs[] = $row;
   }
-	$_SESSION['ring'] = $arrMatchIDs;
+  $_SESSION['ring'] = $arrMatchIDs;
 }
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Process Match ID and ring variables

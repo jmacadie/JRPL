@@ -101,4 +101,7 @@ hr {
  #updatePrediction .alert{
   margin-top: 15px;
 }
-
+#accordionDT > .panel,
+#collapseDT {
+  overflow: visible;
+}
