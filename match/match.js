@@ -14,25 +14,37 @@ $(document).ready(function() {
   // Add click handler to submit prediction button
   $("#btnSubmitPrediction").click(function(e) {
     e.preventDefault();
-    submitPrediction($("#matchIDXS").val(), $("#homeScore").val(), $("#awayScore").val());
+    submitPrediction($("#matchIDXS").val(), $("#homeScore").val(), $("#awayScore").val(), false);
   });
 
   // Add click handler to submit prediction button for mobile
   $("#btnSubmitPredictionXS").click(function(e) {
     e.preventDefault();
-    submitPrediction($("#matchIDXS").val(), $("#homeScoreXS").val(), $("#awayScoreXS").val());
+    submitPrediction($("#matchIDXS").val(), $("#homeScoreXS").val(), $("#awayScoreXS").val(), false);
+  });
+
+  // Add click handler to submit prediction & move next button
+  $("#btnSubmitPredictionNext").click(function(e) {
+    e.preventDefault();
+    submitPrediction($("#matchIDXS").val(), $("#homeScore").val(), $("#awayScore").val(), true);
+  });
+
+  // Add click handler to submit prediction & movce nextbutton for mobile
+  $("#btnSubmitPredictionNextXS").click(function(e) {
+    e.preventDefault();
+    submitPrediction($("#matchIDXS").val(), $("#homeScoreXS").val(), $("#awayScoreXS").val(), true);
   });
 
   // Add click handler to submit result button
   $("#btnSubmitRes").click(function(e) {
     e.preventDefault();
-    submitResult($("#matchIDResXS").val(), $("#homeScoreRes").val(), $("#awayScoreRes").val());
+    submitResult($("#matchIDResXS").val(), $("#homeScoreRes").val(), $("#awayScoreRes").val(), false);
   });
 
   // Add click handler to submit result button for mobile
   $("#btnSubmitResXS").click(function(e) {
     e.preventDefault();
-    submitResult($("#matchIDResXS").val(), $("#homeScoreResXS").val(), $("#awayScoreResXS").val());
+    submitResult($("#matchIDResXS").val(), $("#homeScoreResXS").val(), $("#awayScoreResXS").val(), false);
   });
 
   $('#datepicker').datetimepicker({
@@ -122,7 +134,7 @@ function processSubmitDTReturn (data) {
 }
 
 // Function to handle submitting prediction
-function submitPrediction(matchID, homeTeamScore, awayTeamScore) {
+function submitPrediction(matchID, homeTeamScore, awayTeamScore, next) {
 
   // Build HTML for warning message
   var result = [
@@ -146,7 +158,7 @@ function submitPrediction(matchID, homeTeamScore, awayTeamScore) {
     },
     dataType: 'json',
     success: function(data) {
-      processSubmitReturn (data);
+      processSubmitReturn (data, next);
     },
     error: function(jqXHR, textStatus, errorThrown) {
       alert ('AJAX callback error: ' + textStatus + ', ' + errorThrown);
@@ -156,7 +168,7 @@ function submitPrediction(matchID, homeTeamScore, awayTeamScore) {
 }
 
 // Callback function to process the returned data after the prediction has been submitted
-function processSubmitReturn (data) {
+function processSubmitReturn (data, next) {
 
   var result;
 
@@ -176,18 +188,23 @@ function processSubmitReturn (data) {
 
   } else { // Data came back OK so build and display a success message
 
-    // Build HTML for success message
-    result = [
-      '<div class="alert alert-success alert-dismissable">',
-      '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
-      'Prediction successfully submitted',
-      '</div>'];
+    if(next) {
+      // Clear message, if not already gone
+      $("#updatePrediction").html();
+      // Move to next match
+      location.href = $('#next').attr('href');
+    } else {
+      // Build HTML for success message
+      result = [
+        '<div class="alert alert-success alert-dismissable">',
+        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>',
+        'Prediction successfully submitted',
+        '</div>'];
 
-    // Output success message
-    $("#updatePrediction").html(result.join(''));
-
+      // Output success message
+      $("#updatePrediction").html(result.join(''));
+    }
   }
-
 }
 
 // Function to handle submitting prediction
