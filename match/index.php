@@ -37,7 +37,7 @@ if (!isset($_SESSION['ring'])) {
   // Store results
   $arrMatchIDs = array();
   while($row = mysqli_fetch_assoc($result)) {
-    $arrMatchIDs[] = $row;
+    $arrMatchIDs[] = $row['MatchID'];
   }
   $_SESSION['ring'] = $arrMatchIDs;
 }
