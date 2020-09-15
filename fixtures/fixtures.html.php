@@ -151,7 +151,7 @@
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbT20" value="" checked>
-                  <strong>Wovlerhampton Wanderers</strong><br />
+                  <strong>Wolverhampton Wanderers</strong><br />
                   </label>
                 </div>
               </div>

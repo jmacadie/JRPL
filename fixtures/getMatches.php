@@ -201,7 +201,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   if ($t17) $sql .= "m.`HomeTeamID` = 17 OR m.`AwayTeamID` = 17 OR ";
   if ($t18) $sql .= "m.`HomeTeamID` = 18 OR m.`AwayTeamID` = 18 OR ";
   if ($t19) $sql .= "m.`HomeTeamID` = 19 OR m.`AwayTeamID` = 19 OR ";
-  if ($t20) $sql .= "m.`HomeTeamID` = 20 OR m.`AwayTeamID` = 10 OR ";
+  if ($t20) $sql .= "m.`HomeTeamID` = 20 OR m.`AwayTeamID` = 20 OR ";
   //Remove last OR as close bracket on section
   $sql = substr($sql, 0, -4) . ")";
   $sql .= " AND (";
