@@ -150,8 +150,8 @@
 
 ?>
 <div class="row">
-  <div class="col-xs-6 text-left"><a href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
-  <div class="col-xs-6 text-right"><a href="<?php echo($next); ?>">Next Match &gt;</a></div>
+  <div class="col-xs-6 text-left"><a id="prev" href="<?php echo($prev); ?>">&lt; Previous Match</a></div>
+  <div class="col-xs-6 text-right"><a id="next" href="<?php echo($next); ?>">Next Match &gt;</a></div>
 </div>
 <h3><?php htmlout($stage); ?><br />
   <?php htmlout($date); ?><br />
@@ -384,8 +384,11 @@
     </div>
   </div>
   <div class="row form-group">
-    <div class="col-sm-12 text-center">
+    <div class="col-sm-6 text-center">
       <button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPrediction">Submit</button>
+    </div>
+    <div class="col-sm-6 text-center">
+      <button class="btn btn-sm btn-success" type="submit" id="btnSubmitPredictionNext">Submit &amp; Move Next</button>
     </div>
   </div>
   <input type="hidden" name="matchID" id="matchID" value="<?php htmlout($matchID); ?>">
@@ -406,7 +409,16 @@
       <input type="number" class="form-control" id="awayScoreXS" name="awayScoreXS" value="<?php htmlout($awayTeamPredPoints); ?>">
     </div>
   </div>
-  <button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPredictionXS">Submit</button>
+  <div class="form-group">
+    <div class="col-xs-6">
+      <button class="btn btn-sm btn-primary" type="submit" id="btnSubmitPredictionXS">Submit</button>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-6">
+      <button class="btn btn-sm btn-success" type="submit" id="btnSubmitPredictionNextXS">Submit &amp; Move Next</button>
+    </div>
+  </div>
   <input type="hidden" name="matchID" id="matchIDXS" value="<?php htmlout($matchID); ?>">
   <?php if($lockedDown) echo('</fieldset>'); ?>
 </form>
