@@ -92,7 +92,7 @@ function ring_base_convert ($ring) {
 }
 
 // Generate data for tables
-function getLeagueTable() {
+function getLeagueTable($gw = NULL) {
 
   // Get DB connection
   include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
@@ -146,6 +146,9 @@ function getLeagueTable() {
         FROM `Match` m
           LEFT JOIN `Prediction` p ON p.`MatchID` = m.`MatchID`
         WHERE p.`UserID` = u.`UserID`
+          ";
+  if ($gw != NULL) $sql .= "AND m.`GameWeekID` = " . $gw;
+  $sql .= "
           AND (p.`HomeTeamPoints` IS NOT NULL AND p.`AwayTeamPoints` IS NOT NULL)
           AND (m.`ResultPostedBy` IS NOT NULL)) AS `Submitted`
 
@@ -153,7 +156,10 @@ function getLeagueTable() {
         FROM
           (SELECT `MatchID`, `UserID`
           FROM `Match`, `User`
-          WHERE `ResultPostedBy` IS NOT NULL) mu
+          WHERE `ResultPostedBy` IS NOT NULL
+          ";
+  if ($gw != NULL) $sql .= "AND `GameWeekID` = " . $gw;
+  $sql .= ") mu
           LEFT JOIN `Prediction` p ON
             p.`MatchID` = mu.`MatchID`
             AND p.`UserID` = mu.`UserID`
@@ -217,7 +223,7 @@ function getLeagueTable() {
 
       FROM
         (SELECT
-          u.`UserID`
+           u.`UserID`
           ,IFNULL(u.`DisplayName`,CONCAT(u.`FirstName`,' ',u.`LastName`)) AS `DisplayName`
           ,IFNULL(po.`ResultPoints`,0) AS `ResultPoints`
           ,IFNULL(po.`ScorePoints`,0) AS `ScorePoints`
@@ -228,7 +234,10 @@ function getLeagueTable() {
           LEFT JOIN
             (SELECT `MatchID`, `UserID`
             FROM `Match`, `User`
-            WHERE `ResultPostedBy` IS NOT NULL) mu
+            WHERE `ResultPostedBy` IS NOT NULL
+          ";
+  if ($gw != NULL) $sql .= "AND `GameWeekID` = " . $gw;
+  $sql .= ") mu
               ON mu.`UserID` = u.`UserID`
 
           LEFT JOIN `Points` po ON
@@ -316,7 +325,7 @@ function getLeagueTable() {
       INNER JOIN `SubmittedMatches` sm ON sm.`UserID` = pbu.`UserID`
 
     ORDER BY
-      pbu.`TotalPoints` DESC
+       pbu.`TotalPoints` DESC
       ,pbu.`ScorePoints` DESC
       ,pbu.`ResultPoints` DESC
       ,pbu.`DisplayName` ASC;";

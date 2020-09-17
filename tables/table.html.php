@@ -20,6 +20,7 @@
           <th data-priority="6" class="text-center">Points /pred</th>
         </tr>
       </thead>
+      <tbody>
         <?php if (isset($rLeague)) : ?>
         <?php foreach ($rLeague as $row): ?>
         <tr>
@@ -72,7 +73,6 @@
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
-      <tbody>
       </tbody>
     </table>
   </div>
