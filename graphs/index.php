@@ -68,7 +68,8 @@ function getGraphData () {
 
           LEFT JOIN `Points` po ON
             po.`UserID` = mu.`UserID`
-            AND po.`MatchID` = mu.`MatchID`) tmp
+            AND po.`MatchID` = mu.`MatchID`
+            AND po.`ScoringSystemID` = 1) tmp
 
       INNER JOIN `Match` m ON
         m.`MatchID` >= tmp.`MatchID`

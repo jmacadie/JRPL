@@ -30,6 +30,7 @@ function sendResultsEmail ($matchID) {
       ,at.`ShortName` AS `AwayTeamS`
       ,m.`HomeTeamPoints`
       ,m.`AwayTeamPoints`
+      ,m.`GameWeekID`
 
     FROM `Match` m
       INNER JOIN `Team` ht ON
@@ -53,9 +54,34 @@ function sendResultsEmail ($matchID) {
   $row = mysqli_fetch_assoc($result);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Get played matches this week
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $sql = "
+    SELECT COUNT(*) AS `Played`
+
+    FROM `Match` m
+
+    WHERE m.`GameWeekID` = " . $row['GameWeekID'] . "
+      AND m.`ResultPostedBy` IS NOT NULL;";
+
+  $result = mysqli_query($link, $sql);
+  if (!$result) {
+    $error = 'Error getting count of posted matches: <br />' . mysqli_error($link) . '<br /><br />' . $sql;
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
+
+  // Get the data
+  $gwPlayed = mysqli_fetch_assoc($result)['Played'];
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get league table details
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $resultLeague = getLeagueTable();
+  $resultGWLeague = getLeagueTable($row['GameWeekID']);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get match result details
@@ -68,6 +94,7 @@ function sendResultsEmail ($matchID) {
       ,po.`ResultPoints`
       ,po.`ScorePoints`
       ,po.`TotalPoints`
+      ,po2.`TotalPoints` AS `DistancePoints`
 
     FROM
       (SELECT `MatchID`, `UserID`, `DisplayName`
@@ -81,9 +108,16 @@ function sendResultsEmail ($matchID) {
       INNER JOIN `Points` po ON
         po.`MatchID` = mu.`MatchID`
         AND po.`UserID` = mu.`UserID`
+        AND po.`ScoringSystemID` = 1
+
+      INNER JOIN `Points` po2 ON
+        po2.`MatchID` = mu.`MatchID`
+        AND po2.`UserID` = mu.`UserID`
+        AND po2.`ScoringSystemID` = 2
 
     ORDER BY
        po.`TotalPoints` DESC
+      ,po2.`TotalPoints` DESC
       ,(p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC
       ,p.`HomeTeamPoints` DESC;";
 
@@ -143,13 +177,13 @@ function sendResultsEmail ($matchID) {
                     style="vertical-align: middle;"
                     src="http://';
   if (getenv('ENVIR') == 'Production') {
-	  $heading .= 'www';
+    $heading .= 'www';
   } else if (getenv('ENVIR') == 'Test') {
-	  $heading .= 'test';
+    $heading .= 'test';
   } else if (getenv('ENVIR') == 'Development') {
-	  $heading .= 'dev';
+    $heading .= 'dev';
   } else {
-	  $heading .= 'www';
+    $heading .= 'www';
   }
   $heading .= '.julianrimet.com/assets/img/flags/';
   $heading .= strtolower($row['HomeTeamS']) . '.png" />' . chr(13);
@@ -190,13 +224,13 @@ function sendResultsEmail ($matchID) {
                     style="vertical-align: middle;"
                     src="http://';
   if (getenv('ENVIR') == 'Production') {
-	  $heading .= 'www';
+    $heading .= 'www';
   } else if (getenv('ENVIR') == 'Test') {
-	  $heading .= 'test';
+    $heading .= 'test';
   } else if (getenv('ENVIR') == 'Development') {
-	  $heading .= 'dev';
+    $heading .= 'dev';
   } else {
-	  $heading .= 'www';
+    $heading .= 'www';
   }
   $heading .= '.julianrimet.com/assets/img/flags/';
   $heading .= strtolower($row['AwayTeamS']) . '.png" />' . chr(13);
@@ -209,7 +243,7 @@ function sendResultsEmail ($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $match = '<!-- Title -->' . chr(13);
   $match .= '<tr>' . chr(13);
-  $match .= '<td colspan="3"
+  $match .= '<td colspan="6"
                  style="font-family: Helvetica, arial, sans-serif;
                         font-size: 18px;
                         color: #333333;
@@ -222,7 +256,7 @@ function sendResultsEmail ($matchID) {
   $match .= '<!-- End of Title -->' . chr(13);
   $match .= '<!-- spacing -->' . chr(13);
   $match .= '<tr>' . chr(13);
-  $match .= '<td colspan="3" width="100%" height="20"
+  $match .= '<td colspan="6" width="100%" height="20"
                  style="font-size:1px; line-height:1px;
                         mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
   $match .= '</tr>' . chr(13);
@@ -287,6 +321,15 @@ function sendResultsEmail ($matchID) {
                         border-bottom: 1px solid #a0a0a0;
                         border-top: 1px solid #a0a0a0;"
                   align="left">Total Points</th>' . chr(13);
+  $match .= '<th style="font-family: Helvetica, arial, sans-serif;
+                        font-size: 14px;
+                        color: #333333;
+                        text-align: center;
+                        line-height: 16px;
+                        border-collapse: collapse;
+                        border-bottom: 1px solid #a0a0a0;
+                        border-top: 1px solid #a0a0a0;"
+                  align="left">Distance</th>' . chr(13);
   $match .= '</tr>' . chr(13);
 
   // Counter for striped rows
@@ -421,6 +464,29 @@ function sendResultsEmail ($matchID) {
                             border-bottom: 1px solid #b7a075;"
                      align="center">' . (int)$rowMatch['TotalPoints'] . '</td>' . chr(13);
     }
+    if ($rowMatch['DistancePoints'] == 0) {
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">-</td>' . chr(13);
+    } else {
+      $match .= '<td style="font-family: Helvetica, arial, sans-serif;
+                            font-size: 14px;
+                            color: #666666;
+                            text-align:center;
+                            line-height: 16px;
+                            white-space: nowrap;
+                            vertical-align: top;
+                            border-collapse: collapse;
+                            border-bottom: 1px solid #b7a075;"
+                     align="center">' . $rowMatch['DistancePoints'] . '</td>' . chr(13);
+    }
 
     $match .= '</tr>' . chr(13);
 
@@ -436,7 +502,7 @@ function sendResultsEmail ($matchID) {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $league = '<!-- Title -->' . chr(13);
   $league .= '<tr>' . chr(13);
-  $league .= '<td colspan="5"
+  $league .= '<td colspan="6"
                   style="font-family: Helvetica, arial, sans-serif;
                          font-size: 18px;
                          color: #333333;
@@ -449,7 +515,7 @@ function sendResultsEmail ($matchID) {
   $league .= '<!-- End of Title -->' . chr(13);
   $league .= '<!-- spacing -->' . chr(13);
   $league .= '<tr>' . chr(13);
-  $league .= '<td colspan="5" width="100%" height="20"
+  $league .= '<td colspan="6" width="100%" height="20"
                   style="font-size:1px;
                          line-height:1px;
                          mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
@@ -506,6 +572,15 @@ function sendResultsEmail ($matchID) {
                          border-bottom: 1px solid #a0a0a0;
                          border-top: 1px solid #a0a0a0;"
                   align="left">Overall Points</th>' . chr(13);
+  $league .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align: center;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Distance</th>' . chr(13);
   $league .= '</tr>' . chr(13);
 
   // Counter for striped rows
@@ -615,6 +690,29 @@ function sendResultsEmail ($matchID) {
                              border-bottom: 1px solid #b7a075;"
                       align="center">' . (int)$rowLeague['totalPoints'] . '</td>' . chr(13);
     }
+    if ($rowLeague['distancePoints'] == 0) {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $league .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . $rowLeague['distancePoints'] . '</td>' . chr(13);
+    }
     $league .= '</tr>' . chr(13);
 
   }
@@ -625,6 +723,242 @@ function sendResultsEmail ($matchID) {
   $league .= '<!-- End of content -->' . chr(13);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Body - write game week league table
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $leagueGW = '<!-- Title -->' . chr(13);
+  $leagueGW .= '<tr>' . chr(13);
+  $leagueGW .= '<td colspan="6"
+                  style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 18px;
+                         color: #333333;
+                         text-align:center;
+                         line-height: 30px;"
+                  st-title="fulltext-heading">' . chr(13);
+  $leagueGW .= 'Current Game Week League Table' . chr(13);
+  $leagueGW .= '</td>' . chr(13);
+  $leagueGW .= '</tr>' . chr(13);
+  $leagueGW .= '<tr>' . chr(13);
+  $leagueGW .= '<td colspan="6"
+                  style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align:center;
+                         line-height: 20px;"
+                  st-title="fulltext-heading">' . chr(13);
+  $leagueGW .= 'Match ' . $gwPlayed . '  of 10' . chr(13);
+  $leagueGW .= '</td>' . chr(13);
+  $leagueGW .= '</tr>' . chr(13);
+  $leagueGW .= '<!-- End of Title -->' . chr(13);
+  $leagueGW .= '<!-- spacing -->' . chr(13);
+  $leagueGW .= '<tr>' . chr(13);
+  $leagueGW .= '<td colspan="6" width="100%" height="20"
+                  style="font-size:1px;
+                         line-height:1px;
+                         mso-line-height-rule: exactly;">&nbsp;</td>' . chr(13);
+  $leagueGW .= '</tr>' . chr(13);
+  $leagueGW .= '<!-- End of spacing -->' . chr(13);
+  $leagueGW .= '<!-- content -->' . chr(13);
+  $leagueGW .= '<tr>' . chr(13);
+  $leagueGW .= '<td st-content="fulltext-content">' . chr(13);
+  $leagueGW .= '<table border="0" width="100%" cellpadding="4" cellspacing="0"
+                     border="0" align="left" class="devicewidth">' . chr(13);
+  $leagueGW .= '<tr style="background-color: #d3d3d3;">' . chr(13);
+  $leagueGW .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">&nbsp;</th>' . chr(13);
+  $leagueGW .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align:left;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Player</th>' . chr(13);
+  $leagueGW .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align: center;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Result Points</th>' . chr(13);
+  $leagueGW .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align: center;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Score Points</th>' . chr(13);
+  $leagueGW .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align: center;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Overall Points</th>' . chr(13);
+  $leagueGW .= '<th style="font-family: Helvetica, arial, sans-serif;
+                         font-size: 14px;
+                         color: #333333;
+                         text-align: center;
+                         line-height: 16px;
+                         border-collapse: collapse;
+                         border-bottom: 1px solid #a0a0a0;
+                         border-top: 1px solid #a0a0a0;"
+                  align="left">Distance</th>' . chr(13);
+  $leagueGW .= '</tr>' . chr(13);
+
+  // Counter for striped rows
+  $i = 0;
+
+  foreach ($resultGWLeague as $rowGWLeague) {
+
+    if($i == 1) {
+      $leagueGW .= '<tr style="background-color: #f4ecdc;">' . chr(13);
+      $i = 2;
+    } else{
+      $leagueGW .= '<tr>' . chr(13);
+      $i = 1;
+    }
+
+    $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                           font-size: 14px;
+                           color: #666666;
+                           text-align:left;
+                           line-height: 16px;
+                           white-space: nowrap;
+                           vertical-align: top;
+                           border-collapse: collapse;
+                           border-bottom: 1px solid #b7a075;"
+                    align="left">';
+    if ($rowGWLeague['rankCount'] > 1) {
+      $leagueGW .= $rowGWLeague['rank'] . '=</td>' . chr(13);
+    } else {
+      $leagueGW .= $rowGWLeague['rank'] . '</td>' . chr(13);
+    }
+    $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                           font-size: 14px;
+                           color: #666666;
+                           text-align:left;
+                           line-height: 16px;
+                           white-space: nowrap;
+                           vertical-align: top;
+                           border-collapse: collapse;
+                           border-bottom: 1px solid #b7a075;"
+                    align="left">' . $rowGWLeague['name'] . '</td>' . chr(13);
+    if ($rowGWLeague['results'] == 0) {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowGWLeague['results'] . '</td>' . chr(13);
+    }
+    if ($rowGWLeague['scores'] == 0) {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align: center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowGWLeague['scores'] . '</td>' . chr(13);
+    }
+    if ($rowGWLeague['totalPoints'] == 0) {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . (int)$rowGWLeague['totalPoints'] . '</td>' . chr(13);
+    }
+    if ($rowGWLeague['distancePoints'] == 0) {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">-</td>' . chr(13);
+    } else {
+      $leagueGW .= '<td style="font-family: Helvetica, arial, sans-serif;
+                             font-size: 14px;
+                             color: #666666;
+                             text-align:center;
+                             line-height: 16px;
+                             white-space: nowrap;
+                             vertical-align: top;
+                             border-collapse: collapse;
+                             border-bottom: 1px solid #b7a075;"
+                      align="center">' . $rowGWLeague['distancePoints'] . '</td>' . chr(13);
+    }
+    $leagueGW .= '</tr>' . chr(13);
+
+  }
+
+  $leagueGW .= '</table>' . chr(13);
+  $leagueGW .= '</td>' . chr(13);
+  $leagueGW .= '</tr>' . chr(13);
+  $leagueGW .= '<!-- End of content -->' . chr(13);
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Body - build body array for sendEmail routine
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   $body = array(array('separator','Separator'),
@@ -633,6 +967,8 @@ function sendResultsEmail ($matchID) {
                 array('table','Current League table',$match),
                 array('separatorHR','Separator'),
                 array('table','Match details table',$league),
+                array('separatorHR','Separator'),
+                array('table','Match details table',$leagueGW),
                 array('separatorHR','Separator'));
 
   // Send e-mail

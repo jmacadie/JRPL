@@ -123,7 +123,8 @@ if ($lockedDown == 1) {
         at.`Name` AS `AwayTeam`,
         IFNULL(p.`HomeTeamPoints`,'No prediction') AS `HomeTeamPrediction`,
         IFNULL(p.`AwayTeamPoints`,'No prediction') AS `AwayTeamPrediction`,
-        ROUND(po.`TotalPoints`, 2) AS `TotalPoints`
+        ROUND(po.`TotalPoints`, 2) AS `TotalPoints`,
+        ROUND(po2.`TotalPoints`, 2) AS `DistancePoints`
 
       FROM
         (SELECT `MatchID`, `HomeTeamID`, `AwayTeamID`, `UserID`, `DisplayName`
@@ -140,9 +141,15 @@ if ($lockedDown == 1) {
         LEFT JOIN `Points` po ON
           po.`MatchID` = p.`MatchID`
           AND po.`UserID` = p.`UserID`
+          AND po.`ScoringSystemID` = 1
+        LEFT JOIN `Points` po2 ON
+          po2.`MatchID` = p.`MatchID`
+          AND po2.`UserID` = p.`UserID`
+          AND po2.`ScoringSystemID` = 2
 
       ORDER BY
         po.`TotalPoints` DESC,
+        po2.`TotalPoints` DESC,
         (p.`HomeTeamPoints` - p.`AwayTeamPoints`) DESC,
         p.`HomeTeamPoints` DESC,
         mu.`UserID` ASC;";

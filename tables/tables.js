@@ -89,7 +89,7 @@ function processSubmitReturn (data) {
       result.push('<tr>');
 
       // Rank
-      result.push('<td ' + colAttributes[7] + '>');
+      result.push('<td ' + colAttributes[8] + '>');
       if (entry['rankCount'] > 1) {
         result.push(entry['rank'] + '=');
       } else {
@@ -98,12 +98,12 @@ function processSubmitReturn (data) {
       result.push('</td>');
 
       // Player Name
-      result.push('<td ' + colAttributes[8] + '>');
+      result.push('<td ' + colAttributes[9] + '>');
       result.push(entry['name']);
       result.push('</td>');
 
       // Predictions submitted
-      result.push('<td ' + colAttributes[9] + '">');
+      result.push('<td ' + colAttributes[10] + '">');
       if (entry['submitted'] == 0) {
         result.push('-');
       } else {
@@ -112,7 +112,7 @@ function processSubmitReturn (data) {
       result.push('</td>');
 
       // Correct result points
-      result.push('<td ' + colAttributes[10] + '>');
+      result.push('<td ' + colAttributes[11] + '>');
       if (entry['results'] == 0) {
         result.push('-');
       } else if (entry['results'] == Math.round(entry['results'])) {
@@ -123,7 +123,7 @@ function processSubmitReturn (data) {
       result.push('</td>');
 
       // Correct score points
-      result.push('<td ' + colAttributes[11] + '>');
+      result.push('<td ' + colAttributes[12] + '>');
       if (entry['scores'] == 0) {
         result.push('-');
       } else if (entry['scores'] == Math.round(entry['scores'])) {
@@ -134,7 +134,7 @@ function processSubmitReturn (data) {
       result.push('</td>');
 
       // Total points
-      result.push('<td ' + colAttributes[12] + '><strong>');
+      result.push('<td ' + colAttributes[13] + '><strong>');
       if (entry['totalPoints'] == 0) {
         result.push('-');
       } else if (entry['totalPoints'] == Math.round(entry['totalPoints'])) {
@@ -144,8 +144,19 @@ function processSubmitReturn (data) {
       }
       result.push('</strong></td>');
 
+      // Distance
+      result.push('<td ' + colAttributes[14] + '><strong>');
+      if (entry['distancePoints'] == 0) {
+        result.push('-');
+      } else if (entry['distancePoints'] == Math.round(entry['distancePoints'])) {
+        result.push(Math.round(entry['distancePoints']));
+      } else {
+        result.push(entry['distancePoints']);
+      }
+      result.push('</strong></td>');
+
       // Points per prediction
-      result.push('<td ' + colAttributes[13] + '>');
+      result.push('<td ' + colAttributes[15] + '>');
       if (entry['submitted'] == 0 || entry['totalPoints'] == 0) {
         result.push('-');
       } else {

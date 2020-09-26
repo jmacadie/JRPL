@@ -3,7 +3,7 @@
 // Calculate the all the points systems for a given match
 function calculatePoints($matchID) {
   calculateFootballStandardPoints($matchID);
-  //calculateAutoQuizPoints($matchID);
+  calculateFixedDistancePoints($matchID);
 
 }
 
@@ -28,7 +28,8 @@ function calculateFootballStandardPoints($matchID) {
   $sql = "
     DELETE FROM `Points`
     WHERE
-      `MatchID` = " . $matchID . ";";
+        `MatchID` = " . $matchID . "
+        AND `ScoringSystemID` = 1;";
 
   // Run SQL and trap any errors
   $result = mysqli_query($link, $sql);
@@ -139,12 +140,14 @@ function calculateFootballStandardPoints($matchID) {
       INSERT INTO `Points`
         (`UserID`,
          `MatchID`,
+         `ScoringSystemID`,
          `ResultPoints`,
          `ScorePoints`,
          `TotalPoints`)
       VALUES
         (" . $rowP['UserID'] . ",
          " . $matchID . ",
+         1,
          " . $resultPoints . ",
          " . $scorePoints . ",
          " . $totalPoints . ");";
@@ -435,11 +438,11 @@ function calculateAutoQuizPoints($matchID) {
 
   // Set value for third (results) dimension
   if ($ht > $at) {
-	  $res = 0; // Home Win
+    $res = 0; // Home Win
   } else if ($ht == $at) {
-	  $res = 3; // Draw
+    $res = 3; // Draw
   } else {
-	  $res = 6; // Away Win
+    $res = 6; // Away Win
   }
 
   // Grab predictions
@@ -475,16 +478,16 @@ function calculateAutoQuizPoints($matchID) {
   // Loop through all predictions made
   while ($rowP = mysqli_fetch_array($resultP)) {
 
-	// Grab values
-	$htp = $rowP['HomeTeamPoints'];
-	$atp = $rowP['AwayTeamPoints'];
-	if ($htp > $atp) {
-	  $resp = 0; // Home Win
-	} else if ($htp == $atp) {
-	  $resp = 3; // Draw
-	} else {
-	  $resp = 6; // Away Win
-	}
+  // Grab values
+  $htp = $rowP['HomeTeamPoints'];
+  $atp = $rowP['AwayTeamPoints'];
+  if ($htp > $atp) {
+    $resp = 0; // Home Win
+  } else if ($htp == $atp) {
+    $resp = 3; // Draw
+  } else {
+    $resp = 6; // Away Win
+  }
 
     // Reset single user output array
     $out = array();
@@ -513,8 +516,8 @@ function calculateAutoQuizPoints($matchID) {
   // Loop through all predictions made
   for ($i = 0, $max = count($arrCalc); $i < $max; $i++) {
 
-	// Increment player count
-	$numPlayers++;
+  // Increment player count
+  $numPlayers++;
 
     // Calculate this user's Inverted Ecludian Distance
     $ied = $maxED - $arrCalc[$i]['ed'];
@@ -558,6 +561,174 @@ function calculateAutoQuizPoints($matchID) {
     $result = mysqli_query($link, $sql);
     if (!$result) {
       $error = "Error inserting AutoQuiz points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+
+      header('Content-type: application/json');
+      $arr = array('result' => 'No', 'message' => $error);
+      echo json_encode($arr);
+      die();
+    }
+  }
+}
+
+// Calculate the FixedDistance points for a given match
+function calculateFixedDistancePoints($matchID) {
+
+  // Get DB connection
+  include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+  if (!isset($link)) {
+    $error = 'Error getting DB connection';
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
+
+  // Delete existing prediction first
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // Build SQL
+  $sql = "
+    DELETE FROM `Points`
+    WHERE
+      `MatchID` = " . $matchID . "
+      AND `ScoringSystemID` = 2;";
+
+  // Run SQL and trap any errors
+  $result = mysqli_query($link, $sql);
+  if (!$result) {
+    $error = "Error deleting previous Fixed Distance points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
+
+  // Grab match result
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // Build SQL
+  $sql = "
+    SELECT
+      `HomeTeamPoints`
+      ,`AwayTeamPoints`
+    FROM `Match`
+    WHERE `MatchID` = " . $matchID . ";";
+
+  // Run SQL and trap any errors
+  $resultM = mysqli_query($link, $sql);
+  if (!$resultM) {
+    $error = "Error getting result for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
+
+  // Grab results
+  $rowM = mysqli_fetch_array($resultM);
+  $ht = $rowM['HomeTeamPoints'];
+  $at = $rowM['AwayTeamPoints'];
+
+  // Set value for third (results) dimension
+  if ($ht > $at) {
+    $res = 0; // Home Win
+  } else if ($ht == $at) {
+    $res = 3; // Draw
+  } else {
+    $res = 6; // Away Win
+  }
+
+  // Grab predictions
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // Build SQL
+  $sql = "
+    SELECT
+      `UserID`
+      ,`HomeTeamPoints`
+      ,`AwayTeamPoints`
+    FROM `Prediction`
+    WHERE `MatchID` = " . $matchID . ";";
+
+  // Run SQL and trap any errors
+  $resultP = mysqli_query($link, $sql);
+  if (!$resultP) {
+    $error = "Error getting predictions for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
+
+    header('Content-type: application/json');
+    $arr = array('result' => 'No', 'message' => $error);
+    echo json_encode($arr);
+    die();
+  }
+
+  // Loop through predictions and calculate Ecludian Distance
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // Set variables
+  $maxED = 0;
+  $arrCalc = array();
+
+  // Loop through all predictions made
+  while ($rowP = mysqli_fetch_array($resultP)) {
+
+  // Grab values
+  $htp = $rowP['HomeTeamPoints'];
+  $atp = $rowP['AwayTeamPoints'];
+  if ($htp > $atp) {
+    $resp = 0; // Home Win
+  } else if ($htp == $atp) {
+    $resp = 3; // Draw
+  } else {
+    $resp = 6; // Away Win
+  }
+
+    // Reset single user output array
+    $out = array();
+    $out['userID'] = $rowP['UserID'];
+
+    // Calculate this user's Ecludian Distance
+    $ed = sqrt(pow($htp - $ht, 2) +
+               pow($atp - $at, 2) +
+               pow($resp - $res, 2));
+    $out['ed'] = $ed;
+
+    // Calculate the fixed disatcne points
+    $fd = 15 / pow(1.5, $ed);
+    $out['fd'] = $fd;
+
+    // Add single user output array
+    $arrCalc[] = $out;
+  }
+
+  // Calculate points and INSERT them back into the DB
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  // Loop through all predictions made
+  foreach ($arrCalc as $userPoints) {
+
+    // Build SQL
+    $sql = "INSERT INTO `Points`
+          (`ScoringSystemID`,
+          `UserID`,
+          `MatchID`,
+          `ResultPoints`,
+          `ScorePoints`,
+          `TotalPoints`)
+        VALUES
+          (2,
+          " . $userPoints['userID'] . ",
+          " . $matchID . ",
+          0,
+          0,
+          " . $userPoints['fd'] . ");";
+
+    // Run SQL and trap any errors
+    $result = mysqli_query($link, $sql);
+    if (!$result) {
+      $error = "Error inserting  Fixed Distance points for match: <br />" . mysqli_error($link) . '<br /><br />' . $sql;
 
       header('Content-type: application/json');
       $arr = array('result' => 'No', 'message' => $error);

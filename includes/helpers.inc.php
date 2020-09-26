@@ -198,7 +198,8 @@ function getLeagueTable($gw = NULL) {
       ,`DisplayName` VARCHAR(100) NOT NULL
       ,`ResultPoints` DECIMAL(6,2) NOT NULL
       ,`ScorePoints` DECIMAL(6,2) NOT NULL
-      ,`TotalPoints` DECIMAL(6,2) NOT NULL) ; ";
+      ,`TotalPoints` DECIMAL(6,2) NOT NULL
+      ,`DistancePoints` DECIMAL(6,2) NOT NULL) ; ";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
@@ -220,6 +221,7 @@ function getLeagueTable($gw = NULL) {
         ,SUM(tmp.`ResultPoints`) AS `ResultPoints`
         ,SUM(tmp.`ScorePoints`) AS `ScorePoints`
         ,SUM(tmp.`TotalPoints`) AS `TotalPoints`
+        ,SUM(tmp.`DistancePoints`) AS `DistancePoints`
 
       FROM
         (SELECT
@@ -228,6 +230,7 @@ function getLeagueTable($gw = NULL) {
           ,IFNULL(po.`ResultPoints`,0) AS `ResultPoints`
           ,IFNULL(po.`ScorePoints`,0) AS `ScorePoints`
           ,IFNULL(po.`TotalPoints`,0) AS `TotalPoints`
+          ,IFNULL(po2.`TotalPoints`,0) AS `DistancePoints`
 
         FROM `User` u
 
@@ -242,7 +245,13 @@ function getLeagueTable($gw = NULL) {
 
           LEFT JOIN `Points` po ON
             po.`UserID` = mu.`UserID`
-            AND po.`MatchID` = mu.`MatchID`) tmp
+            AND po.`MatchID` = mu.`MatchID`
+            AND po.`ScoringSystemID` = 1
+
+          LEFT JOIN `Points` po2 ON
+            po2.`UserID` = mu.`UserID`
+            AND po2.`MatchID` = mu.`MatchID`
+            AND po2.`ScoringSystemID` = 2) tmp
 
       GROUP BY tmp.`UserID`, tmp.`DisplayName`; ";
 
@@ -313,10 +322,13 @@ function getLeagueTable($gw = NULL) {
     SELECT
       (SELECT COUNT(*) + 1
       FROM `PointsByUser2` pbu2
-      WHERE pbu2.`TotalPoints` > pbu.`TotalPoints`) AS `Rank`
+      WHERE (pbu2.`TotalPoints` > pbu.`TotalPoints`)
+        OR ((pbu2.`TotalPoints` = pbu.`TotalPoints`)
+          AND (pbu2.`DistancePoints` > pbu.`DistancePoints`))) AS `Rank`
       ,(SELECT COUNT(*)
       FROM `PointsByUser3` pbu3
-      WHERE pbu3.`TotalPoints` = pbu.`TotalPoints`) AS `RankCount`
+      WHERE (pbu3.`TotalPoints` = pbu.`TotalPoints`)
+        AND (pbu3.`DistancePoints` = pbu.`DistancePoints`)) AS `RankCount`
       ,pbu.*
       ,sm.`Submitted`
       ,sm.`NotSubmitted`
@@ -326,6 +338,7 @@ function getLeagueTable($gw = NULL) {
 
     ORDER BY
        pbu.`TotalPoints` DESC
+      ,pbu.`DistancePoints` DESC
       ,pbu.`ScorePoints` DESC
       ,pbu.`ResultPoints` DESC
       ,pbu.`DisplayName` ASC;";
@@ -351,7 +364,8 @@ function getLeagueTable($gw = NULL) {
       ,'notSubmitted' => $row['NotSubmitted']
       ,'results' => $row['ResultPoints']
       ,'scores' => $row['ScorePoints']
-      ,'totalPoints' => $row['TotalPoints']);
+      ,'totalPoints' => $row['TotalPoints']
+      ,'distancePoints' => $row['DistancePoints']);
   }
 
   return $out;

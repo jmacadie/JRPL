@@ -320,7 +320,8 @@
     <tr>
       <th>Player</th>
       <th>Prediction</th>
-      <th>Points</th>
+      <th>Standard Points</th>
+      <th>Distance</th>
     </tr>
   </thead>
   <tbody>
@@ -355,6 +356,12 @@
           htmlout('-');
         } else {
           $out = (int($result['TotalPoints'])) ? round($result['TotalPoints']) : $result['TotalPoints'];
+          htmlout($out);
+        } ?></td>
+      <td><?php if($result['DistancePoints'] == 0) {
+          htmlout('-');
+        } else {
+          $out = (int($result['DistancePoints'])) ? round($result['DistancePoints']) : $result['DistancePoints'];
           htmlout($out);
         } ?></td>
       <?php if ($result['HomeTeamPrediction'] == 'No prediction') { echo('</i>'); }; ?>
