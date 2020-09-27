@@ -121,7 +121,11 @@ function getGraphData () {
       INNER JOIN `Team` ht ON ht.`TeamID` = m.`HomeTeamID`
       INNER JOIN `Team` at ON at.`TeamID` = m.`AwayTeamID`
 
-    ORDER BY cpmu.`MatchID` ASC, cpmu.`UserID` ASC";
+    ORDER BY
+      m.`Date` ASC,
+      m.`Kickoff` ASC,
+      cpmu.`MatchID` ASC,
+      cpmu.`UserID` ASC";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
