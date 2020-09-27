@@ -13,12 +13,12 @@
         <tr>
           <th>Position</th>
           <th>Player</th>
-          <th data-priority="3" class="text-center">Predicted</th>
-          <th data-priority="4" class="text-center">Correct Results</th>
-          <th data-priority="4" class="text-center">Score Points</th>
+          <th data-priority="2" class="text-center">Predicted</th>
+          <th data-priority="3" class="text-center">Correct Results</th>
+          <th data-priority="3" class="text-center">Score Points</th>
           <th class="text-center">Points</th>
-          <th data-priority="2" class="text-center">Distance</th>
-          <th data-priority="5" class="text-center">Points /pred</th>
+          <th class="text-center">Distance</th>
+          <th data-priority="4" class="text-center">Points /pred</th>
         </tr>
       </thead>
       <tbody>
@@ -65,7 +65,7 @@
                         : $row['totalPoints'];
               htmlout($out);
             } ?></strong></td>
-          <td class="text-center"><strong><?php
+          <td class="text-center"><?php
             if($row['distancePoints'] == 0) {
               htmlout('-');
             } else {
@@ -73,7 +73,7 @@
                         ? round($row['distancePoints'])
                         : $row['distancePoints'];
               htmlout($out);
-            } ?></strong></td>
+            } ?></td>
           <td class="text-center"><?php
             if(($row['submitted'] == 0) || ($row['totalPoints'] == 0)) {
               htmlout('-');

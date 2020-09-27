@@ -12,7 +12,7 @@
 <h3>Game Week</h3>
 <form class="form-horizontal">
   <div class="form-group">
-    <div class="col-xs-4">
+    <div class="col-sm-4">
       <select class="form-control" id="gameWeek">
         <option value="1"<?php if($gw==1) echo(" selected");?>>Week 1: 12th Sep - 14th Sep</option>
         <option value="2"<?php if($gw==2) echo(" selected");?>>Week 2: 19th Sep - 21st Sep</option>
