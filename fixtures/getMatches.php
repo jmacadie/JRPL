@@ -18,7 +18,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   // Assign values
   $userID = (isset($_SESSION['userID'])) ? $_SESSION['userID'] : 0;
   $excPlayed = (isset($_POST['excPlayed'])) ? ($_POST['excPlayed'] === 'true') : true;
-  $excPredicted = (isset($_POST['excPredicted'])) ? ($_POST['excPredicted'] === 'true') : true;
+  $excPredicted = (isset($_POST['excPredicted'])) ? ($_POST['excPredicted'] === 'true') : false;
   $t1 = (isset($_POST['t1'])) ? ($_POST['t1'] === 'true') : true;
   $t2 = (isset($_POST['t2'])) ? ($_POST['t2'] === 'true') : true;
   $t3 = (isset($_POST['t3'])) ? ($_POST['t3'] === 'true') : true;
@@ -66,7 +66,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $gw25 = (isset($_POST['gw25'])) ? ($_POST['gw25'] === 'true') : true;
   $gw26 = (isset($_POST['gw26'])) ? ($_POST['gw26'] === 'true') : true;
   $gw27 = (isset($_POST['gw27'])) ? ($_POST['gw27'] === 'true') : true;
-  $gw28 = (isset($_POST['gw28'])) ? ($_POST['gw18'] === 'true') : true;
+  $gw28 = (isset($_POST['gw28'])) ? ($_POST['gw28'] === 'true') : true;
   $gw29 = (isset($_POST['gw29'])) ? ($_POST['gw29'] === 'true') : true;
   $gw30 = (isset($_POST['gw30'])) ? ($_POST['gw30'] === 'true') : true;
   $gw31 = (isset($_POST['gw31'])) ? ($_POST['gw31'] === 'true') : true;
@@ -75,7 +75,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $gw34 = (isset($_POST['gw34'])) ? ($_POST['gw34'] === 'true') : true;
   $gw35 = (isset($_POST['gw35'])) ? ($_POST['gw35'] === 'true') : true;
   $gw36 = (isset($_POST['gw36'])) ? ($_POST['gw36'] === 'true') : true;
-  $gw37 = (isset($_POST['gw37'])) ? ($_POST['gw17'] === 'true') : true;
+  $gw37 = (isset($_POST['gw37'])) ? ($_POST['gw37'] === 'true') : true;
   $gw38 = (isset($_POST['gw38'])) ? ($_POST['gw38'] === 'true') : true;
 
   // Get DB connection
@@ -151,6 +151,144 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateMatches')
   $gw36 = mysqli_real_escape_string($link, $gw36);
   $gw37 = mysqli_real_escape_string($link, $gw37);
   $gw38 = mysqli_real_escape_string($link, $gw38);
+
+  // Convert back to bools
+  $excPlayed = ($excPlayed == "1");
+  $excPredicted = ($excPredicted == "1");
+  $t1 = ($t1 == "1");
+  $t2 = ($t2 == "1");
+  $t3 = ($t3 == "1");
+  $t4 = ($t4 == "1");
+  $t5 = ($t5 == "1");
+  $t6 = ($t6 == "1");
+  $t7 = ($t7 == "1");
+  $t8 = ($t8 == "1");
+  $t9 = ($t9 == "1");
+  $t10 = ($t10 == "1");
+  $t11 = ($t11 == "1");
+  $t12 = ($t12 == "1");
+  $t13 = ($t13 == "1");
+  $t14 = ($t14 == "1");
+  $t15 = ($t15 == "1");
+  $t16 = ($t16 == "1");
+  $t17 = ($t17 == "1");
+  $t18 = ($t18 == "1");
+  $t19 = ($t19 == "1");
+  $t20 = ($t20 == "1");
+  $gw1 = ($gw1 == "1");
+  $gw2 = ($gw2 == "1");
+  $gw3 = ($gw3 == "1");
+  $gw4 = ($gw4 == "1");
+  $gw5 = ($gw5 == "1");
+  $gw6 = ($gw6 == "1");
+  $gw7 = ($gw7 == "1");
+  $gw8 = ($gw8 == "1");
+  $gw9 = ($gw9 == "1");
+  $gw10 = ($gw10 == "1");
+  $gw11 = ($gw11 == "1");
+  $gw12 = ($gw12 == "1");
+  $gw13 = ($gw13 == "1");
+  $gw14 = ($gw14 == "1");
+  $gw15 = ($gw15 == "1");
+  $gw16 = ($gw16 == "1");
+  $gw17 = ($gw17 == "1");
+  $gw18 = ($gw18 == "1");
+  $gw19 = ($gw19 == "1");
+  $gw20 = ($gw20 == "1");
+  $gw21 = ($gw21 == "1");
+  $gw22 = ($gw22 == "1");
+  $gw23 = ($gw23 == "1");
+  $gw24 = ($gw24 == "1");
+  $gw25 = ($gw25 == "1");
+  $gw26 = ($gw26 == "1");
+  $gw27 = ($gw27 == "1");
+  $gw28 = ($gw28 == "1");
+  $gw29 = ($gw29 == "1");
+  $gw30 = ($gw30 == "1");
+  $gw31 = ($gw31 == "1");
+  $gw32 = ($gw32 == "1");
+  $gw33 = ($gw33 == "1");
+  $gw34 = ($gw34 == "1");
+  $gw35 = ($gw35 == "1");
+  $gw36 = ($gw36 == "1");
+  $gw37 = ($gw37 == "1");
+  $gw38 = ($gw38 == "1");
+
+  //Make sure not everything is unselected
+  if (!$t1  && !$t2  && !$t3  && !$t4  && !$t5 &&
+      !$t6  && !$t7  && !$t8  && !$t9  && !$t10 &&
+      !$t11 && !$t12 && !$t13 && !$t14 && !$t15 &&
+      !$t16 && !$t17 && !$t18 && !$t19 && !$t20) $t1 = true;
+  if (!$gw1  && !$gw2  && !$gw3  && !$gw4  && !$gw5 &&
+      !$gw6  && !$gw7  && !$gw8  && !$gw9  && !$gw10 &&
+      !$gw11 && !$gw12 && !$gw13 && !$gw14 && !$gw15 &&
+      !$gw16 && !$gw17 && !$gw18 && !$gw19 && !$gw20 &&
+      !$gw21 && !$gw22 && !$gw23 && !$gw24 && !$gw25 &&
+      !$gw26 && !$gw27 && !$gw28 && !$gw29 && !$gw30 &&
+      !$gw31 && !$gw32 && !$gw33 && !$gw34 && !$gw35 &&
+      !$gw36 && !$gw37 && !$gw38) $gw1 = true;
+
+  // Store options in session variable
+  $_SESSION['excPlayed'] = $excPlayed;
+  $_SESSION['excPredicted'] = $excPredicted;
+  $_SESSION['t1'] = $t1;
+  $_SESSION['t2'] = $t2;
+  $_SESSION['t3'] = $t3;
+  $_SESSION['t4'] = $t4;
+  $_SESSION['t5'] = $t5;
+  $_SESSION['t6'] = $t6;
+  $_SESSION['t7'] = $t7;
+  $_SESSION['t8'] = $t8;
+  $_SESSION['t9'] = $t9;
+  $_SESSION['t10'] = $t10;
+  $_SESSION['t11'] = $t11;
+  $_SESSION['t12'] = $t12;
+  $_SESSION['t13'] = $t13;
+  $_SESSION['t14'] = $t14;
+  $_SESSION['t15'] = $t15;
+  $_SESSION['t16'] = $t16;
+  $_SESSION['t17'] = $t17;
+  $_SESSION['t18'] = $t18;
+  $_SESSION['t19'] = $t19;
+  $_SESSION['t20'] = $t20;
+  $_SESSION['gw1'] = $gw1;
+  $_SESSION['gw2'] = $gw2;
+  $_SESSION['gw3'] = $gw3;
+  $_SESSION['gw4'] = $gw4;
+  $_SESSION['gw5'] = $gw5;
+  $_SESSION['gw6'] = $gw6;
+  $_SESSION['gw7'] = $gw7;
+  $_SESSION['gw8'] = $gw8;
+  $_SESSION['gw9'] = $gw9;
+  $_SESSION['gw10'] = $gw10;
+  $_SESSION['gw11'] = $gw11;
+  $_SESSION['gw12'] = $gw12;
+  $_SESSION['gw13'] = $gw13;
+  $_SESSION['gw14'] = $gw14;
+  $_SESSION['gw15'] = $gw15;
+  $_SESSION['gw16'] = $gw16;
+  $_SESSION['gw17'] = $gw17;
+  $_SESSION['gw18'] = $gw18;
+  $_SESSION['gw19'] = $gw19;
+  $_SESSION['gw20'] = $gw20;
+  $_SESSION['gw21'] = $gw21;
+  $_SESSION['gw22'] = $gw22;
+  $_SESSION['gw23'] = $gw23;
+  $_SESSION['gw24'] = $gw24;
+  $_SESSION['gw25'] = $gw25;
+  $_SESSION['gw26'] = $gw26;
+  $_SESSION['gw27'] = $gw27;
+  $_SESSION['gw28'] = $gw28;
+  $_SESSION['gw29'] = $gw29;
+  $_SESSION['gw30'] = $gw30;
+  $_SESSION['gw31'] = $gw31;
+  $_SESSION['gw32'] = $gw32;
+  $_SESSION['gw33'] = $gw33;
+  $_SESSION['gw34'] = $gw34;
+  $_SESSION['gw35'] = $gw35;
+  $_SESSION['gw36'] = $gw36;
+  $_SESSION['gw37'] = $gw37;
+  $_SESSION['gw38'] = $gw38;
 
   $firstFilter = true;
 
