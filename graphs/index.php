@@ -57,12 +57,14 @@ function getGraphData () {
 
       FROM
         (SELECT
-            mu.`MatchID`
+             mu.`MatchID`
+            ,mu.`Date`
+            ,mu.`KickOff`
             ,mu.`UserID`
             ,IFNULL(po.`TotalPoints`,0) AS `Points`
 
         FROM
-          (SELECT m.`MatchID`, u.`UserID`
+          (SELECT m.`MatchID`, m.`Date`, m.`KickOff`, u.`UserID`
           FROM `Match` m, `User` u
           WHERE m.`ResultPostedBy` IS NOT NULL) mu
 
@@ -72,11 +74,13 @@ function getGraphData () {
             AND po.`ScoringSystemID` = 1) tmp
 
       INNER JOIN `Match` m ON
-        m.`MatchID` >= tmp.`MatchID`
-        AND m.`ResultPostedBy` IS NOT NULL
+        m.`ResultPostedBy` IS NOT NULL
+        AND
+          ((m.`Date` > tmp.`Date`) OR
+           (m.`Date` = tmp.`Date` AND m.`KickOff` >= tmp.`KickOff`))
 
       GROUP BY
-        m.`MatchID`
+         m.`MatchID`
         ,tmp.`UserID`;";
 
   $result = mysqli_query($link, $sql);
