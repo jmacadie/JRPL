@@ -250,7 +250,7 @@ function getLeagueTable($scoringSystem = 1, $stage = '') {
             AND po.`UserID` = mu.`UserID`
             AND po.`MatchID` = mu.`MatchID`) tmp
 
-      GROUP BY tmp.`DisplayName`; ";
+      GROUP BY tmp.`UserID`, tmp.`DisplayName`; ";
 
   $result = mysqli_query($link, $sql);
   if (!$result) {
