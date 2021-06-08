@@ -3,5 +3,5 @@
 
 <div class="cover">
   <h1>Julian Rimet Prediction League</h1>
-  <p>European Football Championships 2016, France</p>
+  <p>European Football Championships 2021, Various (but mostly Wembley, it's coming home....)</p>
 </div>
