@@ -117,10 +117,6 @@ hr {
     background-image: url(http://img.uefa.com/imgml/2016/euro/flags/flags_sprite_empty_64x64.png)
 }
 
-.flag-ALB {
-    background-position: 100% 100%
-}
-
 .flag-AUT {
     background-position: 75% 0
 }
@@ -137,14 +133,21 @@ hr {
     background-position: 25% 20%
 }
 
+.flag-DEN {
+    background-position: 50% 20%
+}
+
 .flag-ENG {
     background-position: 75% 20%
+}
+
+.flag-FIN {
+    background-position: 0 30%
 }
 
 .flag-FRA {
     background-position: 25% 30%
 }
-
 
 .flag-GER {
     background-position: 100% 30%
@@ -154,20 +157,16 @@ hr {
     background-position: 50% 40%
 }
 
-.flag-ISL {
-    background-position: 75% 40%
-}
-
-.flag-IRL {
-    background-position: 100% 40%
-}
-
 .flag-ITA {
     background-position: 25% 50%
 }
 
-.flag-NIR {
-    background-position: 50% 70%
+.flag-MKD {
+    background-position: 75% 60%
+}
+
+.flag-NLD {
+    background-position: 25% 70%
 }
 
 .flag-POL {
@@ -178,16 +177,16 @@ hr {
     background-position: 0 80%
 }
 
-.flag-ROU {
-    background-position: 25% 80%
-}
-
 .flag-RUS {
     background-position: 50% 80%
 }
 
 .flag-ESP {
     background-position: 25% 90%
+}
+
+.flag-SCO {
+    background-position: 75% 100%
 }
 
 .flag-SUI {
