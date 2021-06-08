@@ -44,42 +44,42 @@
                   <label>
                   <input type="checkbox" id="ckbGroupA" value="" checked>
                   <strong>Pool A</strong><br />
-                  Albania, France, Romania, Switzerland
+                  Italy, Switzerland, Turkey, Wales
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupB" value="" checked>
                   <strong>Pool B</strong><br />
-                  England, Russia, Slovakia, Wales
+                  Belgium, Denmark, Finland, Russia
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupC" value="" checked>
                   <strong>Pool C</strong><br />
-                  Germany, Northern Ireland, Poland, Ukraine
+                  Austria, Netherlands, North Macendonia, Ukraine
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupD" value="" checked>
                   <strong>Pool D</strong><br />
-                  Croatia, Czech Republic, Spain, Turkey
+                  Croatia, Czechia, England, Scotland
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupE" value="" checked>
                   <strong>Pool E</strong><br />
-                  Belgium, Italy, Republic of Ireland, Sweden
+                  Poland, Slovenia, Spain, Sweden
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" id="ckbGroupF" value="" checked>
                   <strong>Pool F</strong><br />
-                  Austria, Hungary, Iceland, Portugal
+                  France, Germany, Hungary, Portugal
                   </label>
                 </div>
               </div>
